@@ -1,0 +1,601 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Coupon {
+  //usageCount Int 
+  //vendorProfile       VendorProfile        @relation(fields: [vendorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  couponCode String
+  expiryDate DateTime
+  isActive   Boolean
+
+  storeId    String    @db.ObjectId
+  store      Store     @relation("StoreCoupons", fields: [storeId], references: [id]) // المتجر المرتبط بالقسيمة
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Banner {
+  //displayOrder Int
+  //targetPage String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  link      String
+  imageUrl  String
+  expiryDate DateTime
+  isActive  Boolean
+
+  storeId      String   @db.ObjectId
+  store        Store    @relation(fields: [storeId], references: [id]) // المتجر المرتبط بالبنب
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Relationships
+
+// 1 to 1 Relationship User => Profile Relation
+// 1 to Many => Category => Product Relation
+// many to many => Market => Category
+
+model Category {
+  //VendorProfileId
+  //MainCategoryId
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  slug        String     @unique
+  imageUrl    String?
+  description String?
+  isActive    Boolean
+  products    Product[]
+  subCategories SubCategory[]  
+
+  mainCategoryId    String @db.ObjectId 
+  mainCategory     MainCategory @relation(fields: [mainCategoryId], references: [id]) 
+
+  storeId      String       @db.ObjectId
+  store        Store        @relation("StoreCategories", fields: [storeId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model MainCategory {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  slug        String  @unique
+  logoUrl     String?
+  description String?
+  isActive    Boolean
+  
+  trainings   Training[]
+  categories  Category[]
+  stores      Store[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model SubCategory {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  slug        String     @unique
+  imageUrl    String?
+  description String?
+  isActive    Boolean    @default(true)
+
+  categoryId  String     @db.ObjectId
+  category    Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  storeId     String     @db.ObjectId
+  store       Store      @relation(fields: [storeId], references: [id])
+
+  products    Product[]  // اختياري: لو تحب تربط المنتجات مباشرة بالقسم الفرعي
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime?  @updatedAt
+}
+
+
+model Product {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  slug           String   @unique
+  imageUrl       String?
+  productImages  String[]
+  descripti      String?
+  isActive       Boolean
+  isWholesale    Boolean
+  sku            String?
+  barcode        String?
+  productCode    String?
+  unit           String?
+  productPrice   Float
+  salePrice      Float
+  wholesalePrice Float?
+  wholesaleQty   Int?
+  productStock   Int?
+  qty            Int?
+  tags           String[]
+  categoryId     String   @db.ObjectId
+  category       Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  subCategoryId  String?    @db.ObjectId
+  subCategory    SubCategory? @relation(fields: [subCategoryId], references: [id])
+
+
+  orderItems OrderItem[]
+  saleItems  SaleItem[]
+
+  storeId        String   @db.ObjectId
+  store      Store       @relation(fields: [storeId], references: [id])
+
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime?   @updatedAt  
+}
+
+model Training {
+  //MainCategoryId
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  slug        String  @unique
+  imageUrl    String?
+  description String?
+  content     String?
+  isActive    Boolean
+
+  mainCategory   MainCategory? @relation(fields: [mainCategoryId], references: [id]) //delete
+  mainCategoryId String    @db.ObjectId //delete
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  VENDOR
+  MODERATOR
+}
+
+// Add this enum at the top-level of your schema
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELED
+}
+
+ model Admin {
+    id        String  @id @default(auto()) @map("_id") @db.ObjectId // الرقم التعريفي للعميل (مفتاح أساسي)
+    name      String
+    email     String?   @unique// البريد الإلكتروني للعميل (يجب أن يكون فريدًا ويمكن أن يكون خاليًا)
+    isBlocked Boolean @default(false) // حالة الحظر للعميل (القيمة الافتراضية: غير محظور)
+    password          String // كلمة المرور للعميل (يجب أن لا تكون خالية)
+
+
+   // storeId    String[] @db.ObjectId
+   // store      Store[]  @relation(fields: [storeId], references: [id])// قائمة بملفات تعريف العميل المرتبطة بالعميل (اختياري)
+    createdAt DateTime  @default(now()) // تاريخ إنشاء العميل
+    updatedAt DateTime? @updatedAt // تاريخ آخر تعديل للعميل
+  }
+  
+  model Customer {
+    id        String  @id @default(auto()) @map("_id") @db.ObjectId // الرقم التعريفي للعميل (مفتاح أساسي)
+    email     String @unique // البريد الإلكتروني للعميل (يجب أن يكون فريدًا ويمكن أن يكون خاليًا)
+    isBlocked Boolean @default(false) // حالة الحظر للعميل (القيمة الافتراضية: غير محظور)
+    password          String // كلمة المرور للعميل (يجب أن لا تكون خالية)
+    emailVerified     Boolean @default(false) // حالة التحقق من البريد الإلكتروني (القيمة الافتراضية: false)
+    verificationToken String? // رمز التحقق (اختياري)
+
+    firstName         String? // الاسم الأول للعميل (اختياري)
+    lastName          String? // اسم العائلة للعميل (اختياري)
+    profileImage      String? // رابط صورة الملف الشخصي للعميل (اختياري)
+
+    phone             String? @unique// رقم الهاتف للعميل (اختياري)
+    phoneVerified     Boolean @default(false) // حالة التحقق من الرقم (القيمة الافتراضية: false)
+    verificationCode String? // رمز التحقق (اختياري)
+
+
+   // storeId    String[] @db.ObjectId
+   // store      Store[]  @relation(fields: [storeId], references: [id])// قائمة بملفات تعريف العميل المرتبطة بالعميل (اختياري)
+
+   customerStores  CustomerStore[]
+   // sales Sale[]
+    addresses Address[] // علاقة بالعناوين
+
+
+   // orders             Order[]
+    createdAt DateTime  @default(now()) // تاريخ إنشاء العميل
+    updatedAt DateTime? @updatedAt // تاريخ آخر تعديل للعميل
+  }
+  
+  model Address {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  customerId String   @db.ObjectId // الرقم التعريفي للعميل المرتبط (مفتاح أجنبي)
+  customer   Customer @relation(fields: [customerId], references: [id]) // العلاقة مع العميل
+  addressName      String   // اسم العنوان (البيت، العمل، الخ)
+  streetAddress     String
+  city       String
+  district   String
+  country    String
+  description String?
+  location   Json     // lat/lng
+  createdAt  DateTime @default(now())
+  updatedAt DateTime? @updatedAt // تاريخ آخر تعديل لملف التعريف
+
+}
+
+
+
+model Vendor {
+  id                String         @id @default(auto()) @map("_id") @db.ObjectId
+  name              String?
+  email             String?        @unique
+  password          String
+  enmailVerified    Boolean        @default(false)
+  //plan            String? 
+  verificationToken String?
+  isBloked          Boolean
+  store             Store?
+  phone             String    
+  verificationCode String?
+  phoneVerified    Boolean        @default(false)
+
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+ 
+}
+
+model CustomerStore {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  customerId  String   @db.ObjectId
+  storeId     String   @db.ObjectId
+
+  customer    Customer @relation(fields: [customerId], references: [id])
+  store       Store    @relation(fields: [storeId], references: [id])
+  reviews   Review[]
+  orders             Order[]
+  sales Sale[] 
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+
+
+model Store {
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  code               String
+  businessName       String
+  businessNameEn     String 
+  contactPerson      String?
+  whatsappPhone String?
+  storeType          String 
+  entityType         String
+  profileImageUrl    String?
+  notes              String?
+  phone              String
+  physicalAddress    String?
+  isActive           Boolean
+  slugDomain         String  @unique
+  socialLinks     Json?    // حفظ روابط التواصل داخل JSON
+
+
+  subCategories  SubCategory[]   
+  products           Product[]
+  orders             Order[]
+  sales              Sale[]
+
+  vendorId String @unique @db.ObjectId // الرقم التعريفي للبائع
+  vendor   Vendor @relation(fields: [vendorId], references: [id])
+
+  storePaymentSettings StorePaymentSetting[]
+  
+  paymentTransactions PaymentTransaction[]
+  
+  storeDeliveringSettings StoreDeliveringSetting[]
+  
+  deliveringTransactions DeliveringTransaction[]
+  
+  //customersId     String[]          @db.ObjectId
+  //customer Customer[] @relation(fields: [customersId], references: [id]) 
+
+  categories Category[] @relation("StoreCategories")
+
+  //user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  //userId String @unique @db.ObjectId
+
+  mainCategory   MainCategory @relation(fields: [mainCategoryId], references: [id]) // علاقة مع الفئة الرئيسية
+  mainCategoryId String       @db.ObjectId
+
+  coupons   Coupon[]  @relation("StoreCoupons") // علاقة مع القسائم
+  banners   Banner[]
+
+  customizations Customization?
+
+  templateId     String?        @db.ObjectId
+  template       Template?       @relation(fields: [templateId], references: [id])
+  reviews   Review[]
+  currencies StoreCurrency[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  customerStores        CustomerStore[]
+}
+
+
+  model Template {
+    id          String  @id @default(auto()) @map("_id") @db.ObjectId // الرقم الفريد للنموذج (مفتاح أساسي)
+    title       String // عنوان النموذج الذي يظهر للمستخدمين
+    slug        String  @unique // معرف فريد للنموذج يتم إنشاؤه بناءً على العنوان
+    thumbnail   String? // رابط الصورة المصغرة لعرض معاينة النموذج (اختياري)
+    description String? // وصف مختصر أو تفصيلي للنموذج (اختياري)
+    isActive    Boolean @default(true) // حالة النموذج إذا كان نشطًا أم لا (افتراضيًا نشط)
+    isDefault   Boolean @default(false) // مؤشر إذا كان النموذج هو الافتراضي للنظام (افترprاضيًا غير افتراضي)
+  
+    stores Store[] // قائمة المتاجر المرتبطة بالنموذج
+  
+    createdAt DateTime  @default(now()) // تاريخ إنشاء السجل الخاص بالنموذج
+    updatedAt DateTime? @updatedAt // تاريخ آخر تعديل للسجل الخاص بالنموذج
+  }
+  
+  model Customization {
+    id              String  @id @default(auto()) @map("_id") @db.ObjectId // الرقم الفريد للتخصيص (مفتاح أساسي)
+    primaryColor    String // اللون الأساسي المستخدم في تصميم المتجر
+    secondaryColor  String // اللون الثانوي المستخدم في تصميم المتجر
+    accentColor     String // اللون المستخدم لإبراز العناصر المهمة في التصميم
+    backgroundColor String // لون الخلفية المستخدم في تصميم المتجر
+    fontFamily      String? // نوع الخط المستخدم في النصوص داخل المتجر (اختياري)
+    isActive        Boolean @default(true) // حالة التخصيص إذا كان نشطًا أم لا (افتراضيًا نشط)
+  
+    store   Store  @relation(fields: [storeId], references: [id]) // علاقة مع جدول المتاجر
+    storeId String @unique @db.ObjectId // الرقم التعريفي للمتجر المرتبط بالتخصيص (مفتاح أجنبي)
+  
+    createdAt DateTime  @default(now()) // تاريخ إنشاء السجل الخاص بالتخصيص
+    updatedAt DateTime? @updatedAt // تاريخ آخر تعديل للسجل الخاص بالتخصيص
+  }
+
+
+// Modify the Order model to use the enum and set PENDING as default
+model Order {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  //Personal Details
+  firstName     String
+  lastName      String
+  email         String
+  phone         String
+  //shipping Details
+  streetAddress String
+  city          String
+  country       String
+  district      String
+  description String?
+  location   Json     // lat/lng
+  shippingCost  Float
+  orderNumber   String?
+  //payment Method
+  paymentMethod String
+
+  storeId String @db.ObjectId // الرقم التعريفي للمتجر (مفتاح أجنبي)
+  store   Store  @relation(fields: [storeId], references: [id]) 
+
+  customerStore       CustomerStore @relation(fields: [CustomerStoreId], references: [id]) // علاقة واحد إلى متعدد مع العملاء
+  CustomerStoreId     String          @db.ObjectId
+
+  paymentTransactionId String?             @db.ObjectId // الرقم التعريفي لمعالجة الدفع (مفتاح أجنبي)
+  paymentTransaction   PaymentTransaction? @relation(fields: [paymentTransactionId], references: [id])
+  
+  deliveringTransactionsId String?                @db.ObjectId // الرقم التعريفي لمعاملات التسوق (يمكن أن تكون القيمة فارغة)
+  deliveringTransactions   DeliveringTransaction? @relation(fields: [deliveringTransactionsId], references: [id]) // علاقة مع معاملات التسليم
+  
+  orderStatus OrderStatus @default(PENDING) // Set PENDING as the default value
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  orderItems  OrderItem[]
+  sales       Sale[]
+}
+
+model OrderItem {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  orderId   String   @db.ObjectId
+  productId String   @db.ObjectId
+  vendorId  String   @db.ObjectId
+  imageUrl  String?
+  title     String?
+  quantity  Int
+  price     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  order     Order    @relation(fields: [orderId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+}
+
+model Sale {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  orderId      String   @db.ObjectId
+  productQty   Int
+  username     String
+  invoiceTotal Float
+  saleItems SaleItem[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  order        Order    @relation(fields: [orderId], references: [id])
+
+  customerStore       CustomerStore @relation(fields: [customerStoreId], references: [id]) // علاقة واحد إلى متعدد مع العملاء
+  customerStoreId     String          @db.ObjectId
+
+  storeId String @db.ObjectId // الرقم التعريفي للمتجر الذي تمت فيه عملية البيع (مفتاح أجنبي)
+  store   Store  @relation(fields: [storeId], references: [id])
+}
+  
+  model SaleItem {
+    id String @id @default(auto()) @map("_id") @db.ObjectId // الرقم التعريفي لعنصر البيع (مفتاح أساسي)
+    
+    productId String  @db.ObjectId
+    product   Product @relation(fields: [productId], references: [id]) // علاقة مع جدول المنتجات
+  
+    saleId String @db.ObjectId // الرقم التعريفي للبيع المرتبط بالعنصر (مفتاح أجنبي)
+    sale   Sale   @relation(fields: [saleId], references: [id]) // علاقة مع جدول المبيعات
+    
+    
+   // total        Float // إجمالي مبلغ العنصر (يجب أن لا تكون القيمة خالية)
+    productTitle String // عنوان المنتج المرتبط بالعنصر (يجب أن لا تكون القيمة خالية)
+    productImage String? // رابط صورة المنتج المرتبط بالعنصر (اختياري)
+    productPrice Float // سعر المنتج المرتبط بالعنصر (يجب أن لا تكون القيمة خالية)
+    productQty   Int // كمية المنتج المرتبطة بالعنصر (يجب أن لا تكون القيمة خالية)
+  
+    createdAt DateTime  @default(now()) // تاريخ إنشاء العنصر
+    updatedAt DateTime? @updatedAt // تاريخ آخر تعديل للعنصر
+  }
+  
+  model PaymentTransaction {
+    id                String @id @default(auto()) @map("_id") @db.ObjectId // الرقم الفريد للمعاملة (مفتاح أساسي)
+    transactionNumber String // رقم فريد يميز المعاملة المالية
+    amount            Float // المبلغ المدفوع في المعاملة
+    currency          String // العملة المستخدمة في المعاملة (مثل USD أو SAR)
+    status            String // حالة المعاملة (مثل PENDING أو COMPLETED)
+  
+    storeId String @db.ObjectId // الرقم التعريفي للمتجر المرتبط بالمعاملة (مفتاح أجنبي)
+    store   Store  @relation(fields: [storeId], references: [id])
+  
+    orders Order[]
+  
+    paymentProvidersId String          @db.ObjectId // الرقم التعريفي لمزود الخدمة المرتبط بالمعاملة (مفتاح أجنبي)
+    paymentProvider    PaymentProvider @relation(fields: [paymentProvidersId], references: [id])
+  
+    createdAt DateTime  @default(now()) // تاريخ إنشاء المعاملة
+    updatedAt DateTime? @updatedAt // تاريخ آخر تعديل للمعاملة
+  }
+  
+  model StorePaymentSetting {
+    id       String  @id @default(auto()) @map("_id") @db.ObjectId // الرقم التعريفي لإعدادات الدفع (مفتاح أساسي)
+    isActive Boolean // ما إذا كانت إعدادات الدفع للبائع نشطة أم لا
+    storeId  String  @db.ObjectId // الرقم التعريفي للمتجر المرتبط بإعدادات الدفع (مفتاح أجنبي)
+    store    Store   @relation(fields: [storeId], references: [id])
+  
+    paymentProvidersId String          @db.ObjectId // الرقم التعريفي لمزود خدمة الدفع (مفتاح أجنبي)
+    paymentProvider    PaymentProvider @relation(fields: [paymentProvidersId], references: [id])
+  
+    createdAt DateTime  @default(now()) // تاريخ إنشاء السجل
+    updatedAt DateTime? @updatedAt // تاريخ آخر تعديل للسجل
+  }
+  
+  model PaymentProvider {
+    id        String  @id @default(auto()) @map("_id") @db.ObjectId // الرقم التعريفي لمزود خدمة الدفع (مفتاح أساسي)
+    name      String // اسم مزود خدمة الدفع
+    apiUrl    String // عنوان واجهة برمجة التطبيقات (API)
+    apiKey    String // المفتاح للوصول إلى API
+    apiSecret String // السر للوصول إلى API
+    isActive  Boolean // حالة التفعيل لمزود خدمة الدفع
+    imageUrl  String?
+    paymentTransactions  PaymentTransaction[] // المعاملات المتعلقة بالدفع
+    storePaymentSettings StorePaymentSetting[] // إعدادات الدفع للبائع المرتبطة بمزود الخدمة
+  
+    createdAt DateTime  @default(now()) // تاريخ إنشاء السجل
+    updatedAt DateTime? @updatedAt // تاريخ آخر تعديل للسجل
+  }
+
+
+
+  model DeliveringTransaction {
+    id                   String @id @default(auto()) @map("_id") @db.ObjectId // الرقم التعريفي للمعاملة (مفتاح أساسي)
+    transactionNumber    String // رقم معاملة الشحن فريد
+    amount               Float // المبلغ المدفوع في معاملة الشحن
+    currency             String // العملة المستخدمة في معاملة الشحن (مثل USD أو SAR)
+    status               String // حالة معاملة الشحن (مثل PENDING أو COMPLETED)
+    storeId              String @db.ObjectId // الرقم التعريفي للمتجر المرتبط بالمعاملة (مفتاح أجنبي)
+    orderId              String @db.ObjectId // الرقم التعريفي للطلب المرتبط بالمعاملة (مفتاح أجنبي)
+    deliveringProviderId String @db.ObjectId // الرقم التعريفي لمزود خدمة الشحن المرتبط بالمعاملة (مفتاح أجنبي)
+  
+    store              Store              @relation(fields: [storeId], references: [id]) // علاقة مع جدول المتاجر
+    order              Order[]
+    deliveringProvider DeliveringProvider @relation(fields: [deliveringProviderId], references: [id]) // علاقة مع جدول مزودي خدمة الشحن
+  
+    createdAt DateTime  @default(now()) // تاريخ إنشاء السجل
+    updatedAt DateTime? @updatedAt // تاريخ آخر تعديل للسجل
+  }
+  
+  model StoreDeliveringSetting {
+    id                   String  @id @default(auto()) @map("_id") @db.ObjectId // الرقم التعريفي لإعدادات الشحن (مفتاح أساسي)
+    isActive             Boolean // حالة التفعيل لإعدادات الشحن (نشطة أو غير نشطة)
+    storeId              String  @db.ObjectId // الرقم التعريفي للمتجر المرتبط بإعدادات الشحن (مفتاح أجنبي)
+    deliveringProviderId String  @db.ObjectId // الرقم التعريفي لمزود خدمة الشحن المرتبط بهذه الإعدادات (مفتاح أجنبي)
+  
+    store              Store              @relation(fields: [storeId], references: [id]) // علاقة مع جدول المتاجر
+    deliveringProvider DeliveringProvider @relation(fields: [deliveringProviderId], references: [id]) // علاقة مع جدول مزودي خدمة الشحن
+  
+    createdAt DateTime  @default(now()) // تاريخ إنشاء السجل
+    updatedAt DateTime? @updatedAt // تاريخ آخر تعديل للسجل
+  }
+  
+  model DeliveringProvider {
+    id        String  @id @default(auto()) @map("_id") @db.ObjectId // الرقم التعريفي لمزود خدمة الشحن (مفتاح أساسي)
+    name      String // اسم مزود خدمة الشحن
+    apiUrl    String // عنوان واجهة برمجة التطبيقات (API) لمزود الشحن
+    apiKey    String // المفتاح الذي يستخدمه مزود الشحن للوصول إلى واجهة برمجة التطبيقات (API)
+    apiSecret String // السر الذي يستخدمه مزود الشحن للوصول إلى واجهة برمجة التطبيقات (API)
+    isActive  Boolean // حالة تفعيل مزود الخدمة (نشط أو غير نشط)
+    logoUrl   String?
+
+    deliveringTransactions  DeliveringTransaction[]
+    storeDeliveringSettings StoreDeliveringSetting[] // علاقة 1 إلى متعدد مع إعدادات الشحن الخاصة بالبائع
+  
+    createdAt DateTime  @default(now()) // تاريخ إنشاء السجل
+    updatedAt DateTime? @updatedAt // تاريخ آخر تعديل للسجل
+  }
+  
+  model Review {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  rating    Int      // قيمة من 1 إلى 5
+  comment   String?
+  store     Store    @relation(fields: [storeId], references: [id])
+  storeId   String   @db.ObjectId
+  customerStore  CustomerStore?    @relation(fields: [customerStoreId], references: [id])
+  customerStoreId    String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Currency {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  code      String   @unique  // مثل "USD", "SAR", "EUR"
+  name      String            // "US Dollar", "Saudi Riyal"
+  symbol    String            // "$", "﷼"
+  isDefault Boolean @default(false) // العملة الافتراضية للنظام
+  rateToDefault Float         // سعر العملة بالنسبة للعملة الافتراضية (مثلاً: 1 USD = 3.75 SAR → rate = 3.75)
+ 
+  storeCurrencies StoreCurrency[]
+  isActive  Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model StoreCurrency {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId    String   @db.ObjectId
+  store      Store    @relation(fields: [storeId], references: [id])
+  
+  currencyId String   @db.ObjectId
+  currency   Currency @relation(fields: [currencyId], references: [id])
+  
+  isDefault  Boolean  @default(false) // عملة افتراضية للمتجر
+  isActive  Boolean @default(true)
+  
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}

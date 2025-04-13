@@ -8,7 +8,7 @@ import { CircleDollarSign, FolderSync, HelpCircle, HelpCircleIcon, LinkedinIcon 
 import advert from '../../../public/div.gif'
 // import SidebarCategories from './SidebarCategories'
 
-export default  function Bannering({storeId ,customization={},banners={} }) {
+export default  function Banner({storeId ,customization={},banners={} }) {
   // const categoriesData = await getData(`categories?storeId=${storeId}`);
 //         const categories = categoriesData.filter((category)=>{
 //           return category.products.length > 0;

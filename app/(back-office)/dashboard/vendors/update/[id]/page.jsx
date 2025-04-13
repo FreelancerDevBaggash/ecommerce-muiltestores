@@ -1,6 +1,6 @@
 import React from 'react' ;
 import FormHeader from '../../../../../../components/backoffice/FormHeader'
-import NewVendorForm from '../../../../../../components/backoffice/NewVendorForm'
+import NewVendorForm from "../../../../../components/backoffice/NewStoreForm";
 // 6.9k (gzipped: 2.7k)
 
 export default function UpdateVendor(){

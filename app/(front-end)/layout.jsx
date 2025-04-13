@@ -17,7 +17,7 @@
 
 import React from 'react';
 import Footer from '../../components/frontend/Footer';
-import NavbarHome from '@/components/frontend/front-end_home/NavBar_Home';
+import NavbarHome from '../../components/frontend/front-end_home/NavBar_Home';
 
 export default function Layout({ children }) {
   return (

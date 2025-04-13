@@ -65,11 +65,11 @@ import React from 'react';
 import logo from '../../public/reshotq.svg';
 import Link from 'next/link';
 import Image from 'next/image';
-import Herohome from'@/components/frontend/front-end_home/Hero_home'
-import NeuralVision from'@/components/frontend/front-end_home/NeuralVision'
-import Skills from'@/components/frontend/front-end_home/Skills'
-import Beautysection from'@/components/frontend/front-end_home/beauty-section'
-import PartnersSection from'@/components/frontend/front-end_home/PartnersSection'
+import Herohome from'../../components/frontend/front-end_home/Hero_home'
+import NeuralVision from'../../components/frontend/front-end_home/NeuralVision'
+import Skills from'../../components/frontend/front-end_home/Skills'
+import Beautysection from'../../components/frontend/front-end_home/beauty-section'
+import PartnersSection from'../../components/frontend/front-end_home/PartnersSection'
 
 
 

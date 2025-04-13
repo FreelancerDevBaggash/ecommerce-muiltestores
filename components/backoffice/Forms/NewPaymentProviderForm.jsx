@@ -134,16 +134,16 @@
 "use client";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import TextInput from "@/components/Forminputs/TextInput";
-import FormHeader from "@/components/backoffice/FormHeader";
-import SubmitButton from "@/components/Forminputs/SubmitButton";
-import TextareaInput from "@/components/Forminputs/TextareaInput";
-import { generateSlug } from "@/lib/generateSlug";
-import ImageInput from "@/components/Forminputs/ImageInput";
-import SelectInput from "@/components/Forminputs/SelectInput";
-import { makePostRequest } from "@/lib/apiRequest";
-import { makePutRequest } from "@/lib/apiRequest";
-import ToggleInput from "@/components/Forminputs/ToggleInput";
+import TextInput from "../../../components/Forminputs/TextInput";
+import FormHeader from "../../../components/backoffice/FormHeader";
+import SubmitButton from "../../../components/Forminputs/SubmitButton";
+import TextareaInput from "../../../components/Forminputs/TextareaInput";
+import { generateSlug } from "../../../lib/generateSlug";
+import ImageInput from "../../../components/Forminputs/ImageInput";
+import SelectInput from "../../../components/Forminputs/SelectInput";
+import { makePostRequest } from "../../../lib/apiRequest";
+import { makePutRequest } from "../../../lib/apiRequest";
+import ToggleInput from "../../../components/Forminputs/ToggleInput";
 import { useRouter } from "next/navigation";
 
 export default function NewPaymentProviderForm({ updateData = {} }) {

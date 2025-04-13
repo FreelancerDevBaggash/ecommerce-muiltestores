@@ -3,10 +3,10 @@ import React, { useState } from "react"
 import {useForm} from "react-hook-form";
 // import SubmitButton from "@/components/Forminputs/SubmitButton";
 // import FormHeader from "@/components/backoffice/FormHeader";
-import TextInput from "@/components/Forminputs/TextInput";
-import SubmitButton from "@/components/Forminputs/SubmitButton";
-import TextareaInput from "@/components/Forminputs/TextareaInput";
-import { generateUserCode } from "@/lib/generateUserCode";
+import TextInput from "../../components/Forminputs/TextInput";
+import SubmitButton from "../../components/Forminputs/SubmitButton";
+import TextareaInput from "../../components/Forminputs/TextareaInput";
+import { generateUserCode } from "../../lib/generateUserCode";
 import { makePutRequest } from "../../lib/apiRequest";
 import ToggleInput from "@/components/Forminputs/ToggleInput";
 import { useRouter } from "next/navigation";

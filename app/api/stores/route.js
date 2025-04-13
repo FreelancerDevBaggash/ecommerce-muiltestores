@@ -223,6 +223,7 @@ export async function GET(request) {
         createdAt: true,
         updatedAt: true,
         currencies: true,
+        socialLinks: true,
 
       },
       skip,

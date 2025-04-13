@@ -26,6 +26,7 @@ wholesalePrice,
 wholesaleQty,
 productStock, 
 qty,
+subCategoryId,
 
 
 } = await request.json();
@@ -67,6 +68,7 @@ wholesalePrice:parseFloat(wholesalePrice),
 wholesaleQty:parseInt(wholesaleQty),
 productStock :parseInt(productStock),
 qty:parseInt(qty),
+subCategoryId,
 
 },
 });

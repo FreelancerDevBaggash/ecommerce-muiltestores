@@ -6,7 +6,7 @@
 // import TextInput from "../../components/Forminputs/TextInput";
 // import FormHeader from "../../components/backoffice/FormHeader";
 // import SubmitButton from "../../components/Forminputs/SubmitButton";
-// // import TextareaInput from "../../components/Forminputs/TextareaInput";
+// // import TextareaInput from "../../components/Forminputs/TextAreainput";
 // import { generateSlug } from "../../lib/generateSlug";
 // import { generateUserCode } from "../../lib/generateUserCode";
 // import MultipleImageInput from "../../components/Forminputs/MultipleImageInput"
@@ -461,543 +461,120 @@
 //   );
 // }
 
-// "use client";
-// import React, { useState } from "react";
-// import { useForm } from "react-hook-form";
-// import TextInput from "../../components/Forminputs/TextInput";
-// import FormHeader from "../../components/backoffice/FormHeader";
-// import SubmitButton from "../../components/Forminputs/SubmitButton";
-// import MultipleImageInput from "../../components/Forminputs/MultipleImageInput";
-// import SelectInput from "../../components/Forminputs/SelectInput";
-// import ArrayItemsInput from "../../components/Forminputs/ArrayItemsInput";
-// import ToggleInput from "../../components/Forminputs/ToggleInput";
-// import { makePostRequest } from "../../lib/apiRequest";
-// import { useRouter } from "next/navigation";
-// import { generateSlug } from "../../lib/generateSlug";
-// import { generateUserCode } from "../../lib/generateUserCode";
-// import button from "@/components/ui/button";
-// import { Package  } from "lucide-react";
-
-// export default function NewProductForm({ categoryId, storeId }) {
-//   const [productImages, setProductImages] = useState([]);
-//   const [tags, setTags] = useState(["وسم1", "وسم2"]);
-//   const [loading, setLoading] = useState(false);
-//   const [showModal, setShowModal] = useState(false);
-
-//   const {
-//     register,
-//     reset,
-//     watch,
-//     handleSubmit,
-//     formState: { errors },
-//   } = useForm({
-//     defaultValues: {
-//       isActive: true,
-//       isWholesale: false,
-//     },
-//   });
-
-//   const isActive = watch("isActive");
-//   const isWholesale = watch("isWholesale");
-//   const router = useRouter();
-
-//   function redirect() {
-//     router.push("/dashboard/products");
-//   }
-
-//   async function onSubmit(data) {
-//     const slug = generateSlug(data.title);
-//     const productCode = generateUserCode("LLP", data.title);
-//     data.slug = slug;
-//     data.storeId = storeId;
-//     data.productImages = productImages;
-//     data.tags = tags;
-//     data.qty = 1;
-//     data.productCode = productCode;
-
-//     makePostRequest(
-//       setLoading,
-//       "api/products",
-//       data,
-//       "المنتج",
-//       reset,
-//       redirect
-//     );
-
-//     setProductImages([]);
-//     setTags([]);
-//     setShowModal(false);
-//   }
-
-//   return (
-//     <div dir="rtl">
-//       <FormHeader title="إضافة منتج جديد" />
-//       <form
-//         onSubmit={handleSubmit(onSubmit)}
-//         className="w-full max-w-2xl p-4 bg-white border  dark:bg-gray-800 border-gray-200 rounded-lg shadow sm:p-6 mx-auto my-4"
-//       > 
-        
-//              <MultipleImageInput
-//                 imageUrls={productImages}
-//                 setImageUrls={setProductImages}
-//                 endpoint="multipleProductsUploader"
-//                 label="صور المنتج"
-//               />
-//               <div className="grid gap-4">
-//           <TextInput
-//             lable="اسم المنتج"
-//             name="title"
-//             register={register}
-//             errors={errors}
-//           />
-
-//           <TextInput
-//             lable="رمز المنتج (SKU)"
-//             name="sku"
-//             register={register}
-//             errors={errors}
-//           />
-
-//           <TextInput
-//             lable="السعر"
-//             name="productPrice"
-//             type="number"
-//             register={register}
-//             errors={errors}
-//           />
-          
-//           <SelectInput
-//                 lable="اختر القسم"
-//                 name="categoryId"
-//                 register={register}
-//                 errors={errors}
-//                 options={categoryId}
-                
-//               />
-
-// <button
-//   type="button"
-//   onClick={() => setShowModal(true)}
-//   className="flex items-center gap-2 w-36 bg-stone-950 text-white py-2 px-4 rounded-lg hover:bg-stone-700 transition"
-// >
-//   <Package  className="w-5 h-5" /> {/* الأيقونة */}
-//   بيانات المنتج
-// </button>
-
-//           <ToggleInput
-//             label="نشر المنتج"
-//             name="isActive"
-//             trueTitle="نشط"
-//             falseTitle="مسودة"
-//             register={register}
-//           />
-
-//           <SubmitButton
-//             isLoading={loading}
-//             buttonTitle="حفظ المنتج"
-//             loadingButtonTitle="جاري الحفظ..."
-//           />
-//         </div>
-//       </form>
-
-//       {showModal && (
-//   <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-//     <div className="bg-white w-full max-w-md  dark:bg-gray-800 h-auto rounded-lg shadow-xl relative">
-      
-//       <button
-      
-//         className="absolute left-3 top-3 text-gray-500 dark:text-gray-900 hover:text-red-500 text-2xl"
-//         onClick={() => setShowModal(false)}
-      
-//       >
-//         &times;
-      
-//       </button>
-
-//       <div className="p-4">
-//         <h2 className="text-lg font-semibold text-center mb-4">
-//           بيانات إضافية للمنتج
-//         </h2>
-
-//         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-//           {/* الصف الأول */}
-//           <div className="space-y-2">
-//             <TextInput
-//               lable="السعر بعد الخصم"
-//               name="salePrice"
-//               type="number"
-//               register={register}
-//               errors={errors}
-//               className="text-sm"
-//             />
-//             <TextInput
-//               lable="الباركود"
-//               name="barcode"
-//               register={register}
-//               errors={errors}
-//               className="text-sm"
-//             />
-//           </div>
-
-//           {/* الصف الثاني */}
-//           <div className="space-y-2">
-//             <TextInput
-//               lable="السعر القديم"
-//               name="oldPrice"
-//               register={register}
-//               errors={errors}
-//               className="text-sm"
-//             />
-//             <TextInput
-//               lable="نسبة الخصم"
-//               name="discount"
-//               register={register}
-//               errors={errors}
-//               className="text-sm"
-//             />
-//           </div>
-
-//           {/* الصف الثالث */}
-//           <div className="space-y-2">
-//             <TextInput
-//               lable="التقييم"
-//               name="rating"
-//               register={register}
-//               errors={errors}
-//               className="text-sm"
-//             />
-//             <TextInput
-//               lable="الكمية المتوفرة"
-//               name="productStock"
-//               type="number"
-//               register={register}
-//               errors={errors}
-//               className="text-sm"
-//             />
-//           </div>
-
-//           {/* الصف الرابع */}
-//           <div className="space-y-2">
-//             <TextInput
-//               lable="وحدة القياس"
-//               name="unit"
-//               register={register}
-//               errors={errors}
-//               className="text-sm"
-//             />
-//             <ToggleInput
-//               label="يدعم البيع بالجملة؟"
-//               name="isWholesale"
-//               trueTitle="نعم"
-//               falseTitle="لا"
-//               register={register}
-//               className="text-sm"
-//             />
-//           </div>
-
-//           {isWholesale && (
-//             <div className="sm:col-span-2 space-y-2">
-//               <TextInput
-//                 lable="سعر الجملة"
-//                 name="wholesalePrice"
-//                 type="number"
-//                 register={register}
-//                 errors={errors}
-//                 className="text-sm"
-//               />
-//               <TextInput
-//                 lable="أقل كمية للبيع بالجملة"
-//                 name="wholesaleQty"
-//                 type="number"
-//                 register={register}
-//                 errors={errors}
-//                 className="text-sm"
-//               />
-//             </div>
-//           )}
-
-//           <div className="sm:col-span-2">
-//             <ArrayItemsInput
-//               setItems={setTags}
-//               items={tags}
-//               itemTitle="وسم"
-//               className="text-sm"
-//             />
-//           </div>
-
-//           <div className="sm:col-span-2">
-//             <TextInput
-//               lable="وصف المنتج"
-//               name="descripti"
-//               register={register}
-//               errors={errors}
-//               className="text-sm"
-//             />
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   </div>
-// )}
-//     </div>
-//   );
-// }
-
 "use client";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import TextInput from "../../components/Forminputs/TextInput";
-import FormHeader from "../../components/backoffice/FormHeader";
-import SubmitButton from "../../components/Forminputs/SubmitButton";
-import MultipleImageInput from "../../components/Forminputs/MultipleImageInput";
-import ArrayItemsInput from "../../components/Forminputs/ArrayItemsInput";
-import ToggleInput from "../../components/Forminputs/ToggleInput";
+import TextInput from "../Forminputs/TextInput";
+import FormHeader from "./FormHeader";
+import ToggleInput from "../Forminputs/ToggleInput";
+import SubmitButton from "../Forminputs/SubmitButton";
+import ImageInput from "../Forminputs/ImageInput";
+import SelectInput from "../Forminputs/SelectInput";
 import { makePostRequest } from "../../lib/apiRequest";
 import { useRouter } from "next/navigation";
 import { generateSlug } from "../../lib/generateSlug";
-import { generateUserCode } from "../../lib/generateUserCode";
-import { Package } from "lucide-react";
-import CategorySelector from "../../components/Forminputs/CategorySelector";
 
-export default function NewProductForm({ categories, storeId }) {
-  const [productImages, setProductImages] = useState([]);
-  const [tags, setTags] = useState(["وسم1", "وسم2"]);
+export default function NewSubCategoryForm({ categoryId, storeId }) {
+  const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
 
   const {
     register,
     reset,
     watch,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
       isActive: true,
-      isWholesale: false,
     },
   });
 
   const isActive = watch("isActive");
-  const isWholesale = watch("isWholesale");
   const router = useRouter();
 
   function redirect() {
-    router.push("/dashboard/products");
+    router.push("/dashboard/subcategory");
   }
 
   async function onSubmit(data) {
     const slug = generateSlug(data.title);
-    const productCode = generateUserCode("LLP", data.title);
     data.slug = slug;
     data.storeId = storeId;
-    data.productImages = productImages;
-    data.tags = tags;
-    data.qty = 1;
-    data.productCode = productCode;
+   // data.categoryId = categoryId[0]?.id;
+    data.imageUrl = imageUrl;
 
     makePostRequest(
       setLoading,
-      "api/products",
+      "api/subcategory",
       data,
-      "المنتج",
+      "القسم الفرعي",
       reset,
       redirect
     );
 
-    setProductImages([]);
-    setTags([]);
-    setShowModal(false);
+    setImageUrl("");
   }
 
   return (
     <div dir="rtl">
-      <FormHeader title="إضافة منتج جديد" />
+      <FormHeader title="إضافة قسم فرعي جديد" />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-2xl p-4 bg-white border dark:bg-gray-800 border-gray-200 rounded-lg shadow sm:p-6 mx-auto my-4"
       >
-        <MultipleImageInput
-          imageUrls={productImages}
-          setImageUrls={setProductImages}
-          endpoint="multipleProductsUploader"
-          label="صور المنتج"
-        />
-
         <div className="grid gap-4">
           <TextInput
-            lable="اسم المنتج"
+            lable="اسم القسم الفرعي"
             name="title"
             register={register}
             errors={errors}
+            required
+
           />
+
+        
+          <ImageInput
+  label="صورة القسم الفرعي"
+  imageUrl={imageUrl}
+  setImageUrl={setImageUrl}
+  endpoint="subcategoryUploader"
+  register={register}
+  // تأكد من أن هذا الـ endpoint مضبوط في Uploadthing
+/>
 
           <TextInput
-            lable="رمز المنتج (SKU)"
-            name="sku"
+            lable="وصف القسم الفرعي"
+            name="description"
             register={register}
             errors={errors}
+            textarea
           />
 
-          <TextInput
-            lable="السعر"
-            name="productPrice"
-            type="number"
+          <SelectInput
+            lable="اختر القسم الرئيسي"
+            name="categoryId"
             register={register}
             errors={errors}
+            options={categoryId}
+            disabled={!!categoryId} // إذا تم تمرير categoryId من الأب، نعطله
           />
-
-          <CategorySelector
-            categories={categories}
-            setValue={setValue}
-            errors={errors}
-          />
-
-          <button
-            type="button"
-            onClick={() => setShowModal(true)}
-            className="flex items-center gap-2 w-36 bg-stone-950 text-white py-2 px-4 rounded-lg hover:bg-stone-700 transition"
-          >
-            <Package className="w-5 h-5" />
-            بيانات المنتج
-          </button>
 
           <ToggleInput
-            label="نشر المنتج"
+            label="حالة القسم الفرعي"
             name="isActive"
             trueTitle="نشط"
-            falseTitle="مسودة"
+            falseTitle="غير نشط"
             register={register}
           />
 
           <SubmitButton
             isLoading={loading}
-            buttonTitle="حفظ المنتج"
+            buttonTitle="حفظ القسم الفرعي"
             loadingButtonTitle="جاري الحفظ..."
           />
         </div>
       </form>
-
-      {showModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-          <div className="bg-white w-full max-w-md dark:bg-gray-800 h-auto rounded-lg shadow-xl relative">
-            <button
-              className="absolute left-3 top-3 text-gray-500 dark:text-gray-900 hover:text-red-500 text-2xl"
-              onClick={() => setShowModal(false)}
-            >
-              &times;
-            </button>
-
-            <div className="p-4">
-              <h2 className="text-lg font-semibold text-center mb-4">
-                بيانات إضافية للمنتج
-              </h2>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="space-y-2">
-                  <TextInput
-                    lable="سعر البيع"
-                    name="salePrice"
-                    type="number"
-                    register={register}
-                    errors={errors}
-                  />
-                  <TextInput
-                    lable="الباركود"
-                    name="barcode"
-                    register={register}
-                    errors={errors}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <TextInput
-                    lable="السعر القديم"
-                    name="oldPrice"
-                    register={register}
-                    errors={errors}
-                  />
-                  <TextInput
-                    lable="نسبة الخصم"
-                    name="discount"
-                    register={register}
-                    errors={errors}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <TextInput
-                    lable="التقييم"
-                    name="rating"
-                    register={register}
-                    errors={errors}
-                  />
-                  <TextInput
-                    lable="الكمية المتوفرة"
-                    name="productStock"
-                    type="number"
-                    register={register}
-                    errors={errors}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <TextInput
-                    lable="وحدة القياس"
-                    name="unit"
-                    register={register}
-                    errors={errors}
-                  />
-                  <ToggleInput
-                    label="يدعم البيع بالجملة؟"
-                    name="isWholesale"
-                    trueTitle="نعم"
-                    falseTitle="لا"
-                    register={register}
-                  />
-                </div>
-
-                {isWholesale && (
-                  <div className="sm:col-span-2 space-y-2">
-                    <TextInput
-                      lable="سعر الجملة"
-                      name="wholesalePrice"
-                      type="number"
-                      register={register}
-                      errors={errors}
-                    />
-                    <TextInput
-                      lable="أقل كمية للبيع بالجملة"
-                      name="wholesaleQty"
-                      type="number"
-                      register={register}
-                      errors={errors}
-                    />
-                  </div>
-                )}
-
-                <div className="sm:col-span-2">
-                  <ArrayItemsInput
-                    setItems={setTags}
-                    items={tags}
-                    itemTitle="وسم"
-                  />
-                </div>
-
-                <div className="sm:col-span-2">
-                  <TextInput
-                    lable="وصف المنتج"
-                    name="description"
-                    register={register}
-                    errors={errors}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

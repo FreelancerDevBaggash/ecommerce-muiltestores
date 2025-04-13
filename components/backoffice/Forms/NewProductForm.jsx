@@ -30,7 +30,7 @@
 //                 categoryId: updateData?.categoryId,
 //                 ...updateData
 //               } });
-        
+
 
 //     const isActive = watch("isActive");
 //     const isWholesale = watch("isWholesale");
@@ -42,7 +42,7 @@
 //         router.push("/dashboard/products");
 //     }
 //       const [productImages, setProductImages]=useState([])
-    
+
 
 //     // Handle form submission
 //     async function onSubmit(data) {
@@ -112,7 +112,7 @@
 //                     register={register}
 //                     errors={errors}
 //                     className="w-full"  />
-                                                            
+
 //                   <TextInput lable="Product Stock"
 //                     name="productStock"
 //                     type="number"
@@ -136,8 +136,8 @@
 //                     defaultValue={updateData?.categoryId}
 //                     />
 
-            
-                    
+
+
 
 //      <ToggleInput
 //          label="Supports Wholesale Selling"
@@ -149,7 +149,7 @@
 //                   {
 //                     isWholesale&&(
 //                         <>
-                            
+
 //                <TextInput lable="Wholesale  Price"
 //                     name="wholesalePrice"
 //                     type="number"
@@ -163,12 +163,12 @@
 //                     register={register}
 //                     errors={errors}
 //                     className="w-full"  />  
- 
-                    
+
+
 //                         </>
 //                     )
 //                   }
-             
+
 //           <MultipleImageInput imageUrls={imageUrl} setImageUrls={setImageUrl} endpoint="multipleProductsUploader" label="Product Image Images"/>
 
 //        {/*Tags*/}
@@ -345,6 +345,7 @@
 //     </div>
 //   );
 // }
+
 "use client";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -361,18 +362,18 @@ import { generateSlug } from "@/lib/generateSlug";
 import { generateUserCode } from "@/lib/generateUserCode";
 import { Package } from "lucide-react";
 
-export default function NewProductForm({ updateData = {}, categoryId, storeId }) {
+export default function NewProductForm({ updateData = {}, categoryId, subCategoryId, storeId }) {
   // إعداد القيم الابتدائية
   const initialImage = updateData?.imageUrl ?? "";
   const initialTags = updateData?.tags ?? [];
-  
+
   const [productImages, setProductImages] = useState(
     updateData?.productImages ? updateData.productImages : []
   );
   const [tags, setTags] = useState(initialTags.length ? initialTags : []);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  
+
   const {
     register,
     reset,
@@ -386,14 +387,14 @@ export default function NewProductForm({ updateData = {}, categoryId, storeId })
       ...updateData,
     },
   });
-  
+
   const isWholesale = watch("isWholesale");
   const router = useRouter();
-  
+
   function redirect() {
     router.push("/dashboard/products");
   }
-  
+
   async function onSubmit(data) {
     const slug = generateSlug(data.title);
     const productCode = generateUserCode("LLP", data.title);
@@ -403,7 +404,7 @@ export default function NewProductForm({ updateData = {}, categoryId, storeId })
     data.tags = tags;
     data.qty = 1;
     data.productCode = productCode;
-    
+
     if (updateData?.id) {
       // تعديل المنتج إذا كان معرف المنتج موجودًا
       data.id = updateData.id;
@@ -412,12 +413,12 @@ export default function NewProductForm({ updateData = {}, categoryId, storeId })
       // إضافة منتج جديد
       makePostRequest(setLoading, "api/products", data, "المنتج", reset, redirect);
     }
-    
+
     setProductImages([]);
     setTags([]);
     setShowModal(false);
   }
-  
+
   return (
     <div dir="rtl" className="min-h-screen p-4 dark:bg-gray-900">
       <FormHeader title={updateData?.id ? "تعديل المنتج" : "إضافة منتج جديد"} />
@@ -459,6 +460,15 @@ export default function NewProductForm({ updateData = {}, categoryId, storeId })
             options={categoryId}
             defaultValue={updateData?.categoryId}
           />
+
+          <SelectInput
+            lable="اختر القسم الفرعي"
+            name="subCategoryId"
+            register={register}
+            errors={errors}
+            options={subCategoryId}
+            defaultValue={updateData?.subCategoryId}
+          />
           {/* زر عرض البيانات الإضافية للمنتج */}
           <button
             type="button"
@@ -482,7 +492,7 @@ export default function NewProductForm({ updateData = {}, categoryId, storeId })
           />
         </div>
       </form>
-      
+
       {showModal && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 w-full max-w-md h-auto rounded-lg shadow-xl relative">

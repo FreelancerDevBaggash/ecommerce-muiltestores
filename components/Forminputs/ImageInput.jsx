@@ -5,7 +5,7 @@ import React from "react";
 import {  toast } from "react-hot-toast";
 
 export default function ImageInput({
-  label,
+  label ,
   imageUrl = "",
   setImageUrl,
   className = "col-span-full",

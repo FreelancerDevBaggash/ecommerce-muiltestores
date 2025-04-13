@@ -51,6 +51,7 @@ export async function POST(request) {
            paymentMethod  ,      
           storeId,
            customersId,
+           location,
            
         }
         });

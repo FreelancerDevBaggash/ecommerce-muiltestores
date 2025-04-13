@@ -556,6 +556,7 @@ export default function Sidebar({ showSidebar, setShowSidebar }) {
   let catalogueLinks = [
     { title: 'المنتجات', icon: Boxes, href: '/dashboard/products' },
     { title: 'الفئات', icon: LayoutList, href: '/dashboard/categories' },
+    { title: ' الفئات الفرعيه', icon: LayoutList, href: '/dashboard/subcategory' },
     { title: 'الخصائص', icon: SendToBack, href: '/dashboard/attributes' },
     { title: 'الكوبونات', icon: ScanSearch, href: '/dashboard/coupons' },
     { title: 'لافتات المتجر', icon: MonitorPlay, href: '/dashboard/banners' },
@@ -582,6 +583,7 @@ export default function Sidebar({ showSidebar, setShowSidebar }) {
     catalogueLinks = [
       { title: 'المنتجات', icon: Boxes, href: '/dashboard/products' },
       { title: 'الفئات', icon: LayoutList, href: '/dashboard/categories' },
+      { title: ' الفئات الفرعيه', icon: LayoutList, href: '/dashboard/subcategory' },
       { title: 'الخصائص', icon: SendToBack, href: '/dashboard/attributes' },
       { title: 'الكوبونات', icon: ScanSearch, href: '/dashboard/coupons' },
       { title: 'لافتات المتجر', icon: MonitorPlay, href: '/dashboard/banners' },

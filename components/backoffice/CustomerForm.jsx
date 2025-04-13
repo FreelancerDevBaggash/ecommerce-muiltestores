@@ -5,7 +5,7 @@ import {useForm} from "react-hook-form";
 // import FormHeader from "@/components/backoffice/FormHeader";
 import TextInput from "@/components/Forminputs/TextInput";
 import SubmitButton from "@/components/Forminputs/SubmitButton";
-import TextAreainput from "@/components/Forminputs/TextAreainput";
+import TextareaInput from "@/components/Forminputs/TextareaInput";
 import { generateUserCode } from "@/lib/generateUserCode";
 import { makePutRequest } from "../../lib/apiRequest";
 import ToggleInput from "@/components/Forminputs/ToggleInput";

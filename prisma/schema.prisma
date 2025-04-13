@@ -230,7 +230,7 @@ enum OrderStatus {
   district   String
   country    String
   description String?
-  location   Json     // lat/lng
+  location   Json?     // lat/lng
   createdAt  DateTime @default(now())
   updatedAt DateTime? @updatedAt // تاريخ آخر تعديل لملف التعريف
 

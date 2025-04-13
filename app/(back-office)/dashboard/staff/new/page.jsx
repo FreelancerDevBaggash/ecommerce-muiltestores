@@ -6,7 +6,7 @@ import {useForm} from "react-hook-form";
 import TextInput from "../../../../../components/Forminputs/TextInput";
 import FormHeader from "../../../../../components/backoffice/FormHeader";
 import SubmitButton from "../../../../../components/Forminputs/SubmitButton";
-import TextAreainput from "../../../../../components/Forminputs/TextAreainput";
+import TextareaInput from "../../../../../components/Forminputs/TextareaInput";
 import { generateUserCode } from "../../../../../lib/generateUserCode";
 import { makePostRequest } from "../../../../../lib/apiRequest";
 import ToggleInput from "../../../../../components/Forminputs/ToggleInput";
@@ -98,7 +98,7 @@ export default function NewStaff(){
                     className="w-full" />
 
 
-                       <TextAreainput 
+                       <TextareaInput 
                    lable="Notes"
                     name="notes"
                     register={register}

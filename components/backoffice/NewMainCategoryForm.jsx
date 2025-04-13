@@ -9,7 +9,7 @@ import SubmitButton from "../Forminputs/SubmitButton";
 import ImageInput from "../Forminputs/ImageInput"
 import { makePostRequest } from "../../lib/apiRequest";
 import { generateSlug } from "../../lib/generateSlug";
-import TextAreainput from "../Forminputs/TextAreainput"
+import TextareaInput from "../Forminputs/TextareaInput"
 import ToggleInput from "../Forminputs/ToggleInput";
 import SelectInput from "../Forminputs/SelectInput";
 import { useRouter } from "next/navigation";
@@ -78,7 +78,7 @@ export default function NewMainCategoryForm(){
                 setImageUrl={setLogoUrl} 
                endpoint = "mainCategoryLogoUploader" label="MainCategory Logo"/>
                      
-                     <TextAreainput 
+                     <TextareaInput 
                    lable="MainCategory Description"
                     name="description"
                     register={register}

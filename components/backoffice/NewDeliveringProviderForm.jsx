@@ -7,7 +7,7 @@
 // import ImageInput from "../Forminputs/ImageInput";
 // import { makePostRequest } from "../../lib/apiRequest";
 // import { generateSlug } from "../../lib/generateSlug";
-// import TextAreainput from "../Forminputs/TextAreainput";
+// import TextareaInput from "../Forminputs/TextareaInput";
 // import ToggleInput from "../Forminputs/ToggleInput";
 // import { useRouter } from "next/navigation";
 
@@ -91,7 +91,7 @@
 //             lable="Delivering Provider Logo"
 //           />
 
-//           <TextAreainput
+//           <TextareaInput
 //             lable="Delivering Provider Description"
 //             name="description"
 //             register={register}
@@ -208,7 +208,7 @@ export default function NewDeliveringProviderForm() {
             label="Delivering Provider Logo"
           />
 
-          {/* <TextAreainput
+          {/* <TextareaInput
             lable="Delivering Provider Description"
             name="description"
             register={register}

@@ -53,6 +53,7 @@ export async function GET(request) {
             createdAt: "desc",
           },  include: {
             products: true,
+            subCategories: true,
          
           },
         });

@@ -9,7 +9,7 @@
 // import ImageInput from "../Forminputs/ImageInput"
 // import { makePostRequest } from "../../lib/apiRequest";
 // import { generateSlug } from "../../lib/generateSlug";
-// import TextAreainput from "../Forminputs/TextAreainput"
+// import TextareaInput from "../Forminputs/TextareaInput"
 // import ToggleInput from "../Forminputs/ToggleInput";
 // import SelectInput from "../Forminputs/SelectInput";
 // import { useRouter } from "next/navigation";
@@ -78,7 +78,7 @@
 //                 setImageUrl={setLogoUrl} 
 //                endpoint = "PaymentProviderLogoUploader" label="PaymentProvider Logo"/>
                      
-//                      <TextAreainput 
+//                      <TextareaInput 
 //                    lable="PaymentProvider Description"
 //                     name="description"
 //                     register={register}
@@ -112,7 +112,7 @@
 // import ImageInput from "../Forminputs/ImageInput";
 // import { makePostRequest } from "../../lib/apiRequest";
 // import { generateSlug } from "../../lib/generateSlug";
-// import TextAreainput from "../Forminputs/TextAreainput";
+// import TextareaInput from "../Forminputs/TextareaInput";
 // import ToggleInput from "../Forminputs/ToggleInput";
 // import { useRouter } from "next/navigation";
 
@@ -208,7 +208,7 @@
 // import ImageInput from "../Forminputs/ImageInput";
 // import { makePostRequest } from "../../lib/apiRequest";
 // import { generateSlug } from "../../lib/generateSlug";
-// import TextAreainput from "../Forminputs/TextAreainput";
+// import TextareaInput from "../Forminputs/TextareaInput";
 // import ToggleInput from "../Forminputs/ToggleInput";
 // import { useRouter } from "next/navigation";
 
@@ -306,7 +306,7 @@
 // import ImageInput from "../Forminputs/ImageInput";
 // import { makePostRequest } from "../../lib/apiRequest";
 // import { generateSlug } from "../../lib/generateSlug";
-// import TextAreainput from "../Forminputs/TextAreainput";
+// import TextareaInput from "../Forminputs/TextareaInput";
 // import ToggleInput from "../Forminputs/ToggleInput";
 // import { useRouter } from "next/navigation";
 
@@ -412,7 +412,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import TextInput from "@/components/Forminputs/TextInput";
 import SubmitButton from "@/components/Forminputs/SubmitButton";
-import TextAreainput from "@/components/Forminputs/TextAreainput";
+import TextareaInput from "@/components/Forminputs/TextareaInput";
 import { generateUserCode } from "@/lib/generateUserCode";
 import { makePostRequest } from "@/lib/apiRequest";
 import ToggleInput from "@/components/Forminputs/ToggleInput";
@@ -527,7 +527,7 @@ export default function NewStoreForm({ mainCategories, user }) {
           label="صورة المتجر"
         />
 
-        <TextAreainput 
+        <TextareaInput 
           lable="ملاحظات"
           name="notes"
           register={register}

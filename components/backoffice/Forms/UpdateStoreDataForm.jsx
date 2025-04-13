@@ -218,153 +218,209 @@
 //   );
 // }
 
+// "use client";
+// import React, { useState,useEffect } from "react";
+// import { useForm } from "react-hook-form";
+// import ImageInput from "../../../components/Forminputs/ImageInput";
+// import SubmitButton from "../../../components/Forminputs/SubmitButton";
+// import TextInput from "../../Forminputs/TextInput";
+// import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
+
+// export default function UpdateStoreDataForm({updateData={}}) {
+
+//     const  initialImageUrl = updateData[0]?.profileImageUrl;
+  
+//       const [imageUrl, setImageUrl] = useState(initialImageUrl);
+//       const [loading, setLoading] = useState(false);
+//   console.log("dataaaaaaaaaaaaaaaaaaaaaaaa:", updateData[0]);
+    
+//    const { register,reset,watch, handleSubmit, formState:{errors}  } = useForm({
+//     defaultValues: {
+//       isActive: true,
+//       ...updateData[0]
+//       }
+//     });
+
+//     const isActive = watch("isActive");
+    
+//     async function onSubmit (data)  {
+//     console.log(data);
+//       data.profileImageUrl = imageUrl;
+//     if (updateData[0]?.id) {
+//       // تعديل المنتج إذا كان معرف المنتج موجودًا
+//       data.id = updateData[0].id;
+//       makePutRequest(setLoading, `api/stores/${updateData[0].id}`, data, "المتجر");
+//     }
+//   };
+
+//   return (
+//     <div >
+//       {/* <h1 className="text-2xl sm:text-3xl font-bold text-lime-600 mb-6 sm:mb-8">Store Settings</h1> */}
+
+//       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-4xl p-4 bg-white border
+//              border-gray-200 rounded-lg shadow sm:p-6 md:p-8
+//             dark:bg-gray-800 dark:border-gray-700 mx-auto my-3">
+//         {/* Store Data */}
+      
+//           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+//             <ImageInput 
+//               imageUrl={imageUrl} setImageUrl={setImageUrl}
+//               endpoint="vendorProfileUploader" 
+//               label="Store Logo"
+//             />
+
+//             <TextInput lable="Store Name"
+//                     name="businessName"
+//                     register={register}
+//                     errors={errors}
+//                       />
+
+//             <TextInput lable="Store Description"
+//                     name="phone"
+//                     register={register}
+//                     errors={errors}
+//                       />
+
+//             <TextInput lable="Store Type"
+//                     name="storeType"
+//                     register={register}
+//                     errors={errors}
+//                       />
+
+//             <TextInput lable="Store Location"
+//                     name="physicalAddress"
+//                     register={register}
+//                     errors={errors}
+//                       />
+//           </div>
+
+//         {/* Submit Button */}
+//         <SubmitButton isLoading={loading} buttonTitle="Save Changes"
+//                 loadingButtonTitle="Save Changes please wait..."/> 
+//       </form>
+//     </div>
+//   );
+// }
+
+
 "use client";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ImageInput from "../../../components/Forminputs/ImageInput";
 import SubmitButton from "../../../components/Forminputs/SubmitButton";
 import TextInput from "../../Forminputs/TextInput";
 import { makePostRequest, makePutRequest } from "@/lib/apiRequest";
 
-//import { getServerSession } from "next-auth";
-//import { authOptions } from '@/lib/authOptions';
-//import { getData } from '../../../lib/getData';
-
-export default function UpdateStoreDataForm({updateData={}}) {
-  // const storeName = updateData?.businessName || "" ;
-  //   const  storeDescription =  updateData?.notes || "";
-    const  initialImageUrl = updateData[0]?.profileImageUrl;
-    // const  storeActivity = updateData?.storeType || "";
-    //  const storeLocation =  updateData?.physicalAddress || "";
-    // const  phoneNumber = updateData?.phone || "";
-    // const  whatsapp =updateData?.whatsappPhone || "";
-    // const  email = updateData?.contactPerson || "";
-    // socialMedia: {
-    //     instagram: updateData?.socialMedia?.instagram || "",
-    //     twitter: updateData?.socialMedia?.twitter || "",
-    //     snapchat: updateData?.socialMedia?.snapchat || "",
-    //     tiktok: updateData?.socialMedia?.tiktok || "",
-    //     youtube: updateData?.socialMedia?.youtube || "",
-    //     facebook: updateData?.socialMedia?.facebook || "",
-    //   }
-      const [imageUrl, setImageUrl] = useState(initialImageUrl);
-      const [loading, setLoading] = useState(false);
-  console.log("dataaaaaaaaaaaaaaaaaaaaaaaa:", updateData[0]);
-    
-   const { register,reset,watch, handleSubmit, formState:{errors}  } = useForm({
+export default function UpdateStoreDataForm({ updateData = {} }) {
+  const initialImageUrl = updateData[0]?.profileImageUrl;
+  const [imageUrl, setImageUrl] = useState(initialImageUrl);
+  const [loading, setLoading] = useState(false);
+  
+  // استخدم defaultValues لتعريف المدخلات من updateData وإنشاء قيم افتراضية لمجموعة روابط التواصل
+  const { register, reset, watch, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       isActive: true,
-      ...updateData[0]
-      }
-    });
+      ...updateData[0],
+      // إذا كانت روابط التواصل موجودة مسبقاً، يمكنك تفكيكها
+      facebook: updateData[0]?.socialLinks?.facebook || "",
+      instagram: updateData[0]?.socialLinks?.instagram || "",
+      twitter: updateData[0]?.socialLinks?.twitter || "",
+      tiktok: updateData[0]?.socialLinks?.tiktok || ""
+    }
+  });
 
-    const isActive = watch("isActive");
-    
-    async function onSubmit (data)  {
-    console.log(data);
-      data.profileImageUrl = imageUrl;
+  const isActive = watch("isActive");
+
+  async function onSubmit(data) {
+    // تجميع روابط التواصل الاجتماعي في كائن واحد
+    data.socialLinks = {
+      facebook: data.facebook,
+      instagram: data.instagram,
+      twitter: data.twitter,
+      tiktok: data.tiktok,
+    };
+
+    data.profileImageUrl = imageUrl;
     if (updateData[0]?.id) {
-      // تعديل المنتج إذا كان معرف المنتج موجودًا
+      // تعديل المتجر إذا كان المعرف موجودًا
       data.id = updateData[0].id;
       makePutRequest(setLoading, `api/stores/${updateData[0].id}`, data, "المتجر");
     }
-  };
+  }
 
   return (
-    <div >
-      {/* <h1 className="text-2xl sm:text-3xl font-bold text-lime-600 mb-6 sm:mb-8">Store Settings</h1> */}
-
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-4xl p-4 bg-white border
-             border-gray-200 rounded-lg shadow sm:p-6 md:p-8
-            dark:bg-gray-800 dark:border-gray-700 mx-auto my-3">
-        {/* Store Data */}
-      
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-            <ImageInput 
-              imageUrl={imageUrl} setImageUrl={setImageUrl}
-              endpoint="vendorProfileUploader" 
-              label="Store Logo"
-            />
-
-            <TextInput lable="Store Name"
-                    name="businessName"
-                    register={register}
-                    errors={errors}
-                      />
-
-            <TextInput lable="Store Description"
-                    name="phone"
-                    register={register}
-                    errors={errors}
-                      />
-
-            <TextInput lable="Store Type"
-                    name="storeType"
-                    register={register}
-                    errors={errors}
-                      />
-
-            <TextInput lable="Store Location"
-                    name="physicalAddress"
-                    register={register}
-                    errors={errors}
-                      />
-          </div>
+    <div>
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-4xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mx-auto my-3">
         
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+          <ImageInput 
+            imageUrl={imageUrl} setImageUrl={setImageUrl}
+            endpoint="vendorProfileUploader" 
+            label="شعار المتجر"
+          />
 
-        {/* Customer Service Channels */}
-        {/* <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg">
-          <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4 sm:mb-6">Customer Service Channels</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Phone Number</label>
-              <input
-                type="text"
-                {...register("phoneNumber")}
-                className="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-500"
-              />
-            </div>
+          <TextInput 
+            lable="اسم المتجر "
+            name="businessName"
+            register={register}
+            errors={errors}
+          />
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">WhatsApp Number</label>
-              <input
-                type="text"
-                {...register("whatsapp")}
-                className="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-500"
-              />
-            </div>
+          <TextInput 
+            lable="رقم المتجر"
+            name="phone"
+            register={register}
+            errors={errors}
+          />
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Email Address</label>
-              <input
-                type="email"
-                {...register("email")}
-                className="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-500"
-              />
-            </div>
-          </div>
-        </div> */}
+          <TextInput 
+            lable="نوع المتجر"
+            name="storeType"
+            register={register}
+            errors={errors}
+          />
 
-        {/* Social Media Accounts */}
-        {/* <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg">
-          <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4 sm:mb-6">Social Media Accounts</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-            {["instagram", "twitter", "snapchat", "tiktok", "youtube", "facebook"].map((platform) => (
-              <div key={platform}>
-                <label className="block text-sm font-medium text-gray-700">{`Account for ${platform}`}</label>
-                <input
-                  type="text"
-                  {...register(`socialMedia.${platform}`)}
-                  className="mt-2 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-lime-500"
-                />
-              </div>
-            ))}
-          </div>
-        </div> */}
+          <TextInput 
+            lable="عنوان المتجر"
+            name="physicalAddress"
+            register={register}
+            errors={errors}
+          />
+        </div>
 
-        {/* Submit Button */}
-        <SubmitButton isLoading={loading} buttonTitle="Save Changes"
-                loadingButtonTitle="Save Changes please wait..."/> 
+        {/* إضافة حقول روابط التواصل الاجتماعي */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-6">
+          <TextInput 
+            lable="رابط الفيس بوك"
+            name="facebook"
+            register={register}
+            errors={errors}
+          />
+          <TextInput 
+            lable="رابط الانستقرام"
+            name="instagram"
+            register={register}
+            errors={errors}
+          />
+          <TextInput 
+            lable="رابط X"
+            name="twitter"
+            register={register}
+            errors={errors}
+          />
+          <TextInput 
+            lable="رابط تيك توك"
+            name="tiktok"
+            register={register}
+            errors={errors}
+          />
+        </div>
+
+        <SubmitButton 
+          isLoading={loading} 
+          buttonTitle="Save Changes"
+          loadingButtonTitle="Saving Changes, please wait..."
+        /> 
       </form>
     </div>
   );

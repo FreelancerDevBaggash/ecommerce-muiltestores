@@ -1,4 +1,3 @@
-"use client"
 // import {FormHeader} from "../../../../../../components/backoffice/FormHeader";
 // import {NewCustomizationForm} from "../../../../../../components/backoffice/Forms/NewCustomizationForm";
 import { getData } from '../../../../../../lib/getData';

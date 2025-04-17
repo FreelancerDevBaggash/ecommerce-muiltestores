@@ -143,8 +143,8 @@ import React from 'react';
 import { getData } from '../../lib/getData';
 // import AutoPlay from '@/components/frontend/templaet3/AutoPlay';
 
+// import Home from '../../components/frontend/templaet2/Home';
 import Home from '../../components/frontend/templaet2/Home';
-
 // import CategoriesBanner from '../../components/frontend/templaet3/Bannert';
 
 export default async function StorePage({ params: { slugDomain } }) {

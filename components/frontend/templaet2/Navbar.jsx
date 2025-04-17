@@ -173,7 +173,7 @@
 
 //   // Enhanced hover effects with fallback
 //   const getHoverClass = useMemo(() => {
-//     const baseClasses = 'transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]';
+//     const baseClasses = 'transition-all duration-300ease-custom-ease';
     
 //     switch (safeCustomization.hoverEffect) {
 //       case 'scale': 
@@ -320,7 +320,7 @@
 //       `}</style>
 
 //       <motion.header 
-//         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]`}
+//         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500ease-custom-ease`}
 //         style={{ 
 //           ...cssVariables, 
 //           ...navStyle,
@@ -1001,7 +1001,7 @@ export default function Navbar({ slugDomain, storeData = {}, customization = {},
 
   // Enhanced hover effects with fallback
   const getHoverClass = useMemo(() => {
-    const baseClasses = 'transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]';
+    const baseClasses = 'transition-all duration-300 ease-custom-ease';
     
     switch (safeCustomization.hoverEffect) {
       case 'scale': 
@@ -1147,8 +1147,8 @@ export default function Navbar({ slugDomain, storeData = {}, customization = {},
         }
       `}</style>
 
-      <motion.header 
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]`}
+      <motion.header
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-custom-ease`}
         style={{ 
           ...cssVariables, 
           ...navStyle,

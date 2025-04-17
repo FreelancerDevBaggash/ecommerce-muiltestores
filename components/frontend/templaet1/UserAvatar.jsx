@@ -176,7 +176,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
-
+import handleLogout from '../../../lib/handleLogout'
 export default function UserAvatar({ user = {}, customization = {} }) {
   const { name, image } = user;
   const role = user?.role;

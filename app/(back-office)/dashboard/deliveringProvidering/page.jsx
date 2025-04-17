@@ -67,7 +67,7 @@
 //       console.error("storeId is not available");
 //       return;
 //     }
-  
+
 //     try {
 //       const response = await fetch("/api/storeDeliveringSetting", {
 //         method: "POST",
@@ -78,11 +78,11 @@
 //           isActive: true,
 //         }))),
 //       });
-  
+
 //       if (!response.ok) {
 //         throw new Error("Failed to save providers");
 //       }
-  
+
 //       const data = await response.json();
 //       setSavedProviders(data);
 //       setSelectedProviders([]);
@@ -90,7 +90,7 @@
 //       console.error("Error saving providers:", error);
 //     }
 //   };
-  
+
 //   return (
 //     <div>
 //       <h2 className="text-xl font-semibold mb-4">Payment Providers</h2>
@@ -602,15 +602,18 @@ export default function Page() {
           {providers.map((provider) => (
             <div
               key={provider.id}
-              className={`flex items-center justify-between bg-white dark:bg-slate-800 border rounded-xl p-4 shadow hover:shadow-lg transition-all ${
-                selectedProviders.includes(provider.id) ? "ring-2 ring-purple-500" : ""
-              }`}
+              className={`flex items-center justify-between bg-white dark:bg-slate-800 border rounded-xl p-4 shadow hover:shadow-lg transition-all ${selectedProviders.includes(provider.id) ? "ring-2 ring-purple-500" : ""
+                }`}
             >
               <div className="flex items-center gap-4">
-                <img
+                <Image
                   src={provider.logoUrl || "https://via.placeholder.com/150"}
                   alt={`شعار ${provider.name}`}
-                  className="w-12 h-12 rounded-md object-contain"
+                  width={48}           // 12 * 4px = 48px
+                  height={48}          // 12 * 4px = 48px
+                  className="rounded-md object-contain"
+                  unoptimized          // يحافظ على رندر الـ GIF أو أي صيغة متحركة، ويتجاوز قيود الدومين
+                  priority             // تحميل أسرع للشعار
                 />
                 <div>
                   <h4 className="text-lg font-bold text-gray-800 dark:text-white">

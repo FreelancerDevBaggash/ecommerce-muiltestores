@@ -214,6 +214,9 @@ export default withUt({
       screens: {
         '2xl': '1400px',
       },
+      transitionTimingFunction: {
+        'custom-ease': 'cubic-bezier(0.4, 0, 0.2, 1)',
+      },
     },
     
     extend: {
@@ -289,6 +292,7 @@ export default withUt({
       scrollbarColor: {
         hide: 'transparent',  // Firefox
       },
+
     },
   },
   plugins: [

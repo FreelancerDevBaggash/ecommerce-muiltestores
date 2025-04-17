@@ -26,7 +26,7 @@
 //       try {
 //         const session = await getServerSession(authOptions);
 //         const userId = session?.user?.id;
-        
+
 //         if (!userId) {
 //           throw new Error("User ID not found");
 //         }
@@ -83,7 +83,7 @@
 //       console.error("storeId is not available");
 //       return;
 //     }
-    
+
 //     // إضافة المزودات المحددة
 //     for (const providerId of selectedProviders) {
 //       try {
@@ -96,9 +96,9 @@
 //             storeId, // استخدام storeId المستخرج
 //             paymentProvidersId: providerId,
 //             isActive: true,
-            
+
 //           }),
-          
+
 //         });
 
 //         if (!response.ok) {
@@ -156,7 +156,7 @@
 //             ))}
 //           </div>
 //         </div>
-        
+
 //         {/* زر لحفظ المزودات المحددة */}
 //         <div className="mt-4">
 //           <button
@@ -338,13 +338,13 @@
 // import React, { useState, useEffect } from "react";
 // import { useSession } from 'next-auth/react';
 // export default function page() {
-  
+
 //   const [providers, setProviders] = useState([]); // قائمة مزودي الدفع
 //   const [selectedProviders, setSelectedProviders] = useState([]); // المزودين المختارين
 //   const [savedProviders, setSavedProviders] = useState([]); // قائمة المزودين المحفوظين
 //   const [storeId, setStoreId] = useState(null); // معرف المتجر الخاص بالمستخدم
 //    const { data: session, status } = useSession();
-  
+
 //   // console.log(
 //   //   "user jhynnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn    id :",
 //   //   storeId
@@ -357,9 +357,9 @@
 //   useEffect(() => {
 //     async function fetchStoreId() {
 //       try {
-       
-     
-    
+
+
+
 //         const response = await fetch( `/api/stores?vendorId=${userId}`); // استبدل USER_ID بمعرف المستخدم المناسب
 //         if (!response.ok) throw new Error("Failed to fetch storeId");
 
@@ -836,6 +836,7 @@
 "use client";
 import { useSession } from "next-auth/react";
 import React, { useState, useEffect } from "react";
+import Image from 'next/image';
 
 export default function Page() {
   const { data: session } = useSession();
@@ -936,15 +937,18 @@ export default function Page() {
           {providers.map((provider) => (
             <div
               key={provider.id}
-              className={`flex items-center justify-between bg-white dark:bg-slate-800 border rounded-xl p-4 shadow hover:shadow-lg transition-all ${
-                selectedProviders.includes(provider.id) ? "ring-2 ring-purple-500" : ""
-              }`}
+              className={`flex items-center justify-between bg-white dark:bg-slate-800 border rounded-xl p-4 shadow hover:shadow-lg transition-all ${selectedProviders.includes(provider.id) ? "ring-2 ring-purple-500" : ""
+                }`}
             >
               <div className="flex items-center gap-4">
-                <img
+                <Image
                   src={provider.imageUrl || "https://via.placeholder.com/150"}
                   alt={`Logo of ${provider.name}`}
-                  className="w-12 h-12 rounded-md object-contain"
+                  width={48}               // 12 * 4px = 48px
+                  height={48}              // 12 * 4px = 48px
+                  className="rounded-md object-contain"
+                  unoptimized              // يتجاوز تحسين Next.js الافتراضي (مفيد إذا كان المصدر خارجي)
+                  priority                 // تحميل الصورة بأولوية لتحسين تجربة المستخدم
                 />
                 <div>
                   <h4 className="text-lg font-bold text-gray-800 dark:text-white">{provider.name}</h4>
@@ -979,10 +983,14 @@ export default function Page() {
               key={provider.id}
               className="flex items-center bg-gray-100 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-xl p-4 shadow"
             >
-              <img
+              <Image
                 src={provider.paymentProvider.imageUrl || "https://via.placeholder.com/150"}
                 alt={`Logo of ${provider.paymentProvider.name}`}
-                className="w-12 h-12 rounded-md object-contain ml-4"
+                width={48}               // 12 * 4px = 48px
+                height={48}              // 12 * 4px = 48px
+                className="rounded-md object-contain ml-4"
+                unoptimized              // يتجاوز تحسين Next.js الافتراضي (مفيد للمصادر الخارجية)
+                priority                 // تحميل الصورة بأولوية لتحسين الـ LCP
               />
               <div>
                 <h4 className="text-lg font-bold text-gray-800 dark:text-white">{provider.paymentProvider.name}</h4>

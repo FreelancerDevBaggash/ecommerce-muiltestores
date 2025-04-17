@@ -1318,7 +1318,6 @@ import dynamic from 'next/dynamic';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import ParallaxWrapper from './ParallaxWrapper';
-import Banner from './Banner'
 
 // Dynamic imports with better error handling
 // const Banner = dynamic(() => import('./Banner').catch(() => () => null), { 
@@ -1477,18 +1476,6 @@ const Home = ({
       }}
       className="min-h-screen overflow-x-hidden"
     >
-        {/* Banner with enhanced parallax */}
-        <motion.div style={{ y, opacity }}>
-          <ParallaxWrapper intensity={15} >
-            <Banner 
-              banners={banners} 
-              slugDomain={slugDomain}
-              categories={categories}
-              themeColors={themeColors}
-              customization={customization}
-            />
-          </ParallaxWrapper>
-        </motion.div>
 
         {/* AutoPlay with layered parallax */}
         <motion.section

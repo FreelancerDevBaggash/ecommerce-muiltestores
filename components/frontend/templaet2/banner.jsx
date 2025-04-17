@@ -5,7 +5,6 @@ import Link from 'next/link'
 import React from 'react'
 import HeroCarousel from './HeroCarousel-store'     
 import { CircleDollarSign, FolderSync, HelpCircle, HelpCircleIcon, LinkedinIcon } from 'lucide-react'
-import advert from '../../../public/div.gif'
 // import SidebarCategories from './SidebarCategories'
 
 export default  function Banner({storeId ,customization={},banners={} }) {

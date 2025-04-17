@@ -1318,11 +1318,11 @@ import dynamic from 'next/dynamic';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import ParallaxWrapper from './ParallaxWrapper';
-
+import Banner from './Banner';
 // Dynamic imports with better error handling
-const Banner = dynamic(() => import('./Banner').catch(() => () => null), { 
-  loading: () => <Skeleton height={600} className="rounded-2xl" />
-});
+// const Banner = dynamic(() => import('./Banner').catch(() => () => null), { 
+//   loading: () => <Skeleton height={600} className="rounded-2xl" />
+// });
 const AutoPlay = dynamic(() => import('./AutoPlay').catch(() => () => null));
 const FavaroteProducts = dynamic(() => import('./FavaroteProducts').catch(() => () => null));
 const Testimonials = dynamic(() => import('./Testimonials').catch(() => () => null));

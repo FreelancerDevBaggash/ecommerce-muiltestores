@@ -56,7 +56,7 @@
 // {/* <Newsletter/> */}
 // <Testimonials storeId={storeId}/>
 // <SpecialOffers/>
- 
+
 
 
 //         {/* {categories.map((category, i) => (
@@ -118,7 +118,7 @@
 //     {/* )} */}
 //       {/* <AutoPlay customization={customizationData} storeId={storeId}/> */}
 //       {/* <BestSellers products={productsData} customization={customizationData} /> */}
-     
+
 //       {/* ✅ تمرير storeId إلى CategoryList لضمان تصفية الفئات */}
 //       {categories.map((category, i) => (
 //         <div dir='rtl' className="py-8 " key={i}>
@@ -159,18 +159,18 @@ export default async function StorePage({ params: { slugDomain } }) {
   const productsData = await getData(`/products?storeId=${storeId}`);
   const banners = await getData(`banners?storeId=${storeId}`)
 
- const categories = categoriesData.filter(
+  const categories = categoriesData.filter(
     (category) => category.products && category.products.length >= 0
-   );
+  );
   return (
     <div dir='rtl'>
-      <Home store={store}  banners={banners} storeId={storeId} products={productsData}   customization={customizationData}slugDomain={slugDomain} categories={categories} />
+      <Home store={store} banners={banners} storeId={storeId} products={productsData} customization={customizationData} slugDomain={slugDomain} categories={categories} />
       {/* <Hero banners={banners} storeId={storeId} customization={customizationData} /> */}
 
       {/* <Bannert customization={customizationData} storeId={storeId} slugDomain={slugDomain}  categories={categoriesData}/> */}
-     
-    
-          {/* <Testimonials customization={customizationData} storeId={storeId}/>
+
+
+      {/* <Testimonials customization={customizationData} storeId={storeId}/>
       <PremiumFeatureCard products={productsData}  storeId={storeId} customization={customizationData} /> */}
 
     </div>

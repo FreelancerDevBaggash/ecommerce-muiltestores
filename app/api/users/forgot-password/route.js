@@ -4,7 +4,7 @@ import db from "@/lib/db";
 import { v4 as uuidv4 } from "uuid";
 import base64url from "base64url";
 import { Resend } from "resend";
-import { EmailTemplate } from "../../../../components/email-template";
+import { EmailTemplate } from "../../../../components/EmailTemplate";
 export async function PUT(request) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   try {

@@ -248,7 +248,7 @@ model Vendor {
   verificationToken String?
   isBloked          Boolean
   store             Store?
-  phone             String    
+  phone             String?    
   verificationCode String?
   phoneVerified    Boolean        @default(false)
 
@@ -292,6 +292,7 @@ model Store {
   isActive           Boolean
   slugDomain         String  @unique
   socialLinks     Json?    // حفظ روابط التواصل داخل JSON
+  location   Json?     // lat/lng
 
 
   subCategories  SubCategory[]   

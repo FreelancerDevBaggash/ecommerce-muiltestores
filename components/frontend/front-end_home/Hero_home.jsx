@@ -24,7 +24,7 @@
 //       <div className="text-content-container-foreground container mx-auto px-4 sm:px-6 lg:px-8">
 //         {/* القسم الأول */}
 //         <h1 className="text-indigo-700 dark:text-white font-mono text-center text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-//           منصة ميجاشوب .. تجارة ذكية وسهلة
+//           منصة اتجر .. تجارة ذكية وسهلة
 //         </h1>
 //         <p className="text-violet-950 dark:text-slate-200 text-center text-lg sm:text-xl lg:text-2xl mb-8">
 //           أنشئ متجرك الإلكتروني في دقائق، واربط منتجاتك بمجموعة متكاملة من الحلول الرقميَّة الذكيَّة.
@@ -120,7 +120,7 @@ export default function Herohome() {
       <div className="text-content-container-foreground container mx-auto px-4 sm:px-6 lg:px-8">
         {/* القسم الأول */}
         <h1 className="text-indigo-700 font-arabic dark:text-white  text-center text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-          منصة ميجاشوب .. تجارة ذكية وسهلة
+          منصة اتجر .. تجارة ذكية وسهلة
         </h1>
         <p className="text-violet-950 dark:text-slate-200 text-center text-lg sm:text-xl lg:text-2xl mb-8">
           أنشئ متجرك الإلكتروني في دقائق، واربط منتجاتك بمجموعة متكاملة من الحلول الرقميَّة الذكيَّة.

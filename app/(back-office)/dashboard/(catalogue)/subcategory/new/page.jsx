@@ -41,11 +41,11 @@
 //   )
 // }
 import React from 'react'
-import NewSubCategoryForm from "../../../../../components/backoffice/NewSubCategoryForm";
-import {getData} from "../../../../../lib/getData"
+import NewSubCategoryForm from "../../../../../../components/backoffice/NewSubCategoryForm";
+import {getData} from "../../../../../../lib/getData"
 import FormHeader from '../../../../../components/backoffice/FormHeader';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../../../../lib/authOptions';
+import { authOptions } from '../../../../../../lib/authOptions';
 
 export default async function NewProduct() {
     //Categories and Vendors

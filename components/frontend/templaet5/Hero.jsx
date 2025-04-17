@@ -27,7 +27,7 @@
 //         {/* القسم الأول */}
 
 //         <h1 className="text-indigo-700 dark:text-white font-mono text-center text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-//           منصة ميجاشوب .. تجارة ذكية وسهلة
+//           منصة اتجر .. تجارة ذكية وسهلة
 //         </h1>
 //         <p className="text-violet-950 dark:text-slate-200 text-center text-lg sm:text-xl lg:text-2xl mb-8">
 //           أنشئ متجرك الإلكتروني في دقائق، واربط منتجاتك بمجموعة متكاملة من الحلول الرقميَّة الذكيَّة.

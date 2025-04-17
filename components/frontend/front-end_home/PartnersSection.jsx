@@ -50,7 +50,7 @@ function PartnersSection() {
         {/* زر Call To Action */}
         <div className="mt-12">
           <Button className="bg-primary text-white hover:bg-secondary font-arabic text-lg px-6 py-3 rounded-full shadow-md transition-all">
-            ابدأ رحلتك مع ميجا شوب
+            ابدأ رحلتك مع اتجر
           </Button>
         </div>
       </div>

@@ -10,7 +10,7 @@
 //         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
 //           {/* About */}
 //           <div>
-//             <h3 className="text-xl font-bold mb-4 text-white">ميجا شوب</h3>
+//             <h3 className="text-xl font-bold mb-4 text-white">اتجر</h3>
 //             <p className="mb-4">
 //               منصة تسوق إلكتروني رائدة توفر تشكيلة واسعة من المنتجات عالية الجودة بأسعار تنافسية وخدمة عملاء متميزة.
 //             </p>
@@ -115,7 +115,7 @@
 //         </div>
 
 //         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-//           <p>&copy; {currentYear} ميجا شوب. جميع الحقوق محفوظة.</p>
+//           <p>&copy; {currentYear} اتجر. جميع الحقوق محفوظة.</p>
 //         </div>
 //       </div>
 //     </footer>
@@ -285,7 +285,7 @@ const Footer = ({ slugDomain, customization = {} }) => {
                 {/* Copyright */}
                 <div className="mt-2 pt-4 border-t text-center" style={{ borderColor: accentColor }}>
                     <p className="text-xs" style={{ color: secondaryColor }}>
-                    جميع الحقوق محفوظة © {new Date().getFullYear()} {store?.sinessName || 'منصة ميجا شوب'}<br />
+                    جميع الحقوق محفوظة © {new Date().getFullYear()} {store?.sinessName || 'منصة اتجر'}<br />
                       
                     </p>
                 </div>

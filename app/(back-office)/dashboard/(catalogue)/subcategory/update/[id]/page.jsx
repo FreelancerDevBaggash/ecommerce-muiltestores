@@ -1,11 +1,11 @@
-import FormHeader from "../../../../../../components/backoffice/FormHeader";
+import FormHeader from "../../../../../../../components/backoffice/FormHeader";
 //import NewProductForm from "../../../../../../components/backoffice/NewProductForm";
-import NewsubcategoryForm from '../../../../../../components/backoffice/Forms/NewsubcategoryForm '
+import NewsubcategoryForm from '../../../../../../../components/backoffice/Forms/NewsubcategoryForm '
 //import NewProductForm from '../../../../../../components/backoffice/Forms/NewProductForm'
-import { getData } from '../../../../../../lib/getData'
+import { getData } from '../../../../../../../lib/getData'
 import React from "react"
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../../../../../lib/authOptions';
+import { authOptions } from '../../../../../../../lib/authOptions';
 
 export default async function Updatecategories({params:{id}}){
     

@@ -48,7 +48,7 @@ export default function RegisterVendorForm_Home({ role = "VENDOR" }) {
         
       
         const {data} = responseData;
-        router.push(`/verify-phone/${data.id}`);
+        router.push(`/verify-email/${data.id}`);
          // تخزين ID في localStorage
        localStorage.setItem('vendorId', data.id);
        console.log("gooooooooooooooooooood",data.id)

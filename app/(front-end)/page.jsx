@@ -67,8 +67,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Herohome from'../../components/frontend/front-end_home/Hero_home'
 import NeuralVision from'../../components/frontend/front-end_home/NeuralVision'
-import Skills from'../../components/frontend/front-end_home/Skills'
-import Beautysection from'../../components/frontend/front-end_home/beauty-section'
+// import Skills from'../../components/frontend/front-end_home/Skills'
+import BeautySection from'../../components/frontend/front-end_home/BeautySection'
 import PartnersSection from'../../components/frontend/front-end_home/PartnersSection'
 
 
@@ -83,8 +83,8 @@ export default function Page() {
 
 <Herohome  className=" " />
 <NeuralVision/>
-<Skills/>
-<Beautysection/>
+{/* <Skills/> */}
+<BeautySection/>
 <PartnersSection/>
 
 </div>

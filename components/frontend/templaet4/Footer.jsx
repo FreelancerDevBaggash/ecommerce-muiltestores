@@ -598,7 +598,7 @@ const Footerstore = ({ slugDomain, customization = {} }) => {
                 {/* Copyright */}
                 <div className="mt-2 pt-4 border-t text-center" style={{ borderColor: accentColor }}>
                     <p className="text-xs" style={{ color: secondaryColor }}>
-                    جميع الحقوق محفوظة © {new Date().getFullYear()} {store?.sinessName || 'منصة ميجا شوب'}<br />
+                    جميع الحقوق محفوظة © {new Date().getFullYear()} {store?.sinessName || 'منصة اتجر'}<br />
                       
                     </p>
                 </div>

@@ -149,7 +149,7 @@ import { makePostRequest } from "../../lib/apiRequest";
 import ToggleInput from "../../components/Forminputs/ToggleInput";
 import { useRouter } from "next/navigation";
 import SelectInput from "../../components/Forminputs/SelectInput";
-import ImageInput from "@/components/Forminputs/ImageInput";
+import ImageInput from "../../components/Forminputs/ImageInput";
 import ArrayItemsInput from "@/components/Forminputs/ArrayItemsInput";
 import { generateSlug } from "../../lib/generateSlug";
 

@@ -69,10 +69,10 @@
 
 "use client";
 import { Checkbox } from "@/components/ui/checkbox";
-import SorttableColumn from '../../../../components/DateTableColumns/SortableColumn';
-import ImageColumn from '../../../../components/DateTableColumns/ImageColumn';
-import DateColumn from '../../../../components/DateTableColumns/DateColumn';
-import ActionColumn from '../../../../components/DateTableColumns/ActionColumn';
+import SorttableColumn from '../../../../../components/DateTableColumns/SortableColumn';
+import ImageColumn from '../../../../../components/DateTableColumns/ImageColumn';
+import DateColumn from '../../../../../components/DateTableColumns/DateColumn';
+import ActionColumn from '../../../../../components/DateTableColumns/ActionColumn';
 
 export const columns = [
   {

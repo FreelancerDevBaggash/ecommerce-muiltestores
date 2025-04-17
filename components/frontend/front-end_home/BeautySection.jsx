@@ -200,7 +200,7 @@ import { useState } from "react"
 import CryCarousel from "./CryCarousel"
 import ServiceCarousel from "./ServiceCarousel"
 
-export default function Beautysection() {
+export default function BeautySection() {
   const [activeCategory, setActiveCategory] = useState("الإلكترونيات")
 
   const categoryContent = {

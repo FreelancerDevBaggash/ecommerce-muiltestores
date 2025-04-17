@@ -169,9 +169,9 @@ import VendorDashboard from "@/components/backoffice/VendorDashboard";
 import CustomDataTable from "@/components/backoffice/CustomDataTable";
 
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/authOptions';
-import { getData } from '@/lib/getData';
-import db from '@/lib/db'; // نفترض أن لديك إعداد prisma client
+import { authOptions } from '../../../lib/authOptions';
+import { getData } from '../../../lib/getData';
+import db from '../../../lib/db'; // نفترض أن لديك إعداد prisma client
 
 export default async function Page() {
   const session = await getServerSession(authOptions);

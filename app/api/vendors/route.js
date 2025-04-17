@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 
 import {v4 as uuidv4}from "uuid";
 import { Resend } from "resend";
-import { EmailTemplate } from "../../../components/email-template";
+import { EmailTemplate } from "../../../components/EmailTemplate";
 import base64url from "base64url"
 
 export async function POST(request){
@@ -51,7 +51,7 @@ const newVendor = await db.vendor.create({
         isBloked,
       //  plan,
         verificationToken: verificationToken,
-        phone,
+        phone : "775121130",
         verificationCode : verificationCode, 
     }
 });
@@ -69,18 +69,29 @@ console.log(newVendor);
     console.log("New Vendor:", newVendor);
 
     // Send email with the verification code
-    const subject = "Your Verification Code";
-    const emailBody = `
-Hello ${name},
+    // const subject = "Your Verification Code";
+    const subject = "رمز التحقق الخاص بك";
+//     const emailBody = `
+// Hello ${name},
 
-Your verification code is: ${verificationToken}
+// Your verification code is: ${verificationToken}
 
-Please enter this code in the app to verify your account.
+// Please enter this code in the app to verify your account.
 
-Thank you!
+// Thank you!
+// `;
+const emailBody = `
+مرحباً ${name},
+
+رمز التحقق الخاص بك هو: ${verificationToken}
+
+يرجى إدخال هذا الرمز في التطبيق لتفعيل حسابك.
+
+شكراً لك!
 `;
+
 const sendMail = await resend.emails.send({
-    from: "Desishub <info@muiltiecommercevendor.com>",
+    from: "Etjer <no_reply@etjer.store>",
     to: email,
     subject: subject,
     text: emailBody,
@@ -109,15 +120,17 @@ return NextResponse.json({
     },{status:500} 
     );
 }}
+
+
 export async function GET(request){
     try{
         const vendors = await db.vendor.findMany({
             orderBy:{
                 createdAt:"desc"
             },
+        
             include:{
                 store:true,
-                SaleItem:true,
                }
         })
         return NextResponse.json(vendors)

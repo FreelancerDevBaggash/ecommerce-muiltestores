@@ -3,7 +3,7 @@ import  db  from "../../../lib/db";
 import bcrypt from 'bcrypt';
 import {v4 as uuidv4}from "uuid";
 import { Resend } from "resend";
-import { EmailTemplate } from "../../../components/email-template";
+import { EmailTemplate } from "../../../components/EmailTemplate";
 import base64url from "base64url"
 
 export async function POST(request) {

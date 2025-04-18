@@ -65,7 +65,7 @@ export default async function Layout({ children, params:{slugDomain} }) {
     <div dir='rtl'>
       <Navbar  slugDomain={slugDomain} customization={customizationData} storeData={store} categoriesData ={categoriesData}/>
       <div>{children}</div>
-      <Footer slugDomain={slugDomain} customization={customizationData}  />
+      <Footer slugDomain={slugDomain} customization={customizationData} storeData={store}  />
     </div>
   );
 }

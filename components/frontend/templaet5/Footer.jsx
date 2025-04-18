@@ -308,7 +308,7 @@ import Link from "next/link";
 // دالة fetcher لـ SWR
 const fetcher = url => getData(url);
 
-const Footer = ({ slugDomain, customization = {} }) => {
+const Footer = ({ slugDomain, customization = {} , storeData={}}) => {
     const { data: session, status } = useSession();
     const { theme } = useTheme();
 
@@ -347,7 +347,7 @@ const Footer = ({ slugDomain, customization = {} }) => {
                             <div className="relative w-12 h-12 rounded-full border-2 overflow-hidden" style={{ borderColor: styleSettings.primaryColor }}>
                                 <Link href={`/${slugDomain}`}>
                                     <Image
-                                        src={store?.profileImageUrl || "/default-logo.png"}
+                                        src={storeData?.profileImageUrl || "/default-logo.png"}
                                         alt="شعار المتجر"
                                         layout="fill"
                                         objectFit="cover"
@@ -355,31 +355,31 @@ const Footer = ({ slugDomain, customization = {} }) => {
                                 </Link>
                             </div>
                             <div>
-                                <h1 className="text-xl font-bold">{store?.businessName}</h1>
-                                <p className="text-xs mt-1">{store?.entityType}</p>
+                                <h1 className="text-xl font-bold">{storeData?.businessName}</h1>
+                                <p className="text-xs mt-1">{storeData?.entityType}</p>
                             </div>
                         </div>
 
-                        <p className="text-sm leading-snug">{store?.notes || "لا يوجد وصف متاح."}</p>
+                        <p className="text-sm leading-snug">{storeData?.notes || "لا يوجد وصف متاح."}</p>
 
                         <div className="flex flex-wrap gap-2">
-                            {store?.facebook && (
-                                <Link href={store.facebook} target="_blank" className="p-1.5 rounded-full hover:bg-opacity-20 transition-all">
+                            {storeData?.socialLinks?.facebook && (
+                                <Link href={storeData.socialLinks.facebook} target="_blank" className="p-1.5 rounded-full hover:bg-opacity-20 transition-all">
                                     <FaFacebookF className="w-4 h-4" />
                                 </Link>
                             )}
-                            {store?.instagram && (
-                                <Link href={store.instagram} target="_blank" className="p-1.5 rounded-full hover:bg-opacity-20 transition-all">
+                            {storeData?.socialLinks?.instagram && (
+                                <Link href={storeData.instagram} target="_blank" className="p-1.5 rounded-full hover:bg-opacity-20 transition-all">
                                     <FaInstagram className="w-4 h-4" />
                                 </Link>
                             )}
-                            {store?.twitter && (
-                                <Link href={store.twitter} target="_blank" className="p-1.5 rounded-full hover:bg-opacity-20 transition-all" style={{ backgroundColor: `${styleSettings.primaryColor}20` }}>
+                            {storeData?.x && (
+                                <Link href={storeData.socialLinks.x} target="_blank" className="p-1.5 rounded-full hover:bg-opacity-20 transition-all" style={{ backgroundColor: `${styleSettings.primaryColor}20` }}>
                                     <FaTwitter className="w-4 h-4" />
                                 </Link>
                             )}
-                            {store?.phone && (
-                                <Link href={`https://wa.me/${store.phone}`} target="_blank" className="p-1.5 rounded-full hover:bg-opacity-20 transition-all" style={{ backgroundColor: `${styleSettings.primaryColor}20` }}>
+                            {storeData?.whatsappPhone && (
+                                <Link href={`https://wa.me/${storeData.whatsappPhone}`} target="_blank" className="p-1.5 rounded-full hover:bg-opacity-20 transition-all" style={{ backgroundColor: `${styleSettings.primaryColor}20` }}>
                                     <FaWhatsapp className="w-4 h-4" />
                                 </Link>
                             )}
@@ -392,14 +392,14 @@ const Footer = ({ slugDomain, customization = {} }) => {
                         <div className="space-y-2">
                             <div className="flex items-center gap-2">
                                 <FaEnvelope className="flex-shrink-0 w-4 h-4" />
-                                <a href={`mailto:${store?.email}`} className="hover:underline text-sm" style={{ color: styleSettings.secondaryColor }}>
-                                    {store?.email || "لا يوجد بريد"}
+                                <a href={`mailto:${storeData?.email}`} className="hover:underline text-sm" style={{ color: styleSettings.secondaryColor }}>
+                                    {storeData?.email || "لا يوجد بريد"}
                                 </a>
                             </div>
                             <div className="flex items-center gap-2">
                                 <FaPhone className="flex-shrink-0 w-4 h-4" />
-                                <a href={`tel:${store?.phone}`} className="hover:underline text-sm" style={{ color: styleSettings.secondaryColor }}>
-                                    {store?.phone || "لا يوجد رقم"}
+                                <a href={`tel:${storeData?.phone}`} className="hover:underline text-sm" style={{ color: styleSettings.secondaryColor }}>
+                                    {storeData?.phone || "لا يوجد رقم"}
                                 </a>
                             </div>
                         </div>
@@ -433,7 +433,7 @@ const Footer = ({ slugDomain, customization = {} }) => {
                 {/* Copyright */}
                 <div className="mt-2 pt-4 border-t text-center" style={{ borderColor: styleSettings.accentColor }}>
                     <p className="text-xs" style={{ color: styleSettings.secondaryColor }}>
-                        جميع الحقوق محفوظة © {new Date().getFullYear()} {store?.businessName || 'منصة اتجر'}<br />
+                        جميع الحقوق محفوظة © {new Date().getFullYear()} {storeData?.businessName || 'منصة اتجر'}<br />
                     </p>
                 </div>
             </div>

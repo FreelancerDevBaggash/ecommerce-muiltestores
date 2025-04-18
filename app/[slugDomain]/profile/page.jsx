@@ -1745,7 +1745,7 @@ import ImageInput from "@/components/Forminputs/ImageInput";
 import { makePutRequest } from "@/lib/apiRequest";
 import { useRouter } from "next/navigation";
 
-const AccountSettings = ({ user }) => {
+const AccountSettings = ({ user={} }) => {
   const [imageUrl, setImageUrl] = useState(user?.profileImage || "");
   const [loading, setLoading] = useState(false);
   const router = useRouter();

@@ -1278,232 +1278,232 @@
 //     </form>
 //   );
 // }
-// "use client";
+"use client";
 
-// import React, { useState } from "react";
-// import { useForm } from "react-hook-form";
-// import TextInput from "@/components/Forminputs/TextInput";
-// import SubmitButton from "@/components/Forminputs/SubmitButton";
-// import ImageInput from "@/components/Forminputs/ImageInput";
-// import { makePutRequest } from "@/lib/apiRequest";
-// import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import TextInput from "@/components/Forminputs/TextInput";
+import SubmitButton from "@/components/Forminputs/SubmitButton";
+import ImageInput from "@/components/Forminputs/ImageInput";
+import { makePutRequest } from "@/lib/apiRequest";
+import { useRouter } from "next/navigation";
 
-// export default function AccountSettings({ user }) {
-//   const router = useRouter();
-//   const [imageUrl, setImageUrl] = useState(user?.profileImage || "");
-//   const [loading, setLoading] = useState(false);
+export default function AccountSettings({ user }) {
+  const router = useRouter();
+  const [imageUrl, setImageUrl] = useState(user?.profileImage || "");
+  const [loading, setLoading] = useState(false);
 
-//   const {
-//     register,
-//     reset,
-//     handleSubmit,
-//     watch,
-//     formState: { errors },
-//   } = useForm({ defaultValues: { ...user } });
+  const {
+    register,
+    reset,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({ defaultValues: { ...user } });
 
-//   const redirect = () => router.push("/dashboard/customers");
+  const redirect = () => router.push("/dashboard/customers");
 
-//   const onSubmit = async (data) => {
-//     const payload = {
-//       ...data,
-//       profileImage: imageUrl,
-//     };
+  const onSubmit = async (data) => {
+    const payload = {
+      ...data,
+      profileImage: imageUrl,
+    };
 
-//     if (data.newPassword) {
-//       if (data.newPassword !== data.confirmNewPassword) {
-//         alert("كلمة المرور الجديدة غير متطابقة!");
-//         return;
-//       }
-//       payload.password = data.newPassword;
-//     }
+    if (data.newPassword) {
+      if (data.newPassword !== data.confirmNewPassword) {
+        alert("كلمة المرور الجديدة غير متطابقة!");
+        return;
+      }
+      payload.password = data.newPassword;
+    }
 
-//     await makePutRequest(
-//       setLoading,
-//       `api/customers/${user.id}`,
-//       payload,
-//       "Customer Profile",
-//       redirect,
-//       reset
-//     );
-//   };
+    await makePutRequest(
+      setLoading,
+      `api/customers/${user.id}`,
+      payload,
+      "Customer Profile",
+      redirect,
+      reset
+    );
+  };
 
-//   return (
-//     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
-//       <div className="max-w-7xl mx-auto">
-//         {/* Header Section */}
-//         <div className="text-center mb-10">
-//           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
-//             إدارة الملف الشخصي
-//           </h1>
-//           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-//             تحديث المعلومات الشخصية وإعدادات الأمان للحساب
-//           </p>
-//         </div>
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="text-center mb-10">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
+            إدارة الملف الشخصي
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            تحديث المعلومات الشخصية وإعدادات الأمان للحساب
+          </p>
+        </div>
 
-//         <form onSubmit={handleSubmit(onSubmit)}>
-//           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-//             {/* Left Column - Profile Image */}
-//             <div className="lg:col-span-1">
-//               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 sticky top-6">
-//                 <div className="flex flex-col items-center">
-//                   <ImageInput
-//                     imageUrl={imageUrl}
-//                     setImageUrl={setImageUrl}
-//                     endpoint="customerProfileUploader"
-//                     className="w-auto h-auto rounded-lg border-4 border-white dark:border-gray-700 shadow-xl mb-4 object-cover"
-//                   />
-//                   <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">
-//                     {user?.firstName} {user?.lastName}
-//                   </h3>
-//                   <p className="text-gray-600 dark:text-gray-300 text-sm">
-//                     {user?.email}
-//                   </p>
-//                 </div>
-//               </div>
-//             </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Left Column - Profile Image */}
+            <div className="lg:col-span-1">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 sticky top-6">
+                <div className="flex flex-col items-center">
+                  <ImageInput
+                    imageUrl={imageUrl}
+                    setImageUrl={setImageUrl}
+                    endpoint="customerProfileUploader"
+                    className="w-auto h-auto rounded-lg border-4 border-white dark:border-gray-700 shadow-xl mb-4 object-cover"
+                  />
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">
+                    {user?.firstName} {user?.lastName}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm">
+                    {user?.email}
+                  </p>
+                </div>
+              </div>
+            </div>
 
-//             {/* Right Column - Forms */}
-//             <div className="lg:col-span-2 space-y-6">
-//               {/* Personal Info Card */}
-//               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden">
-//                 <div className="p-6 border-b border-gray-100 dark:border-gray-700">
-//                   <h2 className="text-xl font-semibold text-gray-800 dark:text-white flex items-center gap-2">
-//                     <span className="text-lime-500">📝</span>
-//                     المعلومات الشخصية
-//                   </h2>
-//                 </div>
-//                 <div className="p-2 grid grid-cols-1 md:grid-cols-2 gap-2">
-//                   <TextInput
-//                     lable="الاسم الأول"
-//                     name="firstName"
-//                     register={register}
-//                     errors={errors}
-//                     placeholder="أدخل الاسم الأول"
-//                     icon="user"
-//                   />
-//                   <TextInput
-//                     lable="اسم العائلة"
-//                     name="lastName"
-//                     register={register}
-//                     errors={errors}
-//                     placeholder="أدخل اسم العائلة"
-//                     icon="users"
-//                   />
-//                   <TextInput
-//                     lable="البريد الإلكتروني"
-//                     name="email"
-//                     type="email"
-//                     register={register}
-//                     errors={errors}
-//                     placeholder="example@domain.com"
-//                     icon="mail"
-//                     validation={{ required: "هذا الحقل مطلوب" }}
-//                     className="md:col-span-2"
-//                   />
-//                   <TextInput
-//                     lable="رقم الهاتف"
-//                     name="phone"
-//                     register={register}
-//                     errors={errors}
-//                     placeholder="+967 7XX XXX XXX"
-//                     icon="phone"
-//                     dir="ltr"
-//                     validation={{
-//                       pattern: {
-//                         value: /^\+?[0-9]{10,15}$/,
-//                         message: "رقم هاتف غير صالح",
-//                       },
-//                     }}
-//                   />
-//                 </div>
-//               </div>
+            {/* Right Column - Forms */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Personal Info Card */}
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden">
+                <div className="p-6 border-b border-gray-100 dark:border-gray-700">
+                  <h2 className="text-xl font-semibold text-gray-800 dark:text-white flex items-center gap-2">
+                    <span className="text-lime-500">📝</span>
+                    المعلومات الشخصية
+                  </h2>
+                </div>
+                <div className="p-2 grid grid-cols-1 md:grid-cols-2 gap-2">
+                  <TextInput
+                    lable="الاسم الأول"
+                    name="firstName"
+                    register={register}
+                    errors={errors}
+                    placeholder="أدخل الاسم الأول"
+                    icon="user"
+                  />
+                  <TextInput
+                    lable="اسم العائلة"
+                    name="lastName"
+                    register={register}
+                    errors={errors}
+                    placeholder="أدخل اسم العائلة"
+                    icon="users"
+                  />
+                  <TextInput
+                    lable="البريد الإلكتروني"
+                    name="email"
+                    type="email"
+                    register={register}
+                    errors={errors}
+                    placeholder="example@domain.com"
+                    icon="mail"
+                    validation={{ required: "هذا الحقل مطلوب" }}
+                    className="md:col-span-2"
+                  />
+                  <TextInput
+                    lable="رقم الهاتف"
+                    name="phone"
+                    register={register}
+                    errors={errors}
+                    placeholder="+967 7XX XXX XXX"
+                    icon="phone"
+                    dir="ltr"
+                    validation={{
+                      pattern: {
+                        value: /^\+?[0-9]{10,15}$/,
+                        message: "رقم هاتف غير صالح",
+                      },
+                    }}
+                  />
+                </div>
+              </div>
 
-//               {/* Password Card */}
-//               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden">
-//                 <div className="p-6 border-b border-gray-100 dark:border-gray-700">
-//                   <h2 className="text-xl font-semibold text-gray-800 dark:text-white flex items-center gap-2">
-//                     <span className="text-blue-500">🔒</span>
-//                     إعدادات الأمان
-//                   </h2>
-//                 </div>
-//                 <div className="p-6 space-y-6">
-//                   <TextInput
-//                     lable="كلمة المرور الحالية"
-//                     name="oldPassword"
-//                     type="password"
-//                     register={register}
-//                     errors={errors}
-//                     placeholder="أدخل كلمة المرور الحالية"
-//                     icon="lock"
-//                   />
-//                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//                     <TextInput
-//                       lable="كلمة المرور الجديدة"
-//                       name="newPassword"
-//                       type="password"
-//                       register={register}
-//                       errors={errors}
-//                       placeholder="كلمة مرور جديدة"
-//                       icon="refresh-cw"
-//                     />
-//                     <TextInput
-//                       lable="تأكيد كلمة المرور"
-//                       name="confirmNewPassword"
-//                       type="password"
-//                       register={register}
-//                       errors={errors}
-//                       placeholder="تأكيد كلمة المرور"
-//                       icon="check-circle"
-//                       validation={{
-//                         validate: (value) =>
-//                           value === watch("newPassword") ||
-//                           "كلمات المرور غير متطابقة",
-//                       }}
-//                     />
-//                   </div>
-//                   <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-//                     <p className="text-sm text-blue-600 dark:text-blue-300">
-//                       يجب أن تحتوي كلمة المرور على الأقل على 8 أحرف، حرف كبير،
-//                       حرف صغير، رقم، ورمز خاص.
-//                     </p>
-//                   </div>
-//                 </div>
-//               </div>
+              {/* Password Card */}
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden">
+                <div className="p-6 border-b border-gray-100 dark:border-gray-700">
+                  <h2 className="text-xl font-semibold text-gray-800 dark:text-white flex items-center gap-2">
+                    <span className="text-blue-500">🔒</span>
+                    إعدادات الأمان
+                  </h2>
+                </div>
+                <div className="p-6 space-y-6">
+                  <TextInput
+                    lable="كلمة المرور الحالية"
+                    name="oldPassword"
+                    type="password"
+                    register={register}
+                    errors={errors}
+                    placeholder="أدخل كلمة المرور الحالية"
+                    icon="lock"
+                  />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <TextInput
+                      lable="كلمة المرور الجديدة"
+                      name="newPassword"
+                      type="password"
+                      register={register}
+                      errors={errors}
+                      placeholder="كلمة مرور جديدة"
+                      icon="refresh-cw"
+                    />
+                    <TextInput
+                      lable="تأكيد كلمة المرور"
+                      name="confirmNewPassword"
+                      type="password"
+                      register={register}
+                      errors={errors}
+                      placeholder="تأكيد كلمة المرور"
+                      icon="check-circle"
+                      validation={{
+                        validate: (value) =>
+                          value === watch("newPassword") ||
+                          "كلمات المرور غير متطابقة",
+                      }}
+                    />
+                  </div>
+                  <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                    <p className="text-sm text-blue-600 dark:text-blue-300">
+                      يجب أن تحتوي كلمة المرور على الأقل على 8 أحرف، حرف كبير،
+                      حرف صغير، رقم، ورمز خاص.
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-//               {/* Actions Card */}
-//               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
-//                 <div className="flex flex-col md:flex-row justify-between gap-4">
-//                   <button
-//                     type="button"
-//                     onClick={() => router.back()}
-//                     className="px-6 py-3 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors flex-1"
-//                   >
-//                     إلغاء التغييرات
-//                   </button>
-//                   <div className="flex gap-4 flex-1">
-//                     <button
-//                       type="button"
-//                       className="px-6 py-3 text-red-600 border border-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors flex-1"
-//                       onClick={() => console.log("إجراء حذف الحساب")}
-//                     >
-//                       حذف الحساب
-//                     </button>
-//                     <SubmitButton
-//                       isLoading={loading}
-//                       buttonTitle="حفظ التغييرات"
-//                       loadingButtonTitle="جارٍ الحفظ..."
-//                       className="px-6 py-3 bg-lime-600 hover:bg-lime-700 text-white rounded-lg shadow-md transition-all flex-1"
-//                     />
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// }
+              {/* Actions Card */}
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
+                <div className="flex flex-col md:flex-row justify-between gap-4">
+                  <button
+                    type="button"
+                    onClick={() => router.back()}
+                    className="px-6 py-3 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors flex-1"
+                  >
+                    إلغاء التغييرات
+                  </button>
+                  <div className="flex gap-4 flex-1">
+                    <button
+                      type="button"
+                      className="px-6 py-3 text-red-600 border border-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors flex-1"
+                      onClick={() => console.log("إجراء حذف الحساب")}
+                    >
+                      حذف الحساب
+                    </button>
+                    <SubmitButton
+                      isLoading={loading}
+                      buttonTitle="حفظ التغييرات"
+                      loadingButtonTitle="جارٍ الحفظ..."
+                      className="px-6 py-3 bg-lime-600 hover:bg-lime-700 text-white rounded-lg shadow-md transition-all flex-1"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
 
 // "use client";
 
@@ -1733,232 +1733,232 @@
 //   );
 // };
 
-// export default AccountSettings;
-"use client";
+// // export default AccountSettings;
+// "use client";
 
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { FiUser, FiMail, FiPhone, FiLock, FiRefreshCw, FiCheckCircle } from "react-icons/fi";
-import TextInput from "@/components/Forminputs/TextInput";
-import SubmitButton from "@/components/Forminputs/SubmitButton";
-import ImageInput from "@/components/Forminputs/ImageInput";
-import { makePutRequest } from "@/lib/apiRequest";
-import { useRouter } from "next/navigation";
+// import React, { useState } from "react";
+// import { useForm } from "react-hook-form";
+// import { FiUser, FiMail, FiPhone, FiLock, FiRefreshCw, FiCheckCircle } from "react-icons/fi";
+// import TextInput from "@/components/Forminputs/TextInput";
+// import SubmitButton from "@/components/Forminputs/SubmitButton";
+// import ImageInput from "@/components/Forminputs/ImageInput";
+// import { makePutRequest } from "@/lib/apiRequest";
+// import { useRouter } from "next/navigation";
 
-const AccountSettings = ({ user={} }) => {
-  const [imageUrl, setImageUrl] = useState(user?.profileImage || "");
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
+// const AccountSettings = ({ user={} }) => {
+//   const [imageUrl, setImageUrl] = useState(user?.profileImage || "");
+//   const [loading, setLoading] = useState(false);
+//   const router = useRouter();
 
-  const { register, handleSubmit, formState: { errors }, watch } = useForm({
-    defaultValues: user
-  });
+//   const { register, handleSubmit, formState: { errors }, watch } = useForm({
+//     defaultValues: user
+//   });
 
-  const onSubmit = async (data) => {
-    const payload = {
-      ...data,
-      profileImage: imageUrl,
-    };
+//   const onSubmit = async (data) => {
+//     const payload = {
+//       ...data,
+//       profileImage: imageUrl,
+//     };
 
-    if (data.newPassword) {
-      if (data.newPassword !== data.confirmNewPassword) {
-        alert("كلمة المرور الجديدة غير متطابقة!");
-        return;
-      }
-      payload.password = data.newPassword;
-    }
+//     if (data.newPassword) {
+//       if (data.newPassword !== data.confirmNewPassword) {
+//         alert("كلمة المرور الجديدة غير متطابقة!");
+//         return;
+//       }
+//       payload.password = data.newPassword;
+//     }
 
-    await makePutRequest(
-      setLoading,
-      `api/customers/${user.id}`,
-      payload,
-      "Customer Profile",
-      () => router.push("/dashboard/customers"),
-      () => reset()
-    );
-  };
+//     await makePutRequest(
+//       setLoading,
+//       `api/customers/${user.id}`,
+//       payload,
+//       "Customer Profile",
+//       () => router.push("/dashboard/customers"),
+//       () => reset()
+//     );
+//   };
 
-  const InputField = ({ label, name, type = "text", icon, ...props }) => (
-    <div className="space-y-1">
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-        {label}
-      </label>
-      <div className="relative">
-        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
-          {icon}
-        </div>
-        <input
-          type={type}
-          className={`block w-full pr-10 border ${errors[name] ? 'border-red-500' : 'border-gray-300'} rounded-lg p-3 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-lime-500 focus:border-transparent`}
-          {...register(name)}
-          {...props}
-        />
-      </div>
-      {errors[name] && (
-        <p className="mt-1 text-sm text-red-600">{errors[name].message}</p>
-      )}
-    </div>
-  );
+//   const InputField = ({ label, name, type = "text", icon, ...props }) => (
+//     <div className="space-y-1">
+//       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+//         {label}
+//       </label>
+//       <div className="relative">
+//         <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+//           {icon}
+//         </div>
+//         <input
+//           type={type}
+//           className={`block w-full pr-10 border ${errors[name] ? 'border-red-500' : 'border-gray-300'} rounded-lg p-3 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-lime-500 focus:border-transparent`}
+//           {...register(name)}
+//           {...props}
+//         />
+//       </div>
+//       {errors[name] && (
+//         <p className="mt-1 text-sm text-red-600">{errors[name].message}</p>
+//       )}
+//     </div>
+//   );
 
-  const ProfileCard = () => (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
-      <div className="p-6 border-b border-gray-100 dark:border-gray-700">
-        <h2 className="text-xl font-semibold flex items-center gap-2 text-gray-800 dark:text-white">
-          <FiUser className="text-lime-500" />
-          المعلومات الشخصية
-        </h2>
-      </div>
-      <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <InputField
-          label="الاسم الأول"
-          name="firstName"
-          icon={<FiUser />}
-          register={register}
-          errors={errors}
-        />
-        <InputField
-          label="اسم العائلة"
-          name="lastName"
-          icon={<FiUser />}
-          register={register}
-          errors={errors}
-        />
-        <InputField
-          label="البريد الإلكتروني"
-          name="email"
-          type="email"
-          icon={<FiMail />}
-          register={register}
-          errors={errors}
-        />
-        <InputField
-          label="رقم الهاتف"
-          name="phone"
-          icon={<FiPhone />}
-          register={register}
-          errors={errors}
-          dir="ltr"
-        />
-      </div>
-    </div>
-  );
+//   const ProfileCard = () => (
+//     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+//       <div className="p-6 border-b border-gray-100 dark:border-gray-700">
+//         <h2 className="text-xl font-semibold flex items-center gap-2 text-gray-800 dark:text-white">
+//           <FiUser className="text-lime-500" />
+//           المعلومات الشخصية
+//         </h2>
+//       </div>
+//       <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+//         <InputField
+//           label="الاسم الأول"
+//           name="firstName"
+//           icon={<FiUser />}
+//           register={register}
+//           errors={errors}
+//         />
+//         <InputField
+//           label="اسم العائلة"
+//           name="lastName"
+//           icon={<FiUser />}
+//           register={register}
+//           errors={errors}
+//         />
+//         <InputField
+//           label="البريد الإلكتروني"
+//           name="email"
+//           type="email"
+//           icon={<FiMail />}
+//           register={register}
+//           errors={errors}
+//         />
+//         <InputField
+//           label="رقم الهاتف"
+//           name="phone"
+//           icon={<FiPhone />}
+//           register={register}
+//           errors={errors}
+//           dir="ltr"
+//         />
+//       </div>
+//     </div>
+//   );
 
-  return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            إعدادات الحساب
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300">
-            إدارة معلوماتك الشخصية وإعدادات الأمان
-          </p>
-        </div>
+//   return (
+//     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 px-4 sm:px-6 lg:px-8">
+//       <div className="max-w-5xl mx-auto">
+//         <div className="text-center mb-12">
+//           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+//             إعدادات الحساب
+//           </h1>
+//           <p className="text-lg text-gray-600 dark:text-gray-300">
+//             إدارة معلوماتك الشخصية وإعدادات الأمان
+//           </p>
+//         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* العمود الجانبي */}
-          <div className="lg:col-span-1 space-y-6">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 sticky top-6">
-              <div className="flex flex-col items-center">
-                <div className="relative mb-4">
-                  <img 
-                    src={imageUrl || "/default-avatar.png"} 
-                    className="w-32 h-32 rounded-full border-4 border-white dark:border-gray-700 shadow-lg object-cover"
-                    alt="Profile"
-                  />
-                  <button className="absolute bottom-0 right-0 bg-lime-500 text-white p-2 rounded-full shadow-md hover:bg-lime-600 transition">
-                    <FiUser className="w-4 h-4" />
-                  </button>
-                </div>
-                <h3 className="text-xl font-semibold text-center text-gray-800 dark:text-white">
-                  {user?.firstName} {user?.lastName}
-                </h3>
-                <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-                  {user?.email}
-                </p>
-              </div>
-            </div>
-          </div>
+//         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+//           {/* العمود الجانبي */}
+//           <div className="lg:col-span-1 space-y-6">
+//             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 sticky top-6">
+//               <div className="flex flex-col items-center">
+//                 <div className="relative mb-4">
+//                   <img 
+//                     src={imageUrl || "/default-avatar.png"} 
+//                     className="w-32 h-32 rounded-full border-4 border-white dark:border-gray-700 shadow-lg object-cover"
+//                     alt="Profile"
+//                   />
+//                   <button className="absolute bottom-0 right-0 bg-lime-500 text-white p-2 rounded-full shadow-md hover:bg-lime-600 transition">
+//                     <FiUser className="w-4 h-4" />
+//                   </button>
+//                 </div>
+//                 <h3 className="text-xl font-semibold text-center text-gray-800 dark:text-white">
+//                   {user?.firstName} {user?.lastName}
+//                 </h3>
+//                 <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
+//                   {user?.email}
+//                 </p>
+//               </div>
+//             </div>
+//           </div>
 
-          {/* المحتوى الرئيسي */}
-          <div className="lg:col-span-3 space-y-6">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <ProfileCard />
+//           {/* المحتوى الرئيسي */}
+//           <div className="lg:col-span-3 space-y-6">
+//             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+//               <ProfileCard />
               
-              {/* بطاقة كلمة المرور */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-                <div className="p-6 border-b border-gray-100 dark:border-gray-700">
-                  <h2 className="text-xl font-semibold flex items-center gap-2 text-gray-800 dark:text-white">
-                    <FiLock className="text-blue-500" />
-                    إعدادات الأمان
-                  </h2>
-                </div>
-                <div className="p-6 space-y-4">
-                  <InputField
-                    label="كلمة المرور الحالية"
-                    name="oldPassword"
-                    type="password"
-                    icon={<FiLock />}
-                    register={register}
-                    errors={errors}
-                  />
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <InputField
-                      label="كلمة المرور الجديدة"
-                      name="newPassword"
-                      type="password"
-                      icon={<FiRefreshCw />}
-                      register={register}
-                      errors={errors}
-                    />
-                    <InputField
-                      label="تأكيد كلمة المرور"
-                      name="confirmNewPassword"
-                      type="password"
-                      icon={<FiCheckCircle />}
-                      register={register}
-                      errors={errors}
-                    />
-                  </div>
-                  <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
-                    <p className="text-sm text-blue-600 dark:text-blue-300">
-                      يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل، وتشمل حروفًا كبيرة وصغيرة وأرقامًا.
-                    </p>
-                  </div>
-                </div>
-              </div>
+//               {/* بطاقة كلمة المرور */}
+//               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+//                 <div className="p-6 border-b border-gray-100 dark:border-gray-700">
+//                   <h2 className="text-xl font-semibold flex items-center gap-2 text-gray-800 dark:text-white">
+//                     <FiLock className="text-blue-500" />
+//                     إعدادات الأمان
+//                   </h2>
+//                 </div>
+//                 <div className="p-6 space-y-4">
+//                   <InputField
+//                     label="كلمة المرور الحالية"
+//                     name="oldPassword"
+//                     type="password"
+//                     icon={<FiLock />}
+//                     register={register}
+//                     errors={errors}
+//                   />
+//                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+//                     <InputField
+//                       label="كلمة المرور الجديدة"
+//                       name="newPassword"
+//                       type="password"
+//                       icon={<FiRefreshCw />}
+//                       register={register}
+//                       errors={errors}
+//                     />
+//                     <InputField
+//                       label="تأكيد كلمة المرور"
+//                       name="confirmNewPassword"
+//                       type="password"
+//                       icon={<FiCheckCircle />}
+//                       register={register}
+//                       errors={errors}
+//                     />
+//                   </div>
+//                   <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
+//                     <p className="text-sm text-blue-600 dark:text-blue-300">
+//                       يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل، وتشمل حروفًا كبيرة وصغيرة وأرقامًا.
+//                     </p>
+//                   </div>
+//                 </div>
+//               </div>
 
-              {/* أزرار الإجراءات */}
-              <div className="flex flex-col sm:flex-row justify-end gap-4 pt-4">
-                <button
-                  type="button"
-                  onClick={() => router.back()}
-                  className="px-6 py-3 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition"
-                >
-                  إلغاء
-                </button>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="px-6 py-3 bg-lime-500 text-white rounded-lg hover:bg-lime-600 transition flex items-center justify-center"
-                >
-                  {loading ? (
-                    <>
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      جاري الحفظ...
-                    </>
-                  ) : 'حفظ التغييرات'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+//               {/* أزرار الإجراءات */}
+//               <div className="flex flex-col sm:flex-row justify-end gap-4 pt-4">
+//                 <button
+//                   type="button"
+//                   onClick={() => router.back()}
+//                   className="px-6 py-3 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+//                 >
+//                   إلغاء
+//                 </button>
+//                 <button
+//                   type="submit"
+//                   disabled={loading}
+//                   className="px-6 py-3 bg-lime-500 text-white rounded-lg hover:bg-lime-600 transition flex items-center justify-center"
+//                 >
+//                   {loading ? (
+//                     <>
+//                       <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+//                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+//                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+//                       </svg>
+//                       جاري الحفظ...
+//                     </>
+//                   ) : 'حفظ التغييرات'}
+//                 </button>
+//               </div>
+//             </form>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
 
-export default AccountSettings;
+// export default AccountSettings;

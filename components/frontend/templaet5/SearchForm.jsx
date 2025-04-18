@@ -36,6 +36,157 @@
 
 //   )
 // }
+// "use client";
+
+// import { DoorOpen, Search, Mic } from "lucide-react";
+// import { useRouter } from "next/navigation";
+// import React, { useState, useEffect } from "react";
+// import { useForm } from "react-hook-form";
+// import Fuse from "fuse.js"; // مكتبة التصحيح التلقائي
+
+// export default function SearchForm({ customization = {}, products = [], slugDomain = "" }) {
+//   const primaryColor = customization.primaryColor || '#4CAF50'; // اللون الأساسي
+//   const secondaryColor = customization.secondaryColor || '#2C3E50'; // اللون الثانوي
+//   const accentColor = customization.accentColor || '#FFC107'; // اللون المميز
+//   const backgroundColor = customization.backgroundColor || '#FFFFFF'; // لون الخلفية
+//   const fontFamily = customization.fontFamily || 'sans-serif'; // نوع الخط
+//   const isActive = customization.isActive ?? true;
+
+//   const { register, handleSubmit, reset } = useForm();
+//   const router = useRouter();
+
+//   const [query, setQuery] = useState("");
+//   const [suggestions, setSuggestions] = useState([]);
+//   const [isListening, setIsListening] = useState(false);
+
+//   // إعداد Fuse.js للبحث التلقائي
+//   const fuse = new Fuse(products, {
+//     keys: ['name'], // يمكن تخصيص هذه المفتاح حسب البيانات (مثل 'name' أو 'title')
+//     includeScore: true,
+//     threshold: 0.3, // تخصيص مستوى التصحيح التلقائي
+//   });
+
+//   const handleSearch = (data) => {
+//     const { searchTerm } = data;
+//     if (!searchTerm.trim()) return; // منع البحث إذا كان الحقل فارغًا
+//     reset();
+//     router.push(`/search?search=${searchTerm}&slug=${slugDomain}`);
+//   };
+
+//   // إضافة تصحيح تلقائي أو اقتراحات أثناء الكتابة
+//   const fetchSuggestions = (query) => {
+//     if (query.trim() === "") {
+//       setSuggestions([]);
+//       return;
+//     }
+//     const results = fuse.search(query);
+//     setSuggestions(results.map(result => result.item.name)); // افترض أن المنتجات تحتوي على مفتاح 'name'
+//   };
+
+//   // وظيفة البحث الصوتي
+//   const handleVoiceSearch = () => {
+//     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+//     recognition.lang = 'en-US';
+
+//     recognition.onstart = () => {
+//       setIsListening(true);
+//     };
+
+//     recognition.onend = () => {
+//       setIsListening(false);
+//     };
+
+//     recognition.onresult = (event) => {
+//       const spokenText = event.results[0][0].transcript;
+//       setQuery(spokenText);
+//       fetchSuggestions(spokenText);
+//     };
+
+//     recognition.start();
+//   };
+
+//   useEffect(() => {
+//     if (query.trim()) {
+//       fetchSuggestions(query);
+//     }
+//   }, [query]);
+
+//   return (
+//     <form onSubmit={handleSubmit(handleSearch)} className="relative w-full max-w-3xl mx-auto lg:max-w-5xl px-4" role="search">
+//       {/* أيقونة البحث */}
+//       <div className="relative w-full">
+//         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+//           <DoorOpen className="w-5 h-5" style={{ color: primaryColor }} />
+//           <label htmlFor="search" className="sr-only">Search</label>
+//         </div>
+//         <input
+//           {...register("searchTerm", { required: true })}
+//           type="text"
+//           id="search"
+//           value={query}
+//           onChange={(e) => {
+//             setQuery(e.target.value);
+//             fetchSuggestions(e.target.value);
+//           }}
+//           className="bg-transparent border text-gray-900 dark:text-white font-semibold shadow-md rounded-full text-sm focus:ring-2 focus:ring-lime-600 focus:border-lime-600 block w-full ps-12 py-2.5 placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 ease-in-out"
+//           placeholder="Search for products, categories, or markets..."
+//           required
+//           disabled={!isActive}
+//           aria-label="Search input"
+//           aria-describedby="search-error"
+//           style={{
+//             color: backgroundColor,
+//             fontFamily,
+//             borderColor: backgroundColor,
+//             borderWidth: "1px",
+//             borderStyle: "solid",
+//           }}
+//         />
+//       </div>
+
+//       {/* زر البحث */}
+//       <button
+//         type="submit"
+//         className="absolute inset-y-0 end-0 flex items-center pe-6"
+//         aria-label="Submit search"
+//         style={{
+//           color: primaryColor,
+//           transition: "all 0.2s ease-in-out",
+//         }}
+//       >
+//         <Search className="w-6 h-6" style={{ color: primaryColor }} />
+//       </button>
+
+//       {/* زر البحث الصوتي */}
+//       <button
+//         type="button"
+//         className="absolute inset-y-0 end-0 flex items-center pe-12"
+//         aria-label="Voice search"
+//         onClick={handleVoiceSearch}
+//         disabled={!isActive}
+//       >
+//         <Mic className="w-6 h-6" style={{ color: isListening ? accentColor : primaryColor }} />
+//       </button>
+
+//       {/* عرض الاقتراحات */}
+//       {suggestions.length > 0 && (
+//         <div className="absolute w-full bg-white border border-gray-300 rounded-b-lg mt-2 z-10">
+//           {suggestions.map((suggestion, index) => (
+//             <div key={index} className="px-4 py-2 cursor-pointer hover:bg-gray-100">
+//               {suggestion}
+//             </div>
+//           ))}
+//         </div>
+//       )}
+
+//       {/* رسالة الخطأ */}
+//       <span id="search-error" className="sr-only" aria-live="polite">
+//         Please enter a search term.
+//       </span>
+//     </form>
+//   );
+// }
+
 "use client";
 
 import { DoorOpen, Search, Mic } from "lucide-react";
@@ -128,18 +279,20 @@ export default function SearchForm({ customization = {}, products = [], slugDoma
             setQuery(e.target.value);
             fetchSuggestions(e.target.value);
           }}
-          className="bg-transparent border text-gray-900 dark:text-white font-semibold shadow-md rounded-full text-sm focus:ring-2 focus:ring-lime-600 focus:border-lime-600 block w-full ps-12 py-2.5 placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 ease-in-out"
+          className="bg-transparent text-gray-900 dark:text-white font-semibold shadow-md rounded-full text-sm focus:ring-2 focus:ring-lime-600 focus:border-lime-600 block w-full ps-12 py-2.5 placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 ease-in-out"
           placeholder="Search for products, categories, or markets..."
           required
           disabled={!isActive}
           aria-label="Search input"
           aria-describedby="search-error"
           style={{
-            color: backgroundColor,
+            color: secondaryColor,
             fontFamily,
-            borderColor: backgroundColor,
+            backgroundColor,
+            borderColor: primaryColor,
             borderWidth: "1px",
             borderStyle: "solid",
+            boxShadow: `0 0 0 2px ${accentColor}33`,
           }}
         />
       </div>
@@ -151,7 +304,6 @@ export default function SearchForm({ customization = {}, products = [], slugDoma
         aria-label="Submit search"
         style={{
           color: primaryColor,
-          transition: "all 0.2s ease-in-out",
         }}
       >
         <Search className="w-6 h-6" style={{ color: primaryColor }} />
@@ -170,9 +322,23 @@ export default function SearchForm({ customization = {}, products = [], slugDoma
 
       {/* عرض الاقتراحات */}
       {suggestions.length > 0 && (
-        <div className="absolute w-full bg-white border border-gray-300 rounded-b-lg mt-2 z-10">
+        <div
+          className="absolute w-full rounded-b-lg mt-2 z-10"
+          style={{
+            backgroundColor,
+            border: `1px solid ${primaryColor}`,
+          }}
+        >
           {suggestions.map((suggestion, index) => (
-            <div key={index} className="px-4 py-2 cursor-pointer hover:bg-gray-100">
+            <div
+              key={index}
+              className="px-4 py-2 cursor-pointer"
+              style={{
+                color: secondaryColor,
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = accentColor)}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = backgroundColor)}
+            >
               {suggestion}
             </div>
           ))}
@@ -186,7 +352,6 @@ export default function SearchForm({ customization = {}, products = [], slugDoma
     </form>
   );
 }
-
 
 
 // "use client";

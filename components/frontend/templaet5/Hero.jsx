@@ -27,7 +27,7 @@
 //         {/* القسم الأول */}
 
 //         <h1 className="text-indigo-700 dark:text-white font-mono text-center text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-//           منصة اتجر .. تجارة ذكية وسهلة
+//           منصة ميجاشوب .. تجارة ذكية وسهلة
 //         </h1>
 //         <p className="text-violet-950 dark:text-slate-200 text-center text-lg sm:text-xl lg:text-2xl mb-8">
 //           أنشئ متجرك الإلكتروني في دقائق، واربط منتجاتك بمجموعة متكاملة من الحلول الرقميَّة الذكيَّة.
@@ -222,19 +222,26 @@
 //     </section>
 //   );
 // }
-// "use client";
+"use client";
 import {getData} from '../../../lib/getData'
 import Image from 'next/image'
 import Link from 'next/link'
 import HeroCarousel from "./HeroCarousel";
+import FavaroteProducts from "./FavaroteProducts";
+import CategorySlider from "./CategorySlider";
+import SpecialOffers from "./SpecialOffers";
 
 
 export default async function Hero({storeId }, ) {
+
   const banners = await getData(`banners?storeId=${storeId}`)
+  
   return (
     <section className='  mt-4'>
       <HeroCarousel  banners={banners}  />
-   
+
+      {/* <CategorySlider/> */}
+      {/* <SpecialOffers/> */}
     </section>
   );
 }

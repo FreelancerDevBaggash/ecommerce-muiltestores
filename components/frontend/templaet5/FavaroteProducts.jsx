@@ -579,12 +579,12 @@
 //   const dispatch = useDispatch();
 
 //   // إعدادات التخصيص مع قيم افتراضية
-//   const primaryColor = customization?.primaryColor || "#4CAF50";
-//   const secondaryColor = customization?.secondaryColor || "#2C3E50";
-//   const accentColor = customization?.accentColor || "#FFC107";
-//   const lightBackground = customization?.backgroundColor || "#FFFFFF";
-//   const darkBackground = customization?.darkBackground || "#1E293B";
-//   const fontFamily = customization?.fontFamily || "sans-serif";
+  // const primaryColor = customization?.primaryColor || "#4CAF50";
+  // const secondaryColor = customization?.secondaryColor || "#2C3E50";
+  // const accentColor = customization?.accentColor || "#FFC107";
+  // const lightBackground = customization?.backgroundColor || "#FFFFFF";
+  // const darkBackground = customization?.darkBackground || "#1E293B";
+  // const fontFamily = customization?.fontFamily || "sans-serif";
 
 //   // الحصول على وضع الثيم (فاتح أو داكن)
 //   const { theme } = useTheme();
@@ -1464,33 +1464,41 @@ export default function FeaturedProducts({
 
           {/* Filter Buttons with Scroll */}
           <div className="overflow-x-auto scrollbar-hide">
-            <div className="flex gap-3 w-max px-4">
-              <button
-                onClick={() => setActiveCategory("all")}
-                className={`px-4 py-2 rounded-full text-sm md:text-base transition-colors ${
-                  activeCategory === "all"
-                    ? "bg-blue-600 text-white shadow-md"
-                    : "bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
-                }`}
-                style={{ minWidth: '80px' }}
-              >
-                الكل
-              </button>
-              {categories.map((category) => (
-                <button
-                  key={category.id}
-                  onClick={() => setActiveCategory(category.id)}
-                  className={`px-4 py-2 rounded-full text-sm md:text-base transition-colors ${
-                    activeCategory === category.id
-                      ? "bg-blue-600 text-white shadow-md"
-                      : "bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
-                  }`}
-                  style={{ minWidth: '100px' }}
-                >
-                  {category.title}
-                </button>
-              ))}
-            </div>
+          <div className="flex gap-3 w-max px-4">
+  <button
+    onClick={() => setActiveCategory("all")}
+    className={`px-4 py-2 rounded-full text-sm md:text-base transition-colors ${
+      activeCategory === "all"
+        ? "text-white shadow-md"
+        : "bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+    }`}
+    style={{
+      minWidth: '80px',
+      backgroundColor: activeCategory === "all" ? primaryColor : undefined,
+    }}
+  >
+    الكل
+  </button>
+
+  {categories.map((category) => (
+    <button
+      key={category.id}
+      onClick={() => setActiveCategory(category.id)}
+      className={`px-4 py-2 rounded-full text-sm md:text-base transition-colors ${
+        activeCategory === category.id
+          ? "text-white shadow-md"
+          : "bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+      }`}
+      style={{
+        minWidth: '100px',
+        backgroundColor: activeCategory === category.id ? primaryColor : undefined,
+      }}
+    >
+      {category.title}
+    </button>
+  ))}
+</div>
+
           </div>
         </div>
 

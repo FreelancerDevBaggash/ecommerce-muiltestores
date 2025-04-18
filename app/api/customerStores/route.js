@@ -10,9 +10,7 @@ export async function GET(request){
             orderBy:{
                 createdAt:"desc"
             },
-            // include: {
-            //     customer: true,
-            //   },
+            
         })
         return NextResponse.json(customerStores)
     }catch(error){
@@ -29,30 +27,30 @@ export async function GET(request){
     
     }
 
-    export async function handler(req, res) {
-        const { storeId, customerId } = req.query;
+    // export async function handler(req, res) {
+    //     const { storeId, customerId } = req.query;
       
-        try {
-          const customerStore = await db.customerStore.findUnique({
-            where: {
-              storeId_customerId: {
-                storeId: storeId,
-                customerId: customerId,
-              },
-              include: {
-                customer: true,
-              },
-            },
-          });
+    //     try {
+    //       const customerStore = await db.customerStore.findUnique({
+    //         where: {
+    //           storeId_customerId: {
+    //             storeId: storeId,
+    //             customerId: customerId,
+    //           },
+    //           include: {
+    //             customer: true,
+    //           },
+    //         },
+    //       });
       
-          if (customerStore) {
-            res.status(200).json(customerStore);
-          } else {
-            res.status(404).json({ error: "CustomerStore not found" });
-          }
-        } catch (error) {
-          console.error("Error fetching customer store:", error);
-          res.status(500).json({ error: "Server error" });
-        }
-      }
+    //       if (customerStore) {
+    //         res.status(200).json(customerStore);
+    //       } else {
+    //         res.status(404).json({ error: "CustomerStore not found" });
+    //       }
+    //     } catch (error) {
+    //       console.error("Error fetching customer store:", error);
+    //       res.status(500).json({ error: "Server error" });
+    //     }
+    //   }
       

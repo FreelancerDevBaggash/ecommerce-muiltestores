@@ -1288,7 +1288,7 @@ import ImageInput from "@/components/Forminputs/ImageInput";
 import { makePutRequest } from "@/lib/apiRequest";
 import { useRouter } from "next/navigation";
 
-export default function AccountSettings({ user }) {
+export default function AccountSettings({ user={} }) {
   const router = useRouter();
   const [imageUrl, setImageUrl] = useState(user?.profileImage || "");
   const [loading, setLoading] = useState(false);
@@ -1301,7 +1301,7 @@ export default function AccountSettings({ user }) {
     formState: { errors },
   } = useForm({ defaultValues: { ...user } });
 
-  const redirect = () => router.push("/dashboard/customers");
+  const redirect = () => router.push(`/${slugDomain}`);
 
   const onSubmit = async (data) => {
     const payload = {

@@ -373,7 +373,7 @@ const Footer = ({ slugDomain, customization = {} , storeData={}}) => {
                                     <FaInstagram className="w-4 h-4" />
                                 </Link>
                             )}
-                            {storeData?.x && (
+                            {storeData?.socialLinks?.x && (
                                 <Link href={storeData.socialLinks.x} target="_blank" className="p-1.5 rounded-full hover:bg-opacity-20 transition-all" style={{ backgroundColor: `${styleSettings.primaryColor}20` }}>
                                     <FaTwitter className="w-4 h-4" />
                                 </Link>

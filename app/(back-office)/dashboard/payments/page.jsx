@@ -55,15 +55,50 @@
 // }
 // قفم
 
-import PageHeader from "@/components/backoffice/PageHeader";
+// import PageHeader from "../../../../components/backoffice/PageHeader";
+// import DataTable from "../../../../components/data-table-components/DataTable";
+// import { getData } from "../../../../lib/getData";
+// import { columns } from "./columns";
+
+// export default async function Page() {
+//   // جلب البيانات من الـ API
+//   const paymentProviders = await getData("PaymentProvider");
+//   console.log("paymentProviders", paymentProviders);
+
+//   return (
+//     <div dir="rtl">
+//       {/* رأس الصفحة */}
+//       <PageHeader
+//         heading="مزودو الدفع"
+//         href="/dashboard/payments/new"
+//         linkTitle="إضافة مزود دفع"
+//       />
+
+//       <div className="py-0">
+//         {/* جدول البيانات */}
+//         <DataTable 
+//           data={paymentProviders}
+//           columns={columns}
+//           filterKeys={["name"]}
+//         />
+//       </div>
+//     </div>
+//   );
+// }
+
+import PageHeader from "../../../../components/backoffice/PageHeader";
 import DataTable from "../../../../components/data-table-components/DataTable";
-import { getData } from "@/lib/getData";
+import { getData } from "../../../../lib/getData";
+import { useMemo } from "react";
 import { columns } from "./columns";
 
 export default async function Page() {
   // جلب البيانات من الـ API
   const paymentProviders = await getData("PaymentProvider");
   console.log("paymentProviders", paymentProviders);
+
+  // استخدام useMemo لتخزين الأعمدة
+  const memoizedColumns = useMemo(() => columns, []);
 
   return (
     <div dir="rtl">
@@ -78,7 +113,7 @@ export default async function Page() {
         {/* جدول البيانات */}
         <DataTable 
           data={paymentProviders}
-          columns={columns}
+          columns={memoizedColumns}
           filterKeys={["name"]}
         />
       </div>

@@ -44,9 +44,9 @@
 // }
 import React from 'react'
 import OrderCard from '../../../../components/Order/OrderCard'
-import { getData } from '@/lib/getData'
+import { getData } from '../../../../lib/getData'
 import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/authOptions'
+import { authOptions } from '../../../../lib/authOptions'
 
 export default async function page() {
   // Fetch All Orders 

@@ -76,7 +76,7 @@
 // }
 
 
-import Registerform from "../../../components/vendor/register-form"
+import VendorRegisterForm from "../../../components/vendor/VendorRegisterForm"
 import AdvertisementSlider from "../../../components/vendor/advertisement-slider"
 import FeatureSlider from "../../../components/vendor/feature-slider"
 import Image from "next/image"
@@ -112,7 +112,7 @@ export default function Page() {
               <h1 className="text-xl font-bold font-sans leading-tight tracking-tight text-blue-700 md:text-2xl dark:text-white text-center mb-6">
                 إنشاء حساب تاجر جديد
               </h1>
-              <Registerform />
+              <VendorRegisterForm />
             </div>
 
             {/* الكارد (السلايدر) */}

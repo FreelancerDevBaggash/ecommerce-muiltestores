@@ -39,7 +39,7 @@
 // }
 
 
-import VendorLoginForm from "../../../components/vendor/login-Form"
+import VendorLoginForm from "../../../components/vendor/VendorLoginForm"
 import AdvertisementSlider from "../../../components/vendor/advertisement-slider"
 import FeatureSlider from "../../../components/vendor/feature-slider"
 import Image from "next/image"

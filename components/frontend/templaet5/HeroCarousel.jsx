@@ -288,13 +288,13 @@ export default function HeroCarousel({ banners: initialBanners = [] }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [banners.length]);
 
-  if (banners.length === 0) {
-    return (
-      <div className="flex items-center justify-center h-[500px] md:h-[400px] bg-gradient-to-r from-gray-100 to-gray-200 animate-pulse">
-        <p className="text-gray-500 text-lg">جارٍ تحميل البانرات...</p>
-      </div>
-    );
-  }
+  // if (banners.length === 0) {
+  //   return (
+  //     <div className="flex items-center justify-center h-[500px] md:h-[400px] bg-gradient-to-r from-gray-100 to-gray-200 animate-pulse">
+  //       <p className="text-gray-500 text-lg">جارٍ تحميل البانرات...</p>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div 

@@ -138,6 +138,7 @@
 //     </div>
 //   );
 // }
+
 "use client";
 
 import React, { useEffect, useState } from 'react';
@@ -149,7 +150,7 @@ import EmptyCart from '../../../components/frontend/templaet5/cart-templaet/Empt
 import CartItems from '../../../components/frontend/templaet5/cart-templaet/CartItems';
 import { getData } from '../../../lib/getData';
 
-export default function Cart({ params: { slugDomain } }) {
+export default function Page({ params: { slugDomain } }) {
   // الحالة لتخزين بيانات المتجر والتخصيص
   const [store, setStore] = useState(null);
   const [customizationData, setCustomizationData] = useState(null);

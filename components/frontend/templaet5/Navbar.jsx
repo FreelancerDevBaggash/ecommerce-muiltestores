@@ -489,12 +489,12 @@
 //   const { data: session, status } = useSession();
 
 //   // إعدادات التخصيص مع قيم افتراضية
-  // const primaryColor = customization?.primaryColor || "#4CAF50";
-  // const secondaryColor = customization?.secondaryColor || "#2C3E50";
-  // const accentColor = customization?.accentColor || "#FFC107";
-  // const backgroundColor = customization?.backgroundColor || "#FFFFFF";
-  // const darkBackground = customization?.darkBackground || "#1E293B";
-  // const fontFamily = customization?.fontFamily || "sans-serif";
+//   const primaryColor = customization?.primaryColor || "#4CAF50";
+//   const secondaryColor = customization?.secondaryColor || "#2C3E50";
+//   const accentColor = customization?.accentColor || "#FFC107";
+//   const backgroundColor = customization?.backgroundColor || "#FFFFFF";
+//   const darkBackground = customization?.darkBackground || "#1E293B";
+//   const fontFamily = customization?.fontFamily || "sans-serif";
 
 //   const currentBackground = theme === "dark" ? darkBackground : backgroundColor;
 
@@ -853,12 +853,7 @@ export default function Navbar({
   const currentBackground = theme === "dark" 
     ? customization?.darkBackground || "#1E293B" 
     : customization?.backgroundColor || "#FFFFFF";
-    const primaryColor = customization?.primaryColor || "#4CAF50";
-    const secondaryColor = customization?.secondaryColor || "#2C3E50";
-    const accentColor = customization?.accentColor || "#FFC107";
-    const backgroundColor = customization?.backgroundColor || "#FFFFFF";
-    const darkBackground = customization?.darkBackground || "#1E293B";
-    const fontFamily = customization?.fontFamily || "sans-serif";
+
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   return (
@@ -888,8 +883,7 @@ export default function Navbar({
 
           {/* عناصر التنقل لسطح المكتب */}
           <div className="hidden md:flex items-center gap-6">
-       <Link   href={`${slugDomain}/wishlist`}
-           className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full">
+            <Link href="/favorites" className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full">
               <Heart className="h-5 w-5" />
             </Link>
             <UserAuth slugDomain={slugDomain} session={session} status={status} />
@@ -910,7 +904,7 @@ export default function Navbar({
         {isMenuOpen && (
           <div className="md:hidden px-4 pb-4">
             <div className="mt-2">
-              <SearchForm    customization={customization} />
+              <SearchForm />
             </div>
             
             <div className="mt-4 bg-white px-4 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-900 py-2 rounded-lg shadow-lg">
@@ -921,7 +915,7 @@ export default function Navbar({
               />
               
               <div className="flex flex-col space-y-3 mt-4 px-2">
-                <Link       href={`${slugDomain}/wishlist`}className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
+                <Link href="/favorites" className="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
                   <Heart className="h-5 w-5 mr-2" />
                   <span>المفضلة</span>
                 </Link>

@@ -196,9 +196,9 @@ function Slide({ banner, isActive }) {
         />
       </div>
       {/* محتوى النصوص */}
-      <div className="absolute inset-0 z-20 flex items-center justify-center">
+      <div className="absolute inset-0 font-arabic z-20 flex items-center justify-center">
         <div className="text-center text-white px-4 max-w-4xl">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">{banner.title}</h1>
+          <h1 className="text-2xl md:text-4xl font-bold mb-4">{banner.title}</h1>
           <p className="text-xl md:text-2xl mb-8">{banner.subtitle}</p>
           <a
             href={banner.link || "#"}

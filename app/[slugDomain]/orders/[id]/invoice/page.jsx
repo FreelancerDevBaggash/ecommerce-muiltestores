@@ -13,7 +13,7 @@
 // }
 
 
-import SalesInvoice from "../../../../../../components/Order/SalesInvoice";
+import SalesInvoice from "../../../../../components/Order/SalesInvoice";
 import { getData } from "@/lib/getData";
 import React from "react";
 

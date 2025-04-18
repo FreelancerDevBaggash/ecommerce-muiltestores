@@ -1278,232 +1278,232 @@
 //     </form>
 //   );
 // }
-"use client";
+// "use client";
 
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import TextInput from "@/components/Forminputs/TextInput";
-import SubmitButton from "@/components/Forminputs/SubmitButton";
-import ImageInput from "@/components/Forminputs/ImageInput";
-import { makePutRequest } from "@/lib/apiRequest";
-import { useRouter } from "next/navigation";
+// import React, { useState } from "react";
+// import { useForm } from "react-hook-form";
+// import TextInput from "@/components/Forminputs/TextInput";
+// import SubmitButton from "@/components/Forminputs/SubmitButton";
+// import ImageInput from "@/components/Forminputs/ImageInput";
+// import { makePutRequest } from "@/lib/apiRequest";
+// import { useRouter } from "next/navigation";
 
-export default function AccountSettings({ user={} }) {
-  const router = useRouter();
-  const [imageUrl, setImageUrl] = useState(user?.profileImage || "");
-  const [loading, setLoading] = useState(false);
+// export default function AccountSettings({ user }) {
+//   const router = useRouter();
+//   const [imageUrl, setImageUrl] = useState(user?.profileImage || "");
+//   const [loading, setLoading] = useState(false);
 
-  const {
-    register,
-    reset,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm({ defaultValues: { ...user } });
+//   const {
+//     register,
+//     reset,
+//     handleSubmit,
+//     watch,
+//     formState: { errors },
+//   } = useForm({ defaultValues: { ...user } });
 
-  const redirect = () => router.push(`/${slugDomain}`);
+//   const redirect = () => router.push("/dashboard/customers");
 
-  const onSubmit = async (data) => {
-    const payload = {
-      ...data,
-      profileImage: imageUrl,
-    };
+//   const onSubmit = async (data) => {
+//     const payload = {
+//       ...data,
+//       profileImage: imageUrl,
+//     };
 
-    if (data.newPassword) {
-      if (data.newPassword !== data.confirmNewPassword) {
-        alert("كلمة المرور الجديدة غير متطابقة!");
-        return;
-      }
-      payload.password = data.newPassword;
-    }
+//     if (data.newPassword) {
+//       if (data.newPassword !== data.confirmNewPassword) {
+//         alert("كلمة المرور الجديدة غير متطابقة!");
+//         return;
+//       }
+//       payload.password = data.newPassword;
+//     }
 
-    await makePutRequest(
-      setLoading,
-      `api/customers/${user.id}`,
-      payload,
-      "Customer Profile",
-      redirect,
-      reset
-    );
-  };
+//     await makePutRequest(
+//       setLoading,
+//       `api/customers/${user.id}`,
+//       payload,
+//       "Customer Profile",
+//       redirect,
+//       reset
+//     );
+//   };
 
-  return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header Section */}
-        <div className="text-center mb-10">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
-            إدارة الملف الشخصي
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            تحديث المعلومات الشخصية وإعدادات الأمان للحساب
-          </p>
-        </div>
+//   return (
+//     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
+//       <div className="max-w-7xl mx-auto">
+//         {/* Header Section */}
+//         <div className="text-center mb-10">
+//           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
+//             إدارة الملف الشخصي
+//           </h1>
+//           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+//             تحديث المعلومات الشخصية وإعدادات الأمان للحساب
+//           </p>
+//         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left Column - Profile Image */}
-            <div className="lg:col-span-1">
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 sticky top-6">
-                <div className="flex flex-col items-center">
-                  <ImageInput
-                    imageUrl={imageUrl}
-                    setImageUrl={setImageUrl}
-                    endpoint="customerProfileUploader"
-                    className="w-auto h-auto rounded-lg border-4 border-white dark:border-gray-700 shadow-xl mb-4 object-cover"
-                  />
-                  <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">
-                    {user?.firstName} {user?.lastName}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm">
-                    {user?.email}
-                  </p>
-                </div>
-              </div>
-            </div>
+//         <form onSubmit={handleSubmit(onSubmit)}>
+//           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+//             {/* Left Column - Profile Image */}
+//             <div className="lg:col-span-1">
+//               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 sticky top-6">
+//                 <div className="flex flex-col items-center">
+//                   <ImageInput
+//                     imageUrl={imageUrl}
+//                     setImageUrl={setImageUrl}
+//                     endpoint="customerProfileUploader"
+//                     className="w-auto h-auto rounded-lg border-4 border-white dark:border-gray-700 shadow-xl mb-4 object-cover"
+//                   />
+//                   <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">
+//                     {user?.firstName} {user?.lastName}
+//                   </h3>
+//                   <p className="text-gray-600 dark:text-gray-300 text-sm">
+//                     {user?.email}
+//                   </p>
+//                 </div>
+//               </div>
+//             </div>
 
-            {/* Right Column - Forms */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Personal Info Card */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden">
-                <div className="p-6 border-b border-gray-100 dark:border-gray-700">
-                  <h2 className="text-xl font-semibold text-gray-800 dark:text-white flex items-center gap-2">
-                    <span className="text-lime-500">📝</span>
-                    المعلومات الشخصية
-                  </h2>
-                </div>
-                <div className="p-2 grid grid-cols-1 md:grid-cols-2 gap-2">
-                  <TextInput
-                    lable="الاسم الأول"
-                    name="firstName"
-                    register={register}
-                    errors={errors}
-                    placeholder="أدخل الاسم الأول"
-                    icon="user"
-                  />
-                  <TextInput
-                    lable="اسم العائلة"
-                    name="lastName"
-                    register={register}
-                    errors={errors}
-                    placeholder="أدخل اسم العائلة"
-                    icon="users"
-                  />
-                  <TextInput
-                    lable="البريد الإلكتروني"
-                    name="email"
-                    type="email"
-                    register={register}
-                    errors={errors}
-                    placeholder="example@domain.com"
-                    icon="mail"
-                    validation={{ required: "هذا الحقل مطلوب" }}
-                    className="md:col-span-2"
-                  />
-                  <TextInput
-                    lable="رقم الهاتف"
-                    name="phone"
-                    register={register}
-                    errors={errors}
-                    placeholder="+967 7XX XXX XXX"
-                    icon="phone"
-                    dir="ltr"
-                    validation={{
-                      pattern: {
-                        value: /^\+?[0-9]{10,15}$/,
-                        message: "رقم هاتف غير صالح",
-                      },
-                    }}
-                  />
-                </div>
-              </div>
+//             {/* Right Column - Forms */}
+//             <div className="lg:col-span-2 space-y-6">
+//               {/* Personal Info Card */}
+//               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden">
+//                 <div className="p-6 border-b border-gray-100 dark:border-gray-700">
+//                   <h2 className="text-xl font-semibold text-gray-800 dark:text-white flex items-center gap-2">
+//                     <span className="text-lime-500">📝</span>
+//                     المعلومات الشخصية
+//                   </h2>
+//                 </div>
+//                 <div className="p-2 grid grid-cols-1 md:grid-cols-2 gap-2">
+//                   <TextInput
+//                     lable="الاسم الأول"
+//                     name="firstName"
+//                     register={register}
+//                     errors={errors}
+//                     placeholder="أدخل الاسم الأول"
+//                     icon="user"
+//                   />
+//                   <TextInput
+//                     lable="اسم العائلة"
+//                     name="lastName"
+//                     register={register}
+//                     errors={errors}
+//                     placeholder="أدخل اسم العائلة"
+//                     icon="users"
+//                   />
+//                   <TextInput
+//                     lable="البريد الإلكتروني"
+//                     name="email"
+//                     type="email"
+//                     register={register}
+//                     errors={errors}
+//                     placeholder="example@domain.com"
+//                     icon="mail"
+//                     validation={{ required: "هذا الحقل مطلوب" }}
+//                     className="md:col-span-2"
+//                   />
+//                   <TextInput
+//                     lable="رقم الهاتف"
+//                     name="phone"
+//                     register={register}
+//                     errors={errors}
+//                     placeholder="+967 7XX XXX XXX"
+//                     icon="phone"
+//                     dir="ltr"
+//                     validation={{
+//                       pattern: {
+//                         value: /^\+?[0-9]{10,15}$/,
+//                         message: "رقم هاتف غير صالح",
+//                       },
+//                     }}
+//                   />
+//                 </div>
+//               </div>
 
-              {/* Password Card */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden">
-                <div className="p-6 border-b border-gray-100 dark:border-gray-700">
-                  <h2 className="text-xl font-semibold text-gray-800 dark:text-white flex items-center gap-2">
-                    <span className="text-blue-500">🔒</span>
-                    إعدادات الأمان
-                  </h2>
-                </div>
-                <div className="p-6 space-y-6">
-                  <TextInput
-                    lable="كلمة المرور الحالية"
-                    name="oldPassword"
-                    type="password"
-                    register={register}
-                    errors={errors}
-                    placeholder="أدخل كلمة المرور الحالية"
-                    icon="lock"
-                  />
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <TextInput
-                      lable="كلمة المرور الجديدة"
-                      name="newPassword"
-                      type="password"
-                      register={register}
-                      errors={errors}
-                      placeholder="كلمة مرور جديدة"
-                      icon="refresh-cw"
-                    />
-                    <TextInput
-                      lable="تأكيد كلمة المرور"
-                      name="confirmNewPassword"
-                      type="password"
-                      register={register}
-                      errors={errors}
-                      placeholder="تأكيد كلمة المرور"
-                      icon="check-circle"
-                      validation={{
-                        validate: (value) =>
-                          value === watch("newPassword") ||
-                          "كلمات المرور غير متطابقة",
-                      }}
-                    />
-                  </div>
-                  <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-                    <p className="text-sm text-blue-600 dark:text-blue-300">
-                      يجب أن تحتوي كلمة المرور على الأقل على 8 أحرف، حرف كبير،
-                      حرف صغير، رقم، ورمز خاص.
-                    </p>
-                  </div>
-                </div>
-              </div>
+//               {/* Password Card */}
+//               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden">
+//                 <div className="p-6 border-b border-gray-100 dark:border-gray-700">
+//                   <h2 className="text-xl font-semibold text-gray-800 dark:text-white flex items-center gap-2">
+//                     <span className="text-blue-500">🔒</span>
+//                     إعدادات الأمان
+//                   </h2>
+//                 </div>
+//                 <div className="p-6 space-y-6">
+//                   <TextInput
+//                     lable="كلمة المرور الحالية"
+//                     name="oldPassword"
+//                     type="password"
+//                     register={register}
+//                     errors={errors}
+//                     placeholder="أدخل كلمة المرور الحالية"
+//                     icon="lock"
+//                   />
+//                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//                     <TextInput
+//                       lable="كلمة المرور الجديدة"
+//                       name="newPassword"
+//                       type="password"
+//                       register={register}
+//                       errors={errors}
+//                       placeholder="كلمة مرور جديدة"
+//                       icon="refresh-cw"
+//                     />
+//                     <TextInput
+//                       lable="تأكيد كلمة المرور"
+//                       name="confirmNewPassword"
+//                       type="password"
+//                       register={register}
+//                       errors={errors}
+//                       placeholder="تأكيد كلمة المرور"
+//                       icon="check-circle"
+//                       validation={{
+//                         validate: (value) =>
+//                           value === watch("newPassword") ||
+//                           "كلمات المرور غير متطابقة",
+//                       }}
+//                     />
+//                   </div>
+//                   <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+//                     <p className="text-sm text-blue-600 dark:text-blue-300">
+//                       يجب أن تحتوي كلمة المرور على الأقل على 8 أحرف، حرف كبير،
+//                       حرف صغير، رقم، ورمز خاص.
+//                     </p>
+//                   </div>
+//                 </div>
+//               </div>
 
-              {/* Actions Card */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
-                <div className="flex flex-col md:flex-row justify-between gap-4">
-                  <button
-                    type="button"
-                    onClick={() => router.back()}
-                    className="px-6 py-3 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors flex-1"
-                  >
-                    إلغاء التغييرات
-                  </button>
-                  <div className="flex gap-4 flex-1">
-                    <button
-                      type="button"
-                      className="px-6 py-3 text-red-600 border border-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors flex-1"
-                      onClick={() => console.log("إجراء حذف الحساب")}
-                    >
-                      حذف الحساب
-                    </button>
-                    <SubmitButton
-                      isLoading={loading}
-                      buttonTitle="حفظ التغييرات"
-                      loadingButtonTitle="جارٍ الحفظ..."
-                      className="px-6 py-3 bg-lime-600 hover:bg-lime-700 text-white rounded-lg shadow-md transition-all flex-1"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-}
+//               {/* Actions Card */}
+//               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
+//                 <div className="flex flex-col md:flex-row justify-between gap-4">
+//                   <button
+//                     type="button"
+//                     onClick={() => router.back()}
+//                     className="px-6 py-3 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors flex-1"
+//                   >
+//                     إلغاء التغييرات
+//                   </button>
+//                   <div className="flex gap-4 flex-1">
+//                     <button
+//                       type="button"
+//                       className="px-6 py-3 text-red-600 border border-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors flex-1"
+//                       onClick={() => console.log("إجراء حذف الحساب")}
+//                     >
+//                       حذف الحساب
+//                     </button>
+//                     <SubmitButton
+//                       isLoading={loading}
+//                       buttonTitle="حفظ التغييرات"
+//                       loadingButtonTitle="جارٍ الحفظ..."
+//                       className="px-6 py-3 bg-lime-600 hover:bg-lime-700 text-white rounded-lg shadow-md transition-all flex-1"
+//                     />
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </form>
+//       </div>
+//     </div>
+//   );
+// }
 
 // "use client";
 
@@ -1733,7 +1733,7 @@ export default function AccountSettings({ user={} }) {
 //   );
 // };
 
-// // export default AccountSettings;
+// export default AccountSettings;
 // "use client";
 
 // import React, { useState } from "react";
@@ -1745,7 +1745,7 @@ export default function AccountSettings({ user={} }) {
 // import { makePutRequest } from "@/lib/apiRequest";
 // import { useRouter } from "next/navigation";
 
-// const AccountSettings = ({ user={} }) => {
+// const AccountSettings = ({ user }) => {
 //   const [imageUrl, setImageUrl] = useState(user?.profileImage || "");
 //   const [loading, setLoading] = useState(false);
 //   const router = useRouter();
@@ -1962,3 +1962,36 @@ export default function AccountSettings({ user={} }) {
 // };
 
 // export default AccountSettings;
+// app/[slugDomain]/profile/page.jsx
+
+import React from 'react'
+import AccountSettings from './AccountSettings'
+import { getData } from '@/lib/getData'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/authOptions'
+
+export const dynamic = 'force-dynamic'  // يجبر الصفحة على إعادة التحميل في كل مرة
+
+export default async function page() {
+  // 1. جلب جلسة المستخدم
+  const session = await getServerSession(authOptions)
+  if (!session) {
+    // إذا لم يكن المستخدم مسجّلاً دخول، يمكنك إعادة التوجيه أو عرض رسالة
+    return (
+      <div className="text-center py-20">
+        <p className="text-lg text-gray-500 dark:text-gray-400">
+          يرجى تسجيل الدخول للوصول إلى إعدادات الحساب
+        </p>
+      </div>
+    )
+  }
+
+  // 2. استخرج الـ userId من الجلسة
+  const userId = session.user.id;
+
+  // 3. جلب بيانات المستخدم في الوقت الحقيقي
+  const user = await getData(`vendors/${userId}`, { mode: 'real-time' })
+
+  // 4. عرض مكوّن AccountSettings مع تمرير بيانات العميل
+  return <AccountSettings user={user} />
+}

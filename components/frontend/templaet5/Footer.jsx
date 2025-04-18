@@ -129,7 +129,6 @@ import { getData } from '../../../lib/getData';
 import { useTheme } from "next-themes";
 import { FaFacebookF, FaInstagram, FaTwitter, FaWhatsapp, FaEnvelope, FaPhone } from "react-icons/fa";
 import Link from "next/link";
-import ContactUs from "../templaet5/ContactUs"
 
 const Footer = ({ slugDomain, customization = {} }) => {
     const { data: session, status } = useSession();

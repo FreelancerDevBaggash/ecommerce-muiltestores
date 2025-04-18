@@ -170,7 +170,7 @@ const Footer = ({ slugDomain, customization = {} }) => {
                     <div className="md:col-span-2 lg:col-span-2 space-y-4">
                         <div className="flex items-center gap-3">
                         <div className="relative w-12 h-12 rounded-full border-2 overflow-hidden" style={{ borderColor: primaryColor }}>
-                        <Link href={`/${slug}`}>
+                        <Link href={`/${slugDomain}`}>
     <Image
       src={store?.profileImageUrl || "/default-logo.png"}
       alt="شعار المتجر"
@@ -259,7 +259,7 @@ const Footer = ({ slugDomain, customization = {} }) => {
                         <nav>
                             <ul className="space-y-2 text-sm">
                                 <li>
-                                <Link href={`/${slug}/?<ContactUs/>`} className="hover:underline">
+                                <Link href={`/${slugDomain}/contact`} className="hover:underline">
 
                                         
                                         تواصل معنا

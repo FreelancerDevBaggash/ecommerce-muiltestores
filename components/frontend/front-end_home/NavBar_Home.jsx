@@ -164,7 +164,7 @@ const NavbarHome = () => {
             </button>
           </Link>
           <span className={`text-2xl ${isScrolled ? "text-gray-700" : "text-white"}`}>|</span>
-          <Link href="/register-vendor">
+          <Link href="/register">
             <Button
               className={`py-2 px-4 p-2 rounded-full transition-all transform hover:scale-110 ${
                 isScrolled ? "bg-primary text-white whitespace-nowrap flex-nowrap hover:bg-indigo-700" : "bg-indigo-500 text-white hover:bg-teal-300"

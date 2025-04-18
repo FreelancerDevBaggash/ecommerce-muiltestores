@@ -222,7 +222,7 @@
 //     </section>
 //   );
 // }
-"use client";
+// "use client";
 import {getData} from '../../../lib/getData'
 import Image from 'next/image'
 import Link from 'next/link'

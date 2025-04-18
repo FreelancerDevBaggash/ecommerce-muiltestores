@@ -44,8 +44,8 @@
 // }
 
 // إزالة "use client" لجعل التخطيط يعمل كمكون خادم
-import Navbar from '../../components/frontend/templaet2/Navbar';
-import Footer from '../../components/frontend/templaet2/Footer';
+import Navbar from '../../components/frontend/templaet5/Navbar';
+import Footer from '../../components/frontend/templaet5/Footer';
 import { getData } from '../../lib/getData';
 
 export default async function Layout({ children, params:{slugDomain} }) {

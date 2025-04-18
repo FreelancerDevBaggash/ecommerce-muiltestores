@@ -24,7 +24,7 @@ export default function ResetPasswordForm() {
     console.log(data);
     try {
       setLoading(true);
-      const response = await fetch(`${baseUrl}/api/users/update-password`, {
+      const response = await fetch(`${baseUrl}/api/vendors/update-password`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

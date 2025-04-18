@@ -55,7 +55,7 @@ import { useSelector } from 'react-redux';
 import Steps from '../../../components/Checkout/Steps';
 import CartBanner from '../../../components/Checkout/CartBanner';
 import StepForm from '../../../components/Checkout/StepForm';
-import { getData } from "@/lib/getData";
+import { getData } from "../../../lib/getData";
 
 export default function CheckoutPage({ params: { slugDomain } }) {
   // حالة تخزين بيانات المتجر، بيانات التخصيص، معرف القالب، والخطأ (إن وجد)

@@ -17,7 +17,8 @@ export async function POST(request) {
         shippingCost,
         streetAddress,
         storeId,
-        customersId,
+        location,
+        CustomerStoreId,
     }= checkoutFormData;
 
       // Create orderNumber function
@@ -50,10 +51,11 @@ export async function POST(request) {
            shippingCost :parseFloat(shippingCost),
            paymentMethod  ,      
           storeId,
-           customersId,
            location,
+           CustomerStoreId,
+          },
            
-        }
+        
         });
   
         const newOrderItems = await prisma.orderItem.createMany({

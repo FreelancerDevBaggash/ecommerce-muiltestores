@@ -1638,304 +1638,534 @@
 //     </section>
 //   );
 // }
+// components/FeaturedProducts.jsx
 "use client";
 
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart, Heart } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "framer-motion";
 import { useTheme } from "next-themes";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../../redux/slices/cartSlice";
+import { addToCart } from "@/redux/slices/cartSlice";
+import { addToWishlist } from "@/redux/slices/wishlistSlice";
 
-export default function FeaturedProducts({
-  products,
-  customization = {},
-  categories = [],
-  slugDomain,
-}) {
+/**
+ * Component: FeaturedProducts
+ * يعرض قائمة المنتجات المميزة مع فلترة حسب الأقسام
+ * ويدعم إضافة إلى السلة والمفضلة مع انيميشن طائر
+ */
+export default function FeaturedProducts({ products, customization = {}, categories = [], slugDomain }) {
   const dispatch = useDispatch();
-
-  const primaryColor = customization?.primaryColor || "#4CAF50";
-  const secondaryColor = customization?.secondaryColor || "#2C3E50";
-  const accentColor = customization?.accentColor || "#FFC107";
-  const lightBackground = customization?.backgroundColor || "#FFFFFF";
-  const darkBackground = customization?.darkBackground || "#1E293B";
-  const fontFamily = customization?.fontFamily || "sans-serif";
-
   const { theme } = useTheme();
-  const currentBackground = theme === "dark" ? darkBackground : lightBackground;
 
+  // إعدادات الألوان والخط
+  const {
+    primaryColor = "#4CAF50",
+    secondaryColor = "#2C3E50",
+    accentColor = "#FFC107",
+    backgroundColor = "#FFFFFF",
+    darkBackground = "#1E293B",
+    fontFamily = "sans-serif",
+  } = customization;
+
+  const currentBg = theme === "dark" ? darkBackground : backgroundColor;
   const [activeCategory, setActiveCategory] = useState("all");
 
-  const { groupedProducts, displayedGroups } = useMemo(() => {
-    const grouped = categories.reduce((acc, category) => {
-      acc[category.id] = products.filter((p) => p.categoryId === category.id);
+  // تجميع وعرض مجموعات المنتجات
+  const { displayedGroups } = useMemo(() => {
+    const grouped = categories.reduce((acc, cat) => {
+      acc[cat.id] = products.filter(p => p.categoryId === cat.id);
       return acc;
     }, {});
 
-    const groups =
-      activeCategory === "all"
-        ? [{ category: { id: "all", name: "الكل" }, products }]
-        : categories.find((c) => c.id === activeCategory)
-        ? [
-            {
-              category: categories.find((c) => c.id === activeCategory),
-              products: grouped[activeCategory] || [],
-            },
-          ]
-        : [];
-
-    return { groupedProducts: grouped, displayedGroups: groups };
+    if (activeCategory === "all") {
+      return { displayedGroups: [{ category: { id: "all", name: "الكل" }, products }] };
+    }
+    const cat = categories.find(c => c.id === activeCategory);
+    return cat
+      ? { displayedGroups: [{ category: cat, products: grouped[activeCategory] || [] }] }
+      : { displayedGroups: [] };
   }, [products, categories, activeCategory]);
 
-  const handleAddToCart = useCallback(
-    (event, product) => {
-      event.stopPropagation();
-      const productCard = event.currentTarget.closest(".product-card");
+  // دالة عامة لإنشاء انيميشن الطيران
+  const createFlyingImage = (imgElement, targetId) => {
+    const targetIcon = document.getElementById(targetId);
+    if (!imgElement || !targetIcon) return;
+    const imgRect = imgElement.getBoundingClientRect();
+    const targetRect = targetIcon.getBoundingClientRect();
+    const flyImg = new Image();
+    flyImg.src = imgElement.src;
+    flyImg.className = 'flying-image';
+    document.body.appendChild(flyImg);
+    flyImg.animate(
+      [
+        { transform: `translate(${imgRect.left}px, ${imgRect.top}px)`, opacity: 1, width: `${imgRect.width}px`, height: `${imgRect.height}px` },
+        { transform: `translate(${targetRect.left + targetRect.width/2}px, ${targetRect.top + targetRect.height/2}px) scale(0)`, opacity: 0 }
+      ],
+      { duration: 800, easing: 'ease-in-out' }
+    ).onfinish = () => flyImg.remove();
+  };
 
-      const createFlyingImage = () => {
-        const imageElement = productCard?.querySelector("img");
-        const cartIcon = document.getElementById("navbar-cart");
+  // إضافة للسلة مع انيميشن
+  const handleAddToCart = useCallback((e, product) => {
+    e.stopPropagation();
+    const card = e.currentTarget.closest('.product-card');
+    const img = card?.querySelector('img');
+    createFlyingImage(img, 'navbar-cart');
+    dispatch(addToCart(product));
+    toast.success('تمت الإضافة إلى السلة!');
+  }, [dispatch]);
 
-        if (!imageElement || !cartIcon) return;
+  // إضافة للمفضلة مع انيميشن
+  const handleAddToWishlist = useCallback((e, product) => {
+    e.stopPropagation();
+    const card = e.currentTarget.closest('.product-card');
+    const img = card?.querySelector('img');
+    createFlyingImage(img, 'navbar-favorites');
+    dispatch(addToWishlist(product));
+    toast.success('تمت الإضافة إلى المفضلة!');
+  }, [dispatch]);
 
-        const imageRect = imageElement.getBoundingClientRect();
-        const cartRect = cartIcon.getBoundingClientRect();
+  // مكوّن بطاقة المنتج مع حركة دخول مرة واحدة
+  function ProductCard({ product, delay }) {
+    const controls = useAnimation();
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, amount: 0.5 });
 
-        const flyingImage = new Image();
-        flyingImage.src = imageElement.src;
-        flyingImage.className = "flying-image";
+    useEffect(() => {
+      if (isInView) controls.start('visible');
+    }, [isInView, controls]);
 
-        flyingImage.animate(
-          [
-            {
-              transform: `translate(${imageRect.left}px, ${imageRect.top}px)`,
-              opacity: 1,
-              width: `${imageRect.width}px`,
-              height: `${imageRect.height}px`,
-            },
-            {
-              transform: `translate(${
-                cartRect.left + cartRect.width / 2
-              }px, ${cartRect.top + cartRect.height / 2}px)`,
-              opacity: 0,
-              width: "0px",
-              height: "0px",
-            },
-          ],
-          {
-            duration: 800,
-            easing: "ease-in-out",
-          }
-        ).onfinish = () => flyingImage.remove();
+    const variants = { hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0 } };
 
-        document.body.appendChild(flyingImage);
-      };
+    return (
+      <motion.div
+        ref={ref}
+        className="product-card group bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden"
+        variants={variants}
+        initial="hidden"
+        animate={controls}
+        transition={{ duration: 0.5, delay, type: 'spring', stiffness: 100 }}
+      >
+        {/* الصورة */}
+        <Link href={`${slugDomain}/products/${product.slug}`} className="block relative aspect-square">
+          <Image
+            src={product.imageUrl || '/placeholder.jpg'}
+            alt={product.title}
+            fill
+            className="object-cover transition-transform group-hover:scale-105"
+            loading={delay < 0.2 ? 'eager' : 'lazy'}
+          />
+        </Link>
 
-      createFlyingImage();
-      dispatch(addToCart(product));
-      toast.success("تمت الإضافة إلى السلة!");
-    },
-    [dispatch]
-  );
+        {/* شارات الخصم والمفضلة */}
+        <div className="absolute top-3 left-3 z-10 flex gap-2">
+          <button
+            onClick={(e) => handleAddToWishlist(e, product)}
+            className="p-2 rounded-full bg-white/90 dark:bg-gray-900/80 backdrop-blur-sm hover:text-red-500 transition-colors"
+            aria-label="Add to wishlist"
+          >
+            <Heart className="w-5 h-5" />
+          </button>
+          {product.salePrice && (
+            <div className="px-3 py-1 rounded-lg text-white text-sm font-bold" style={{ backgroundColor: primaryColor }}>
+              {Math.round(((product.productPrice - product.salePrice) / product.productPrice) * 100)}% خصم
+            </div>
+          )}
+        </div>
+
+        {/* التفاصيل */}
+        <div className="p-4 space-y-3">
+          <Link href={`${slugDomain}/products/${product.slug}`}>
+            <h3 className="font-medium line-clamp-2 hover:text-blue-600 dark:hover:text-blue-400">
+              {product.title}
+            </h3>
+          </Link>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-lg font-bold" style={{ color: accentColor }}>
+                {product.salePrice || product.productPrice} ر.س
+              </span>
+              {product.salePrice && <span className="text-sm line-through text-gray-500 dark:text-gray-400">{product.productPrice} ر.س</span>}
+            </div>
+            <button
+              onClick={(e) => handleAddToCart(e, product)}
+              className="p-2 rounded-full hover:scale-110 transition-transform"
+              style={{ backgroundColor: primaryColor, color: backgroundColor }}
+              aria-label="Add to cart"
+            >
+              <ShoppingCart className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
 
   return (
-    <section
-      className="py-12 font-arabic px-4 lg:px-8"
-      style={{
-        fontFamily,
-        direction: "rtl",
-      }}
-    >
+    <section className="py-12 px-4 lg:px-8" style={{ backgroundColor: currentBg, fontFamily, direction: 'rtl' }}>
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between mb-8">
-          <h2
-            className="text-2xl md:text-3xl font-bold text-center md:text-right"
-            style={{ color: primaryColor }}
-          >
+        {/* العنوان والفلتر */}
+        <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-center md:text-right" style={{ color: primaryColor }}>
             المنتجات المميزة
           </h2>
-
-          {/* Filter */}
           <div className="overflow-x-auto scrollbar-hide">
             <div className="flex gap-3 w-max px-4">
               <button
-                onClick={() => setActiveCategory("all")}
-                className={`px-4 py-2 rounded-full text-sm md:text-base transition-colors ${
-                  activeCategory === "all"
-                    ? "text-white shadow-md"
-                    : "bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
-                }`}
-                style={{
-                  minWidth: "80px",
-                  backgroundColor:
-                    activeCategory === "all" ? primaryColor : undefined,
-                }}
-              >
-                الكل
-              </button>
-
-              {categories.map((category) => (
+                onClick={() => setActiveCategory('all')}
+                className={`px-4 py-2 rounded-full text-sm md:text-base transition-colors ${activeCategory === 'all' ? 'text-white shadow-md' : 'bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600'}`}
+                style={{ minWidth: '80px', backgroundColor: activeCategory === 'all' ? primaryColor : undefined }}
+              >الكل</button>
+              {categories.map(cat => (
                 <button
-                  key={category.id}
-                  onClick={() => setActiveCategory(category.id)}
-                  className={`px-4 py-2 rounded-full text-sm md:text-base transition-colors ${
-                    activeCategory === category.id
-                      ? "text-white shadow-md"
-                      : "bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
-                  }`}
-                  style={{
-                    minWidth: "100px",
-                    backgroundColor:
-                      activeCategory === category.id ? primaryColor : undefined,
-                  }}
-                >
-                  {category.title}
-                </button>
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                  className={`px-4 py-2 rounded-full text-sm md:text-base transition-colors ${activeCategory === cat.id ? 'text-white shadow-md' : 'bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600'}`}
+                  style={{ minWidth: '100px', backgroundColor: activeCategory === cat.id ? primaryColor : undefined }}
+                >{cat.title}</button>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Products */}
-        {displayedGroups.map(({ category, products: catProducts }) => (
+        {/* شبكة المنتجات */}
+        {displayedGroups.map(({ category, products: items }) => (
           <div key={category.id} className="mb-12">
-            <h3
-              className="text-xl md:text-2xl font-semibold mb-6 text-center md:text-right"
-              style={{ color: secondaryColor }}
-            >
+            <h3 className="text-xl md:text-2xl font-semibold mb-6 text-center md:text-right" style={{ color: secondaryColor }}>
               {category.name}
             </h3>
-
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-              {catProducts.map((product, index) => (
-                <div className="relative" key={product.id}>
-                  {/* Badges always visible and fixed position */}
-                  <div className="absolute top-3 left-3 z-10 flex gap-2">
-                    <button
-                      className="p-2 rounded-full bg-white/90 dark:bg-gray-900/80 backdrop-blur-sm hover:text-red-500 transition-colors"
-                      aria-label="Add to favorites"
-                    >
-                      <Heart className="w-5 h-5" />
-                    </button>
-                    {product.salePrice && (
-                      <div
-                        className="px-3 py-1 rounded-lg text-white text-sm font-bold"
-                        style={{ backgroundColor: primaryColor }}
-                      >
-                        {Math.round(
-                          ((product.productPrice - product.salePrice) /
-                            product.productPrice) *
-                            100
-                        )}
-                        % خصم
-                      </div>
-                    )}
-                  </div>
-
-                  <motion.div
-                    className="product-card group bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "0px 0px -100px 0px" }}
-                    transition={{
-                      duration: 0.5,
-                      delay: index * 0.05,
-                      type: "spring",
-                      stiffness: 100,
-                    }}
-                  >
-                    <Link
-                      href={`${slugDomain}/products/${product.slug}`}
-                      className="block relative aspect-square"
-                    >
-                      <Image
-                        src={product.imageUrl || "/placeholder.jpg"}
-                        alt={product.title}
-                        fill
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
-                        loading={index < 4 ? "eager" : "lazy"}
-                      />
-                    </Link>
-
-                    {/* Product Info */}
-                    <div className="p-4 space-y-3">
-                      <Link href={`${slugDomain}/products/${product.slug}`}>
-                        <h3 className="font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors line-clamp-2">
-                          {product.title}
-                        </h3>
-                      </Link>
-
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="text-lg font-bold"
-                            style={{ color: accentColor }}
-                          >
-                            {product.salePrice || product.productPrice} ر.س
-                          </span>
-                          {product.salePrice && (
-                            <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
-                              {product.productPrice} ر.س
-                            </span>
-                          )}
-                        </div>
-
-                        <button
-                          onClick={(e) => handleAddToCart(e, product)}
-                          className="p-2 rounded-full hover:scale-110 transition-transform"
-                          style={{
-                            backgroundColor: primaryColor,
-                            color: lightBackground,
-                          }}
-                          aria-label="Add to cart"
-                        >
-                          <ShoppingCart className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
+              {items.map((prod, idx) => (
+                <ProductCard key={prod.id} product={prod} delay={idx * 0.05} />
               ))}
             </div>
+            {!items.length && <div className="text-center py-12 text-gray-500">لا توجد منتجات متاحة حالياً</div>}
           </div>
         ))}
-
-        {displayedGroups.every((g) => g.products.length === 0) && (
-          <div className="text-center py-12 text-gray-500">
-            لا توجد منتجات متاحة حالياً
-          </div>
-        )}
       </div>
 
+      {/* أنماط عالمية */}
       <style jsx global>{`
         .flying-image {
           position: fixed;
           z-index: 9999;
           pointer-events: none;
           border-radius: 0.5rem;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-
-        @media (max-width: 640px) {
-          .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-          }
-
-          .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-          }
+        @media (max-width:640px) {
+          .scrollbar-hide { -ms-overflow-style:none; scrollbar-width:none; }
+          .scrollbar-hide::-webkit-scrollbar { display:none; }
         }
       `}</style>
     </section>
   );
 }
+
+
+// "use client";
+
+// import React, { useState, useMemo, useCallback } from "react";
+// import Image from "next/image";
+// import Link from "next/link";
+// import { ShoppingCart, Heart } from "lucide-react";
+// import { motion } from "framer-motion";
+// import { useTheme } from "next-themes";
+// import { toast } from "react-hot-toast";
+// import { useDispatch } from "react-redux";
+// import { addToCart } from "../../../redux/slices/cartSlice";
+
+// export default function FeaturedProducts({
+//   products,
+//   customization = {},
+//   categories = [],
+//   slugDomain,
+// }) {
+//   const dispatch = useDispatch();
+
+//   const primaryColor = customization?.primaryColor || "#4CAF50";
+//   const secondaryColor = customization?.secondaryColor || "#2C3E50";
+//   const accentColor = customization?.accentColor || "#FFC107";
+//   const lightBackground = customization?.backgroundColor || "#FFFFFF";
+//   const darkBackground = customization?.darkBackground || "#1E293B";
+//   const fontFamily = customization?.fontFamily || "sans-serif";
+
+//   const { theme } = useTheme();
+//   const currentBackground = theme === "dark" ? darkBackground : lightBackground;
+
+//   const [activeCategory, setActiveCategory] = useState("all");
+
+//   const { groupedProducts, displayedGroups } = useMemo(() => {
+//     const grouped = categories.reduce((acc, category) => {
+//       acc[category.id] = products.filter((p) => p.categoryId === category.id);
+//       return acc;
+//     }, {});
+
+//     const groups =
+//       activeCategory === "all"
+//         ? [{ category: { id: "all", name: "الكل" }, products }]
+//         : categories.find((c) => c.id === activeCategory)
+//         ? [
+//             {
+//               category: categories.find((c) => c.id === activeCategory),
+//               products: grouped[activeCategory] || [],
+//             },
+//           ]
+//         : [];
+
+//     return { groupedProducts: grouped, displayedGroups: groups };
+//   }, [products, categories, activeCategory]);
+
+//   const handleAddToCart = useCallback(
+//     (event, product) => {
+//       event.stopPropagation();
+//       const productCard = event.currentTarget.closest(".product-card");
+
+//       const createFlyingImage = () => {
+//         const imageElement = productCard?.querySelector("img");
+//         const cartIcon = document.getElementById("navbar-cart");
+
+//         if (!imageElement || !cartIcon) return;
+
+//         const imageRect = imageElement.getBoundingClientRect();
+//         const cartRect = cartIcon.getBoundingClientRect();
+
+//         const flyingImage = new Image();
+//         flyingImage.src = imageElement.src;
+//         flyingImage.className = "flying-image";
+
+//         flyingImage.animate(
+//           [
+//             {
+//               transform: `translate(${imageRect.left}px, ${imageRect.top}px)`,
+//               opacity: 1,
+//               width: `${imageRect.width}px`,
+//               height: `${imageRect.height}px`,
+//             },
+//             {
+//               transform: `translate(${
+//                 cartRect.left + cartRect.width / 2
+//               }px, ${cartRect.top + cartRect.height / 2}px)`,
+//               opacity: 0,
+//               width: "0px",
+//               height: "0px",
+//             },
+//           ],
+//           {
+//             duration: 800,
+//             easing: "ease-in-out",
+//           }
+//         ).onfinish = () => flyingImage.remove();
+
+//         document.body.appendChild(flyingImage);
+//       };
+
+//       createFlyingImage();
+//       dispatch(addToCart(product));
+//       toast.success("تمت الإضافة إلى السلة!");
+//     },
+//     [dispatch]
+//   );
+
+//   return (
+//     <section
+//       className="py-12 font-arabic px-4 lg:px-8"
+//       style={{
+//         fontFamily,
+//         direction: "rtl",
+//       }}
+//     >
+//       <div className="max-w-7xl mx-auto">
+//         {/* Header */}
+//         <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between mb-8">
+//           <h2
+//             className="text-2xl md:text-3xl font-bold text-center md:text-right"
+//             style={{ color: primaryColor }}
+//           >
+//             المنتجات المميزة
+//           </h2>
+
+//           {/* Filter */}
+//           <div className="overflow-x-auto scrollbar-hide">
+//             <div className="flex gap-3 w-max px-4">
+//               <button
+//                 onClick={() => setActiveCategory("all")}
+//                 className={`px-4 py-2 rounded-full text-sm md:text-base transition-colors ${
+//                   activeCategory === "all"
+//                     ? "text-white shadow-md"
+//                     : "bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+//                 }`}
+//                 style={{
+//                   minWidth: "80px",
+//                   backgroundColor:
+//                     activeCategory === "all" ? primaryColor : undefined,
+//                 }}
+//               >
+//                 الكل
+//               </button>
+
+//               {categories.map((category) => (
+//                 <button
+//                   key={category.id}
+//                   onClick={() => setActiveCategory(category.id)}
+//                   className={`px-4 py-2 rounded-full text-sm md:text-base transition-colors ${
+//                     activeCategory === category.id
+//                       ? "text-white shadow-md"
+//                       : "bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+//                   }`}
+//                   style={{
+//                     minWidth: "100px",
+//                     backgroundColor:
+//                       activeCategory === category.id ? primaryColor : undefined,
+//                   }}
+//                 >
+//                   {category.title}
+//                 </button>
+//               ))}
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Products */}
+//         {displayedGroups.map(({ category, products: catProducts }) => (
+//           <div key={category.id} className="mb-12">
+//             <h3
+//               className="text-xl md:text-2xl font-semibold mb-6 text-center md:text-right"
+//               style={{ color: secondaryColor }}
+//             >
+//               {category.name}
+//             </h3>
+
+//             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+//               {catProducts.map((product, index) => (
+//                 <div className="relative" key={product.id}>
+//                   {/* Badges always visible and fixed position */}
+//                   <div className="absolute top-3 left-3 z-10 flex gap-2">
+//                     <button
+//                       className="p-2 rounded-full bg-white/90 dark:bg-gray-900/80 backdrop-blur-sm hover:text-red-500 transition-colors"
+//                       aria-label="Add to favorites"
+//                     >
+//                       <Heart className="w-5 h-5" />
+//                     </button>
+//                     {product.salePrice && (
+//                       <div
+//                         className="px-3 py-1 rounded-lg text-white text-sm font-bold"
+//                         style={{ backgroundColor: primaryColor }}
+//                       >
+//                         {Math.round(
+//                           ((product.productPrice - product.salePrice) /
+//                             product.productPrice) *
+//                             100
+//                         )}
+//                         % خصم
+//                       </div>
+//                     )}
+//                   </div>
+
+//                   <motion.div
+//                     className="product-card group bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+//                     initial={{ opacity: 0, y: 50 }}
+//                     whileInView={{ opacity: 1, y: 0 }}
+//                     viewport={{ once: true, margin: "0px 0px -100px 0px" }}
+//                     transition={{
+//                       duration: 0.5,
+//                       delay: index * 0.05,
+//                       type: "spring",
+//                       stiffness: 100,
+//                     }}
+//                   >
+//                     <Link
+//                       href={`${slugDomain}/products/${product.slug}`}
+//                       className="block relative aspect-square"
+//                     >
+//                       <Image
+//                         src={product.imageUrl || "/placeholder.jpg"}
+//                         alt={product.title}
+//                         fill
+//                         sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+//                         className="object-cover transition-transform duration-300 group-hover:scale-105"
+//                         loading={index < 4 ? "eager" : "lazy"}
+//                       />
+//                     </Link>
+
+//                     {/* Product Info */}
+//                     <div className="p-4 space-y-3">
+//                       <Link href={`${slugDomain}/products/${product.slug}`}>
+//                         <h3 className="font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors line-clamp-2">
+//                           {product.title}
+//                         </h3>
+//                       </Link>
+
+//                       <div className="flex items-center justify-between">
+//                         <div className="flex items-center gap-2">
+//                           <span
+//                             className="text-lg font-bold"
+//                             style={{ color: accentColor }}
+//                           >
+//                             {product.salePrice || product.productPrice} ر.س
+//                           </span>
+//                           {product.salePrice && (
+//                             <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
+//                               {product.productPrice} ر.س
+//                             </span>
+//                           )}
+//                         </div>
+
+//                         <button
+//                           onClick={(e) => handleAddToCart(e, product)}
+//                           className="p-2 rounded-full hover:scale-110 transition-transform"
+//                           style={{
+//                             backgroundColor: primaryColor,
+//                             color: lightBackground,
+//                           }}
+//                           aria-label="Add to cart"
+//                         >
+//                           <ShoppingCart className="w-5 h-5" />
+//                         </button>
+//                       </div>
+//                     </div>
+//                   </motion.div>
+//                 </div>
+//               ))}
+//             </div>
+//           </div>
+//         ))}
+
+//         {displayedGroups.every((g) => g.products.length === 0) && (
+//           <div className="text-center py-12 text-gray-500">
+//             لا توجد منتجات متاحة حالياً
+//           </div>
+//         )}
+//       </div>
+
+//       <style jsx global>{`
+//         .flying-image {
+//           position: fixed;
+//           z-index: 9999;
+//           pointer-events: none;
+//           border-radius: 0.5rem;
+//           box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+//         }
+
+//         @media (max-width: 640px) {
+//           .scrollbar-hide {
+//             -ms-overflow-style: none;
+//             scrollbar-width: none;
+//           }
+
+//           .scrollbar-hide::-webkit-scrollbar {
+//             display: none;
+//           }
+//         }
+//       `}</style>
+//     </section>
+//   );
+// }
 
 
 // "use client";

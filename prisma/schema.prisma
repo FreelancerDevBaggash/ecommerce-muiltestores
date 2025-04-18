@@ -194,7 +194,6 @@ enum OrderStatus {
     id        String  @id @default(auto()) @map("_id") @db.ObjectId // الرقم التعريفي للعميل (مفتاح أساسي)
     email     String @unique // البريد الإلكتروني للعميل (يجب أن يكون فريدًا ويمكن أن يكون خاليًا)
     isBlocked Boolean @default(false) // حالة الحظر للعميل (القيمة الافتراضية: غير محظور)
-    password          String // كلمة المرور للعميل (يجب أن لا تكون خالية)
     emailVerified     Boolean @default(false) // حالة التحقق من البريد الإلكتروني (القيمة الافتراضية: false)
     verificationToken String? // رمز التحقق (اختياري)
 

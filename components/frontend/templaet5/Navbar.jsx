@@ -814,7 +814,7 @@ const CategoriesNav = ({ categories, slugDomain, isMobile }) => (
     {categories?.map((category) => (
       <Link
         key={category.id}
-        href={`${slugDomain}/categories/${category.slug}`}
+        href={`/${slugDomain}/categories/${category.slug}`}
         className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
       >
         {category.title}
@@ -827,7 +827,7 @@ const UserAuth = ({ slugDomain, session, status }) => (
   <>
     {status === "unauthenticated" ? (
       <Link
-        href={`${slugDomain}/loginCustomer`}
+        href={`/${slugDomain}/loginCustomer`}
         className="flex items-center text-sm text-gray-700 dark:text-gray-200 hover:underline"
       >
         <User className="w-5 h-5 mr-1" />
@@ -883,7 +883,7 @@ export default function Navbar({
 
           {/* عناصر التنقل لسطح المكتب */}
           <div className="hidden md:flex items-center gap-6">
-            <Link href="/favorites" className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full">
+            <Link href={`/${slugDomain}/wishlist`} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full">
               <Heart className="h-5 w-5" />
             </Link>
             <UserAuth slugDomain={slugDomain} session={session} status={status} />

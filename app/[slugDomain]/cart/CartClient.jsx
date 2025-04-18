@@ -70,7 +70,7 @@ export default function CartClient({ slugDomain }) {
               </div>
             </div>
           ) : (
-            <EmptyCart customization={customizationData} />
+            <EmptyCart slugDomain={slugDomain} customization={customizationData} />
           )}
         </div>
       </div>

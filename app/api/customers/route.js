@@ -115,13 +115,13 @@ export async function GET(request){
             // where:{
             //     email,
             // },
+            where:{
+              password: null,
+          },
             orderBy:{
                 createdAt:"desc"
             },
-            include:{
-                customerStores:true,
-                orders:true
-            }
+            
         })
         return NextResponse.json(customers)
     }catch(error){
@@ -137,3 +137,19 @@ export async function GET(request){
     }
     
     }
+
+    export async function DELETE(req) {
+      try {
+        await db.customerStore.deleteMany();
+
+        await db.customer.deleteMany();
+        return NextResponse.json({ message: "تم حذف جميع العملاء بنجاح" });
+      } catch (error) {
+        console.error("فشل في حذف العملاء:", error);
+        return NextResponse.json(
+          { message: "حدث خطأ أثناء حذف العملاء", error },
+          { status: 500 }
+        );
+      }
+    }
+    

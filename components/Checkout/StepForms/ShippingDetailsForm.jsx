@@ -284,7 +284,10 @@ export default function ShippingDetailsForm() {
       ...data,
       shippingCost,
       selectedAddressId,
-      location: selectedAddressId ? null : location
+      location: {
+        lat: location.lat,
+        lng: location.lng
+      },
     };
 
     dispatch(updateCheckoutFormData(finalData));

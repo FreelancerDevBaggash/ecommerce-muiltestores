@@ -189,17 +189,16 @@ import { useForm } from "react-hook-form";
 import NavButtons from '../NavButtons';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentStep, updateCheckoutFormData } from '@/redux/slices/checkoutSlice';
-import { useSession } from 'next-auth/react';
+// import { useSession } from 'next-auth/react';
+import useCustomerSession from "@/hooks/useCustomerSession";
 
 export default function PersonalDetailsForm({ storeId }) {
-  const { data: session, status } = useSession();
-  const customerId = session?.user?.id;
-
+  const { session, loading } = useCustomerSession();
+  const customerId = session?.user.id;
   const [customerStore, setCustomerStore] = useState(null);
-
   // جلب customerStore بناءً على storeId و customerId
   useEffect(() => {
-    if (customerId && storeId) {
+    if (loading === "authenticated" && customerId && storeId) {
       const fetchCustomerStore = async () => {
         try {
           const response = await fetch(`/api/customerStores?storeId=${storeId}&customerId=${customerId}`);
@@ -211,10 +210,11 @@ export default function PersonalDetailsForm({ storeId }) {
           console.error("Failed to fetch customerStore:", error);
         }
       };
-
+  
       fetchCustomerStore();
     }
-  }, [storeId, customerId]);
+  }, [loading, storeId, customerId]);
+  
 
   const dispatch = useDispatch();
   const currentStep = useSelector((store) => store.checkout.currentStep);

@@ -47,9 +47,12 @@
 import Navbar from '../../components/frontend/templaet5/Navbar';
 import Footer from '../../components/frontend/templaet5/Footer';
 import { getData } from '../../lib/getData';
+import { getCustomerSession } from "@/lib/getCustomerSession";
 
 export default async function Layout({ children, params:{slugDomain} }) {
  // const { slugDomain } = params;
+ const session = getCustomerSession(); // سيتم استخدام الجلسة في الخادم
+ const status = session ? "authenticated" : "unauthenticated";
 
   // جلب البيانات مرة واحدة من الخادم
   const store = await getData(`/stores/store/${slugDomain}`);
@@ -60,10 +63,11 @@ export default async function Layout({ children, params:{slugDomain} }) {
   const templatesData = await getData(`/templates/${store.templateId}`);
   const customizationData = await getData(`/customizations/Customizationes/${storeId}`);
   const categoriesData = await getData(`/categories?storeId=${storeId}`);
-
+console.log('rrrrrrrrrrrrrr', session?.user)
   return (
     <div dir='rtl'>
-      <Navbar  slugDomain={slugDomain} customization={customizationData} storeData={store} categoriesData ={categoriesData}/>
+      <Navbar  slugDomain={slugDomain} customization={customizationData} storeData={store} categoriesData ={categoriesData} session={session}
+      status={status}/>
       <div>{children}</div>
       <Footer slugDomain={slugDomain} customization={customizationData} storeData={store}  />
     </div>

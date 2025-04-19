@@ -25,6 +25,7 @@
 //     </div>
 //   )
 // }
+
 "use client"
 import React from 'react'
 import PersonalDetailsForm from './StepForms/PersonalDetailsForm'

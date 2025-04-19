@@ -9,7 +9,7 @@ import base64url from "base64url"
 export async function POST(request) {
     try {
       const resend = new Resend(process.env.RESEND_API_KEY);
-      const { email, isBlocked, password, storeId } = await request.json();
+      const { email, isBlocked, storeId } = await request.json();
   
       const existingCustomer = await db.customer.findUnique({
         where: { email },
@@ -56,7 +56,6 @@ export async function POST(request) {
         data: {
           email,
           isBlocked,
-          password: hashedPassword,
           verificationToken: verificationCode,
         },
       });

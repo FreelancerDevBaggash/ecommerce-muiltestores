@@ -1,4 +1,4 @@
-import db from "@/lib/db"
+import db from "../../../../lib/db"
 import { NextResponse } from "next/server";
 
 export async function GET(request, {params:{id}}){
@@ -23,7 +23,55 @@ export async function GET(request, {params:{id}}){
     
     }
 
-
+    export async function PUT(request, { params: { id } }) {
+        try {
+          const body = await request.json();
+      
+          // تحقق من وجود العميل أولاً
+          const existingCustomer = await db.customer.findUnique({
+            where: { id },
+          });
+      
+          if (!existingCustomer) {
+            return NextResponse.json(
+              {
+                message: "العميل غير موجود",
+              },
+              { status: 404 }
+            );
+          }
+      
+          // تحديث العميل
+          const updatedCustomer = await db.customer.update({
+            where: { id },
+            data: {
+              firstName: body.firstName,
+              lastName: body.lastName,
+              email: body.email,
+              phone: body.phone,
+              profileImage: body.profileImage,
+              emailVerified: body.emailVerified,
+              phoneVerified: body.phoneVerified,
+              isBlocked: body.isBlocked,
+            },
+          });
+      
+          return NextResponse.json({
+            message: "تم تحديث بيانات العميل بنجاح",
+            data: updatedCustomer,
+          });
+      
+        } catch (error) {
+          console.error("فشل التحديث:", error);
+          return NextResponse.json(
+            {
+              message: "حدث خطأ أثناء تحديث بيانات العميل",
+              error,
+            },
+            { status: 500 }
+          );
+        }
+      }
 
 export async function DELETE(request, {params:{id}}){
         try{

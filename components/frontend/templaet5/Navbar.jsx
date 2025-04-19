@@ -784,6 +784,7 @@
 //     </header>
 //   );
 // }
+
 "use client";
 
 import React, { useState } from "react";
@@ -791,7 +792,7 @@ import Link from "next/link";
 import { Search, ShoppingCart, User, Menu, X, Heart } from "lucide-react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 import CartCount from "../CartCount";
 import ThemeSwitcherBtn from "../../ThemeSwitcherBtn";
 import UserAvatar from "./UserAvatar";
@@ -834,7 +835,7 @@ const UserAuth = ({ slugDomain, session, status }) => (
         <span>تسجيل الدخول</span>
       </Link>
     ) : (
-      <UserAvatar user={session?.user} />
+      <UserAvatar user={session?.user} slugDomain={slugDomain} />
     )}
   </>
 );
@@ -844,11 +845,13 @@ export default function Navbar({
   customization = {},
   storeData = {},
   categoriesData = [],
+  session, // أخذ الجلسة من الـ props
+  status,
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { theme } = useTheme();
-  const { data: session, status } = useSession();
-
+  // const { data: session, status } = getCustomerSession();
+console.log('mmmmmmm', session)
   // إعدادات التخصيص
   const currentBackground = theme === "dark" 
     ? customization?.darkBackground || "#1E293B" 

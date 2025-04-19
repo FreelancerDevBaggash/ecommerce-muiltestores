@@ -44,7 +44,6 @@ export default function AccountSettings({ user={} }) {
       email: data.email,
       phone: data.phone,
       profileImage: imageUrl,
-      ...(data.newPassword ? { password: data.newPassword } : {}),
     };
 
     // طلب التحديث
@@ -129,7 +128,7 @@ export default function AccountSettings({ user={} }) {
             إعدادات الحساب
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300">
-            إدارة معلوماتك الشخصية وإعدادات الأمان
+            إدارة معلوماتك الشخصية 
           </p>
         </div>
 
@@ -177,7 +176,7 @@ export default function AccountSettings({ user={} }) {
               <ProfileCard />
 
               {/* إعدادات الأمان */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+              {/* <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
                 <div className="p-6 border-b border-gray-100 dark:border-gray-700">
                   <h2 className="text-xl font-semibold flex items-center gap-2 text-gray-800 dark:text-white">
                     <FiLock className="text-blue-500" />
@@ -211,7 +210,7 @@ export default function AccountSettings({ user={} }) {
                     </p>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               {/* أزرار الإجراءات */}
               <div className="flex flex-col sm:flex-row justify-end gap-4 pt-4">

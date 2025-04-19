@@ -159,6 +159,7 @@
 //     </DropdownMenu>
 //   );
 // }
+
 "use client";
 
 import React from "react";
@@ -177,8 +178,8 @@ import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
 
-export default function UserAvatar({ user = {}, customization = {} }) {
-  const { name, image } = user;
+export default function UserAvatar({ user = {}, customization = {}, slugDomain }) {
+  const { firstName, image } = user;
   const role = user?.role;
   const router = useRouter();
   const primaryColor = customization?.primaryColor || "#4CAF50"; 
@@ -192,8 +193,16 @@ export default function UserAvatar({ user = {}, customization = {} }) {
   const { theme } = useTheme();
 
   async function handleLogout() {
-    await signOut();
-    router.push("/");
+  //   await signOut();
+  //   document.cookie = "customer_token=; max-age=0; path=/";  // هذا يقوم بحذف الكوكيز
+
+  //   console.log('userrrrrrrrrrrrrr', user)
+  // // إعادة التوجيه إلى الصفحة الرئيسية أو صفحة تسجيل الدخول بعد تسجيل الخروج
+  await fetch("/api/customerAuth/logout", { method: "POST" });
+
+  // 2) إذا كنت تستخدم next-auth أيضاً:
+  await signOut({ redirect: false });
+    router.push(`/${slugDomain}`);
   }
 
   return (
@@ -224,7 +233,7 @@ export default function UserAvatar({ user = {}, customization = {} }) {
                 className="w-7 h-7 mr-3 rounded-full shrink-0"
               />
             )}
-            {name || "John Doe"}
+            {firstName || "John Doe"}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-3 fill-gray-400 inline ml-3"
@@ -240,7 +249,7 @@ export default function UserAvatar({ user = {}, customization = {} }) {
         </DropdownMenuTrigger>
 
         <DropdownMenuContent className="absolute block shadow-lg bg-white py-2 z-[1000] min-w-full w-max rounded-lg max-h-96 overflow-auto">
-          <DropdownMenuLabel>{name || "John Doe"}</DropdownMenuLabel>
+          <DropdownMenuLabel>{firstName || "John Doe"}</DropdownMenuLabel>
           <DropdownMenuSeparator />
 
           <DropdownMenuItem>
@@ -255,22 +264,22 @@ export default function UserAvatar({ user = {}, customization = {} }) {
 
           <DropdownMenuItem>
             <Link
-              href="/dashboard/profile"
+              href={`/${slugDomain}/profile`}
               className="py-2.5 px-5 flex items-center hover:bg-gray-100 text-[#333] text-sm cursor-pointer"
             >
               <Settings className="w-4 h-4 mr-3" />
-              Edit Profile
+              حسابي
             </Link>
           </DropdownMenuItem>
 
           {role === "USER" && (
             <DropdownMenuItem>
               <Link
-                href="/dashboard/orders"
+                href={`/${slugDomain}/orders`}
                 className="py-2.5 px-5 flex items-center hover:bg-gray-100 text-[#333] text-sm cursor-pointer"
               >
                 <Settings className="w-4 h-4 mr-3" />
-                My Orders
+                طلباتي
               </Link>
             </DropdownMenuItem>
           )}
@@ -281,7 +290,7 @@ export default function UserAvatar({ user = {}, customization = {} }) {
               className="py-2.5 px-5 flex items-center hover:bg-gray-100 text-[#333] text-sm cursor-pointer"
             >
               <LogOut className="w-4 h-4 mr-3" />
-              Logout
+              تسجيل الخروج
             </button>
           </DropdownMenuItem>
         </DropdownMenuContent>

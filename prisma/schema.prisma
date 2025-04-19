@@ -204,6 +204,7 @@ enum OrderStatus {
     phone             String? @unique// رقم الهاتف للعميل (اختياري)
     phoneVerified     Boolean @default(false) // حالة التحقق من الرقم (القيمة الافتراضية: false)
     verificationCode String? // رمز التحقق (اختياري)
+    verificationCodeExpiresAt  DateTime?           // ← حقل جديد
 
 
    // storeId    String[] @db.ObjectId

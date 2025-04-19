@@ -1807,8 +1807,8 @@ export default function FeaturedProducts({ products, customization = {}, categor
   }
 
   return (
-    <section className="py-12 px-4 lg:px-8" style={{ backgroundColor: currentBg, fontFamily, direction: 'rtl' }}>
-      <div className="max-w-7xl mx-auto">
+    <section className="py-8 px-2 lg:px-6" style={{ backgroundColor: currentBg, fontFamily, direction: 'rtl' }}>
+      <div className="max-w-6xl mx-auto">
         {/* العنوان والفلتر */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
           <h2 className="text-2xl md:text-3xl font-bold text-center md:text-right" style={{ color: primaryColor }}>

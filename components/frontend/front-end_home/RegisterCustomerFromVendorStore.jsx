@@ -266,7 +266,7 @@ export default function RegisterCustomerFromVendorStore({ storeId, slugDomain })
 
     
 
-      <TextInput
+      {/* <TextInput
         lable="كلمة المرور"
         name="password"
         register={register}
@@ -280,7 +280,7 @@ export default function RegisterCustomerFromVendorStore({ storeId, slugDomain })
      trueTitle="Not Block"
      falseTitle="Bloked"
      register={register}
-    /> 
+    />  */}
       <SubmitButton
         isLoading={loading}
         buttonTitle="تسجيل"

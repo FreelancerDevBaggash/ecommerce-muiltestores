@@ -1964,19 +1964,51 @@
 // export default AccountSettings;
 // app/[slugDomain]/profile/page.jsx
 
+// import React from 'react'
+// import AccountSettings from './AccountSettings'
+// import { getData } from '@/lib/getData'
+// import { getCustomerSession } from '@/lib/getCustomerSession'
+// import { authOptions } from '@/lib/authOptions'
+
+// export const dynamic = 'force-dynamic'  // يجبر الصفحة على إعادة التحميل في كل مرة
+
+// export default async function page() {
+//   // 1. جلب جلسة المستخدم
+//   const session = await getCustomerSession()
+//   if (!session) {
+//     // إذا لم يكن المستخدم مسجّلاً دخول، يمكنك إعادة التوجيه أو عرض رسالة
+//     return (
+//       <div className="text-center py-20">
+//         <p className="text-lg text-gray-500 dark:text-gray-400">
+//           يرجى تسجيل الدخول للوصول إلى إعدادات الحساب
+//         </p>
+//       </div>
+//     )
+//   }
+
+//   // 2. استخرج الـ userId من الجلسة
+//   const userId = session.user.id;
+
+//   // 3. جلب بيانات المستخدم في الوقت الحقيقي
+//   const user = await getData(`vendors/${userId}`, { mode: 'real-time' })
+
+//   // 4. عرض مكوّن AccountSettings مع تمرير بيانات العميل
+//   return <AccountSettings user={user} />
+// }
+
+
 import React from 'react'
 import AccountSettings from './AccountSettings'
 import { getData } from '@/lib/getData'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/authOptions'
+import { getCustomerSession } from '@/lib/getCustomerSession'
 
-export const dynamic = 'force-dynamic'  // يجبر الصفحة على إعادة التحميل في كل مرة
+export const dynamic = 'force-dynamic'
 
 export default async function page() {
   // 1. جلب جلسة المستخدم
-  const session = await getServerSession(authOptions)
-  if (!session) {
-    // إذا لم يكن المستخدم مسجّلاً دخول، يمكنك إعادة التوجيه أو عرض رسالة
+  const session = await getCustomerSession()
+
+  if (!session || !session.user || !session.user.id) {
     return (
       <div className="text-center py-20">
         <p className="text-lg text-gray-500 dark:text-gray-400">
@@ -1986,12 +2018,11 @@ export default async function page() {
     )
   }
 
-  // 2. استخرج الـ userId من الجلسة
-  const userId = session.user.id;
+  const userId = session.user.id
 
-  // 3. جلب بيانات المستخدم في الوقت الحقيقي
-  const user = await getData(`vendors/${userId}`, { mode: 'real-time' })
+  // 2. جلب بيانات المستخدم
+  const user = await getData(`customers/${userId}`, { mode: 'real-time' })
 
-  // 4. عرض مكوّن AccountSettings مع تمرير بيانات العميل
+  // 3. عرض المكون
   return <AccountSettings user={user} />
 }

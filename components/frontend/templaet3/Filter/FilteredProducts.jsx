@@ -1,7 +1,7 @@
 import { ChevronRight, Link } from 'lucide-react'
 import React from 'react'
 import Breadcrumb from './Breadcrumb';
-import Paginate from './Paginate';
+import Paginate from './paginate';
 import { getData } from '@/lib/getData';
 import Product from '../Product'
 

@@ -173,7 +173,7 @@
 
 //   // Enhanced hover effects with fallback
 //   const getHoverClass = useMemo(() => {
-//     const baseClasses = 'transition-all duration-300ease-custom-ease';
+//     const baseClasses = 'transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]';
     
 //     switch (safeCustomization.hoverEffect) {
 //       case 'scale': 
@@ -320,7 +320,7 @@
 //       `}</style>
 
 //       <motion.header 
-//         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500ease-custom-ease`}
+//         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]`}
 //         style={{ 
 //           ...cssVariables, 
 //           ...navStyle,
@@ -844,14 +844,13 @@ import UserAvatar from './UserAvatar';
 import { useTheme } from 'next-themes';
 import WishlistButton from './WishlistButton';
 
-export default function Navbar({ slugDomain, storeData = {}, customization = {}, storeId }) {
+export default function Navbar({ slugDomain, storeData = {}, categories ,customization = {}, storeId }) {
   // Default values for empty props
   const safeStoreData = useMemo(() => ({
     profileImageUrl: '/default-store.png',
     businessName: 'متجرك',
     ...storeData
   }), [storeData]);
-
   const safeCustomization = useMemo(() => ({
     primaryColor: '#6366f1',
     secondaryColor: '#8b5cf6',
@@ -1001,7 +1000,7 @@ export default function Navbar({ slugDomain, storeData = {}, customization = {},
 
   // Enhanced hover effects with fallback
   const getHoverClass = useMemo(() => {
-    const baseClasses = 'transition-all duration-300 ease-custom-ease';
+    const baseClasses = 'transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]';
     
     switch (safeCustomization.hoverEffect) {
       case 'scale': 
@@ -1064,24 +1063,24 @@ export default function Navbar({ slugDomain, storeData = {}, customization = {},
   }, [safeCustomization.navType, isDarkMode]);
 
   // Fetch categories with error handling
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch(`/api/categories?storeId=${storeId}`);
-        if (response.ok) {
-          const data = await response.json();
-          setCategories(Array.isArray(data) ? data : []);
-        } else {
-          setCategories([]);
-        }
-      } catch (error) {
-        console.error('Failed to fetch categories:', error);
-        setCategories([]);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchCategories = async () => {
+  //     try {
+  //       const response = await fetch(`/api/categories?storeId=${storeId}`);
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setCategories(Array.isArray(data) ? data : []);
+  //       } else {
+  //         setCategories([]);
+  //       }
+  //     } catch (error) {
+  //       console.error('Failed to fetch categories:', error);
+  //       setCategories([]);
+  //     }
+  //   };
 
-    fetchCategories();
-  }, [slugDomain, storeId]);
+  //   fetchCategories();
+  // }, [slugDomain, storeId]);
 
   return (
     <>
@@ -1147,8 +1146,8 @@ export default function Navbar({ slugDomain, storeData = {}, customization = {},
         }
       `}</style>
 
-      <motion.header
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-custom-ease`}
+      <motion.header 
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]`}
         style={{ 
           ...cssVariables, 
           ...navStyle,
@@ -1255,7 +1254,7 @@ export default function Navbar({ slugDomain, storeData = {}, customization = {},
                         }}
                       >
                         <div className="max-h-[60vh] overflow-y-auto p-2">
-                          {categoriesData.map((category, index) => (
+                          {categories.map((category, index) => (
                             <motion.div
                               key={category.id || index}
                               initial={{ opacity: 0, x: -20 }}
@@ -1288,7 +1287,7 @@ export default function Navbar({ slugDomain, storeData = {}, customization = {},
 
               {/* Featured Categories - Desktop */}
               <div className="hidden lg:flex items-center gap-2">
-                {categoriesData.filter(c => c.featured).slice(0, 4).map(category => (
+                {categories.filter(c => c.featured).slice(0, 4).map(category => (
                   <motion.div
                     key={category.id}
                     whileHover={{ y: -3 }}
@@ -1344,10 +1343,10 @@ export default function Navbar({ slugDomain, storeData = {}, customization = {},
                   <motion.button 
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    className="p-2 rounded-full hover:bg-primary/10 transition-colors group"
+                    className="p-5 rounded-full hover:bg-primary/5 transition-colors group"
                     aria-label="مساعدة"
                   >
-                    <HelpCircle className="w-6 h-6 text-primary group-hover:scale-110 transition-transform" />
+                    <HelpCircle className="w-2 h-2 text-primary group-hover:scale-110 transition-transform" />
                   </motion.button>
                 </HelpModalstore>
               </motion.div>
@@ -1513,7 +1512,7 @@ export default function Navbar({ slugDomain, storeData = {}, customization = {},
                       </div>
 
                       <div className="grid grid-cols-2 gap-3">
-                        {categoriesData.map((category, index) => (
+                        {categories.map((category, index) => (
                           <motion.div
                             key={category.id || index}
                             initial={{ opacity: 0, scale: 0.9 }}
@@ -1578,9 +1577,16 @@ export default function Navbar({ slugDomain, storeData = {}, customization = {},
                         </div>
                         <span className="font-medium">الرئيسية</span>
                       </Link>
+                      <Link 
+                    href={`/${slugDomain}/wishlist`}
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/5 transition-colors group"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                         <div className="p-2 rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all">
                          <WishlistButton slugDomain={slugDomain}/> 
-
-                  
+                    </div>
+                    <span className="font-medium"> المفضله</span>
+                    </Link>
                   <Link 
                     href={`/${slugDomain}/cart`}
                     className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/5 transition-colors group"

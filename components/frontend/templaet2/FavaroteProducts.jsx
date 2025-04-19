@@ -2,7 +2,7 @@
 import React, { useState, useMemo, useCallback, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingCart, Heart, Star, ChevronLeft, ChevronRight, Filter, X, Sliders } from "lucide-react";
+import { ShoppingCart, Heart, Star, ChevronLeft, ChevronRight, Filter, X, Sliders, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
 import { toast } from "react-hot-toast";
@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../../../redux/slices/cartSlice";
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
+import useSWR from 'swr';
 
 const hexToRgb = (hex) => {
   hex = hex.replace('#', '');
@@ -19,42 +20,220 @@ const hexToRgb = (hex) => {
   return `${r}, ${g}, ${b}`;
 };
 
+const SubCategoriesTabs = ({ 
+  categories,
+  storeId,
+  activeCategory,
+  setActiveCategory,
+  activeSubcategory,
+  setActiveSubcategory,
+  colors
+}) => {
+  const [expandedCategory, setExpandedCategory] = useState(null);
+  
+  const { data: subcategories, error, isLoading } = useSWR(
+    `api/subcategory?storeId=${storeId}`,
+    async (url) => {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Failed to fetch subcategories');
+      return res.json();
+    },
+    {
+      revalidateOnFocus: false,
+      shouldRetryOnError: false
+    }
+  );
+
+  const groupedSubcategories = useMemo(() => {
+    if (!subcategories) return {};
+    return subcategories.reduce((acc, sub) => {
+      if (!acc[sub.categoryId]) acc[sub.categoryId] = [];
+      acc[sub.categoryId].push(sub);
+      return acc;
+    }, {});
+  }, [subcategories]);
+
+  const handleCategoryClick = (categoryId) => {
+    if (expandedCategory === categoryId) {
+      setExpandedCategory(null);
+      setActiveCategory("all");
+      setActiveSubcategory("all");
+    } else {
+      setExpandedCategory(categoryId);
+      setActiveCategory(categoryId);
+      setActiveSubcategory("all");
+    }
+  };
+
+  if (error) return (
+    <div className="text-red-500 text-center py-4">
+      فشل تحميل الأقسام الفرعية
+    </div>
+  );
+
+  if (isLoading) return (
+    <div className="flex justify-center py-4">
+      <Loader2 className="w-6 h-6 animate-spin" />
+    </div>
+  );
+
+  return (
+    <div className="flex flex-col gap-2 mb-6">
+      <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
+        <button
+          onClick={() => {
+            setActiveCategory("all");
+            setActiveSubcategory("all");
+            setExpandedCategory(null);
+          }}
+          className={`px-5 py-2 rounded-full text-sm md:text-base transition-all ${
+            activeCategory === "all"
+              ? "text-white shadow-lg"
+              : "bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+          }`}
+          style={{
+            backgroundColor: activeCategory === "all" ? colors.primary : undefined,
+            background: activeCategory === "all" 
+              ? `linear-gradient(145deg, ${colors.primary}, ${colors.accent})` 
+              : undefined,
+            minWidth: '90px',
+            boxShadow: activeCategory === "all" 
+              ? `0 4px 6px rgba(${colors.primaryRgb}, 0.2)` 
+              : undefined
+          }}
+        >
+          الكل
+        </button>
+        
+        {categories.map((category) => (
+          <button
+            key={category.id}
+            onClick={() => handleCategoryClick(category.id)}
+            className={`px-5 py-2 rounded-full text-sm md:text-base transition-all ${
+              activeCategory === category.id
+                ? "text-white shadow-lg"
+                : "bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+            }`}
+            style={{
+              backgroundColor: activeCategory === category.id ? colors.primary : undefined,
+              background: activeCategory === category.id 
+                ? `linear-gradient(145deg, ${colors.primary}, ${colors.accent})` 
+                : undefined,
+              minWidth: '120px',
+              boxShadow: activeCategory === category.id 
+                ? `0 4px 6px rgba(${colors.primaryRgb}, 0.2)` 
+                : undefined
+            }}
+          >
+            {category.title}
+          </button>
+        ))}
+      </div>
+
+      <AnimatePresence>
+        {expandedCategory && groupedSubcategories[expandedCategory] && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden"
+          >
+            <div className="flex gap-2 mt-2 flex-wrap">
+              <button
+                onClick={() => setActiveSubcategory("all")}
+                className={`px-4 py-1 rounded-full text-sm transition-all ${
+                  activeSubcategory === "all"
+                    ? "text-white shadow-md"
+                    : "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
+                }`}
+                style={{
+                  backgroundColor: activeSubcategory === "all" ? colors.accent : undefined,
+                  boxShadow: activeSubcategory === "all" 
+                    ? `0 2px 4px rgba(${colors.accentRgb}, 0.2)` 
+                    : undefined
+                }}
+              >
+                الكل
+              </button>
+              
+              {groupedSubcategories[expandedCategory].map((sub) => (
+                <motion.button
+                  key={sub.id}
+                  onClick={() => setActiveSubcategory(sub.id)}
+                  className={`px-4 py-1 rounded-full text-sm transition-all flex items-center ${
+                    activeSubcategory === sub.id
+                      ? "text-white shadow-md"
+                      : "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
+                  }`}
+                  style={{
+                    backgroundColor: activeSubcategory === sub.id ? colors.accent : undefined,
+                    boxShadow: activeSubcategory === sub.id 
+                      ? `0 2px 4px rgba(${colors.accentRgb}, 0.2)` 
+                      : undefined
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {sub.imageUrl && (
+                    <Image 
+                      src={sub.imageUrl} 
+                      alt={sub.title}
+                      width={20}
+                      height={20}
+                      className="inline-block mr-1 rounded-full"
+                    />
+                  )}
+                  {sub.title}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 export default function FeaturedProducts({
   products: initialProducts = [],
   customization = {},
   categories: initialCategories = [],
+  storeId,
   slugDomain,
 }) {
-  // تحويل البيانات إلى مصفوفات إذا لم تكن كذلك
-  const products = Array.isArray(initialProducts) ? initialProducts : [];
   const categories = Array.isArray(initialCategories) ? initialCategories : [];
-  
+  const products = Array.isArray(initialProducts) ? initialProducts : [];
   const dispatch = useDispatch();
   const [currentSlide, setCurrentSlide] = useState(0);
   const { theme } = useTheme();
   const [showFilters, setShowFilters] = useState(false);
   const [activeCategory, setActiveCategory] = useState("all");
+  const [activeSubcategory, setActiveSubcategory] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [ratingFilter, setRatingFilter] = useState(0);
   const [discountFilter, setDiscountFilter] = useState(false);
   const [sortOption, setSortOption] = useState("default");
 
-  // Memoized colors configuration
   const colors = useMemo(() => ({
-    primary: customization?.primaryColor || "#4CAF50",
-    secondary: customization?.secondaryColor || "#2C3E50",
-    accent: customization?.accentColor || "#FFC107",
+    primary: customization?.primaryColor || "#A855F7",
+    secondary: customization?.secondaryColor || "#F59E0B",
+    accent: customization?.accentColor || "#10B981",
     lightBackground: customization?.backgroundColor || "#FFFFFF",
     darkBackground: customization?.darkBackground || "#1E293B",
     fontFamily: customization?.fontFamily || "sans-serif",
     currentBackground: theme === "dark" 
       ? (customization?.darkBackground || "#1E293B") 
       : (customization?.backgroundColor || "#FFFFFF"),
-    primaryRgb: hexToRgb(customization?.primaryColor || "#4CAF50"),
-    accentRgb: hexToRgb(customization?.accentColor || "#FFC107")
+    primaryRgb: hexToRgb(customization?.primaryColor || "#A855F7"),
+    accentRgb: hexToRgb(customization?.accentColor || "#10B981"),
+    glow: {
+      primary: `0 0 15px ${customization?.primaryColor || '#A855F7'}80`,
+      secondary: `0 0 15px ${customization?.secondaryColor || '#F59E0B'}80`,
+      accent: `0 0 15px ${customization?.accentColor || '#10B981'}80`
+    }
   }), [customization, theme]);
 
-  // دالة إضافة/إزالة من المفضلة
   const toggleWishlist = useCallback((e, product) => {
     e.stopPropagation();
     let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
@@ -81,18 +260,16 @@ export default function FeaturedProducts({
     window.dispatchEvent(new Event('storage'));
   }, []);
 
-  // التحقق مما إذا كان المنتج في المفضلة
   const isInWishlist = useCallback((productId) => {
     const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
     return wishlist.some(item => item.id === productId);
   }, []);
 
-  // Calculate max price for range slider with safe checks
   const maxPrice = useMemo(() => {
     if (!products || products.length === 0) return 1000;
     
     const prices = products
-      .filter(p => p) // إزالة أي عناصر null أو undefined
+      .filter(p => p)
       .map(p => {
         const salePrice = parseFloat(p.salePrice);
         const productPrice = parseFloat(p.productPrice);
@@ -102,22 +279,20 @@ export default function FeaturedProducts({
     return Math.ceil(Math.max(...prices, 0)) || 1000;
   }, [products]);
 
-  // Filter and sort products with safe checks
   const { filteredProducts, displayedGroups } = useMemo(() => {
-    // Apply filters
-    let filtered = (products || []).filter(product => {
+    let filtered = products.filter(product => {
       if (!product) return false;
       
       const matchesCategory = activeCategory === "all" || product.categoryId === activeCategory;
+      const matchesSubcategory = activeSubcategory === "all" || product.subCategoryId === activeSubcategory;
       const productPrice = parseFloat(product.salePrice) || parseFloat(product.productPrice) || 0;
       const matchesPrice = productPrice >= priceRange[0] && productPrice <= priceRange[1];
       const matchesRating = (product.rating || 0) >= ratingFilter;
       const matchesDiscount = !discountFilter || (product.salePrice && product.salePrice < product.productPrice);
       
-      return matchesCategory && matchesPrice && matchesRating && matchesDiscount;
+      return matchesCategory && matchesSubcategory && matchesPrice && matchesRating && matchesDiscount;
     });
 
-    // Apply sorting
     switch(sortOption) {
       case "price-asc":
         filtered.sort((a, b) => {
@@ -144,12 +319,10 @@ export default function FeaturedProducts({
         });
         break;
       default:
-        // Default sorting
         break;
     }
 
-    // Group by category with safe checks
-    const grouped = (categories || []).reduce((acc, category) => {
+    const grouped = categories.reduce((acc, category) => {
       if (category && category.id) {
         acc[category.id] = filtered.filter(p => p && p.categoryId === category.id);
       }
@@ -166,9 +339,8 @@ export default function FeaturedProducts({
           : []);
 
     return { filteredProducts: filtered, displayedGroups: groups };
-  }, [products, categories, activeCategory, priceRange, ratingFilter, discountFilter, sortOption]);
+  }, [products, categories, activeCategory, activeSubcategory, priceRange, ratingFilter, discountFilter, sortOption]);
 
-  // Add to cart handler with flying image effect
   const handleAddToCart = useCallback((event, product) => {
     event.stopPropagation();
     const productCard = event.currentTarget.closest('.product-card');
@@ -203,28 +375,35 @@ export default function FeaturedProducts({
     toast.success("تمت الإضافة إلى السلة!");
   }, [dispatch]);
 
-  // Carousel navigation
   const nextSlide = useCallback(() => {
     setCurrentSlide(prev => (prev + 1) % displayedGroups.length);
   }, [displayedGroups.length]);
+
   const prevSlide = useCallback(() => {
     setCurrentSlide(prev => (prev - 1 + displayedGroups.length) % displayedGroups.length);
   }, [displayedGroups.length]);
 
-  // Discount calculation helper
   const calculateDiscount = useCallback((productPrice, salePrice) => {
     return Math.round(((productPrice - salePrice) / productPrice) * 100);
   }, []);
 
-  // Reset filters
   const resetFilters = useCallback(() => {
     setPriceRange([0, maxPrice]);
     setRatingFilter(0);
     setDiscountFilter(false);
     setSortOption("default");
+    setActiveSubcategory("all");
   }, [maxPrice]);
 
-  // Keyboard navigation for carousel
+  useEffect(() => {
+    if (products && products.length > 0) {
+      const max = Math.max(...products.map(p => {
+        return parseFloat(p.salePrice) || parseFloat(p.productPrice) || 0;
+      }));
+      setPriceRange([0, Math.ceil(max)]);
+    }
+  }, [products]);
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'ArrowRight') prevSlide();
@@ -244,7 +423,6 @@ export default function FeaturedProducts({
       }}
     >
       <div className="max-w-9xl mx-auto">
-        {/* Header Section */}
         <div className="flex flex-col md:flex-row gap-6 md:items-center md:justify-between mb-10">
           <div className="space-y-2">
             <h2 className="text-3xl md:text-6xl font-bold" style={{ 
@@ -261,7 +439,6 @@ export default function FeaturedProducts({
             </p>
           </div>
           
-          {/* Desktop Filter Controls */}
           <div className="hidden lg:flex items-center gap-4">
             <div className="relative group">
               <button 
@@ -275,7 +452,6 @@ export default function FeaturedProducts({
                 <span>الفلاتر</span>
               </button>
               
-              {/* Desktop Filter Dropdown */}
               <AnimatePresence>
                 {showFilters && (
                   <motion.div 
@@ -299,7 +475,6 @@ export default function FeaturedProducts({
                     </div>
                     
                     <div className="space-y-6">
-                      {/* Price Range Filter */}
                       <div>
                         <label className="block mb-2 font-medium">نطاق السعر</label>
                         <RangeSlider
@@ -316,7 +491,6 @@ export default function FeaturedProducts({
                         </div>
                       </div>
                       
-                      {/* Rating Filter */}
                       <div>
                         <label className="block mb-2 font-medium">التقييم</label>
                         <div className="flex items-center gap-2">
@@ -332,7 +506,6 @@ export default function FeaturedProducts({
                         </div>
                       </div>
                       
-                      {/* Discount Filter */}
                       <div>
                         <label className="flex items-center gap-2 cursor-pointer">
                           <input
@@ -345,7 +518,6 @@ export default function FeaturedProducts({
                         </label>
                       </div>
                       
-                      {/* Sort Options */}
                       <div>
                         <label className="block mb-2 font-medium">ترتيب حسب</label>
                         <select
@@ -384,118 +556,20 @@ export default function FeaturedProducts({
                 )}
               </AnimatePresence>
             </div>
-            
-            {/* Category Filter */}
-            <div className="relative">
-              <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
-                <button
-                  onClick={() => setActiveCategory("all")}
-                  className={`px-5 py-2 rounded-full text-sm md:text-base transition-all ${
-                    activeCategory === "all"
-                      ? "text-white shadow-lg"
-                      : "bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
-                  }`}
-                  style={{
-                    backgroundColor: activeCategory === "all" ? colors.primary : undefined,
-                    background: activeCategory === "all" 
-                      ? `linear-gradient(145deg, ${colors.primary}, ${colors.accent})` 
-                      : undefined,
-                    minWidth: '90px',
-                    boxShadow: activeCategory === "all" 
-                      ? `0 4px 6px rgba(${colors.primaryRgb}, 0.2)` 
-                      : undefined
-                  }}
-                >
-                  الكل
-                </button>
-                {categories.map((category) => (
-                  <button
-                    key={category.id}
-                    onClick={() => setActiveCategory(category.id)}
-                    className={`px-5 py-2 rounded-full text-sm md:text-base transition-all ${
-                      activeCategory === category.id
-                        ? "text-white shadow-lg"
-                        : "bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
-                    }`}
-                    style={{
-                      backgroundColor: activeCategory === category.id ? colors.primary : undefined,
-                      background: activeCategory === category.id 
-                        ? `linear-gradient(145deg, ${colors.primary}, ${colors.accent})` 
-                        : undefined,
-                      minWidth: '120px',
-                      boxShadow: activeCategory === category.id 
-                        ? `0 4px 6px rgba(${colors.primaryRgb}, 0.2)` 
-                        : undefined
-                    }}
-                  >
-                    {category.title}
-                  </button>
-                ))}
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                <div 
-                  className="h-full transition-all duration-300"
-                  style={{
-                    width: `${100 / (categories.length + 1)}%`,
-                    transform: `translateX(${activeCategory === "all" ? 0 : (categories.findIndex(c => c.id === activeCategory) + 1) * 100}%)`,
-                    background: `linear-gradient(90deg, ${colors.accent}, ${colors.primary})`
-                  }}
-                />
-              </div>
-            </div>
           </div>
         </div>
         
-        {/* Mobile Filter & Category Controls */}
-        <div className="lg:hidden flex items-center justify-between mb-5 gap-4">
-          {/* Mobile Category Filter */}
-          <div className="flex-1 overflow-x-auto scrollbar-hide">
-            <div className="flex gap-2 w-max">
-              <button
-                onClick={() => setActiveCategory("all")}
-                className={`px-4 py-2 rounded-full text-sm transition-all ${
-                  activeCategory === "all"
-                    ? "text-white shadow-lg"
-                    : "bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
-                }`}
-                style={{
-                  backgroundColor: activeCategory === "all" ? colors.primary : undefined,
-                  background: activeCategory === "all" 
-                    ? `linear-gradient(145deg, ${colors.primary}, ${colors.accent})` 
-                    : undefined,
-                  boxShadow: activeCategory === "all" 
-                    ? `0 4px 6px rgba(${colors.primaryRgb}, 0.2)` 
-                    : undefined
-                }}
-              >
-                الكل
-              </button>
-              {categories.map((category) => (
-                <button
-                  key={category.id}
-                  onClick={() => setActiveCategory(category.id)}
-                  className={`px-4 py-2 rounded-full text-sm transition-all ${
-                    activeCategory === category.id
-                      ? "text-white shadow-lg"
-                      : "bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
-                  }`}
-                  style={{
-                    backgroundColor: activeCategory === category.id ? colors.primary : undefined,
-                    background: activeCategory === category.id 
-                      ? `linear-gradient(145deg, ${colors.primary}, ${colors.accent})` 
-                      : undefined,
-                    boxShadow: activeCategory === category.id 
-                      ? `0 4px 6px rgba(${colors.primaryRgb}, 0.2)` 
-                      : undefined
-                  }}
-                >
-                  {category.title}
-                </button>
-              ))}
-            </div>
-          </div>
-          
-          {/* Mobile Filter Button */}
+        <SubCategoriesTabs
+          categories={categories}
+          storeId={storeId}
+          activeCategory={activeCategory}
+          setActiveCategory={setActiveCategory}
+          activeSubcategory={activeSubcategory}
+          setActiveSubcategory={setActiveSubcategory}
+          colors={colors}
+        />
+        
+        <div className="lg:hidden flex justify-end mb-5">
           <button
             onClick={() => setShowFilters(true)}
             className="p-2 rounded-full shadow-lg"
@@ -509,7 +583,6 @@ export default function FeaturedProducts({
           </button>
         </div>
         
-        {/* Products Carousel */}
         <div className="relative">
           {displayedGroups.length > 0 ? (
             <>
@@ -581,7 +654,6 @@ export default function FeaturedProducts({
                           boxShadow: `0 4px 6px rgba(${colors.primaryRgb}, 0.05)`
                         }}
                       >
-                        {/* Product Badges */}
                         <div className="absolute top-3 left-3 right-3 flex justify-between z-10">
                           <button
                             onClick={(e) => toggleWishlist(e, product)}
@@ -607,7 +679,6 @@ export default function FeaturedProducts({
                           )}
                         </div>
                         
-                        {/* Product Image */}
                         <Link 
                           href={`${slugDomain}/products/${product.slug}`}
                           className="block relative aspect-square"
@@ -625,7 +696,6 @@ export default function FeaturedProducts({
                           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                         </Link>
                         
-                        {/* Product Details */}
                         <div className="p-4 flex flex-col flex-grow">
                           <div className="mb-2 flex items-center">
                             {[...Array(5)].map((_, i) => (
@@ -668,7 +738,7 @@ export default function FeaturedProducts({
                             </div>
                             <motion.button
                               onClick={(e) => handleAddToCart(e, product)}
-                              className="p-2 rounded-full hover:scale-110 transition-transform shadow-md"
+                              className="p-5 rounded-full hover:scale-110 transition-transform shadow-md"
                               style={{
                                 background: `linear-gradient(145deg, ${colors.primary}, ${colors.accent})`,
                                 boxShadow: `0 4px 6px rgba(${colors.primaryRgb}, 0.2)`
@@ -677,7 +747,7 @@ export default function FeaturedProducts({
                               whileHover={{ scale: 1.1 }}
                               whileTap={{ scale: 0.9 }}
                             >
-                              <ShoppingCart className="w-5 h-5 text-white" />
+                              <ShoppingCart className="w-6 h-6 text-white" />
                             </motion.button>
                           </div>
                         </div>
@@ -687,7 +757,6 @@ export default function FeaturedProducts({
                 </motion.div>
               </AnimatePresence>
               
-              {/* Carousel Indicators */}
               {displayedGroups.length > 1 && (
                 <div className="flex justify-center gap-2 mt-6">
                   {displayedGroups.map((_, index) => (
@@ -718,7 +787,7 @@ export default function FeaturedProducts({
                 }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <ShoppingCart className="w-10 h-10 text-gray-400" />
+                <ShoppingCart className="w-20 h-20 text-gray-400" />
               </motion.div>
               <h3 className="text-xl font-medium text-gray-500">
                 لا توجد منتجات متاحة حالياً
@@ -744,7 +813,6 @@ export default function FeaturedProducts({
         </div>
       </div>
 
-      {/* Mobile Filter Drawer */}
       <AnimatePresence>
         {showFilters && (
           <motion.div 
@@ -784,11 +852,10 @@ export default function FeaturedProducts({
               </div>
               
               <div className="space-y-6 h-[calc(100%-60px)] overflow-y-auto pb-6">
-                {/* Price Range Filter */}
                 <div>
                   <label className="block mb-2 font-medium">نطاق السعر</label>
                   <RangeSlider
-                    min={0}
+                    min={10}
                     max={maxPrice}
                     step={10}
                     value={priceRange}
@@ -801,7 +868,6 @@ export default function FeaturedProducts({
                   </div>
                 </div>
                 
-                {/* Rating Filter */}
                 <div>
                   <label className="block mb-2 font-medium">التقييم</label>
                   <div className="flex flex-wrap gap-2">
@@ -830,7 +896,6 @@ export default function FeaturedProducts({
                   </div>
                 </div>
                 
-                {/* Discount Filter */}
                 <div className="flex items-center justify-between">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
@@ -842,7 +907,7 @@ export default function FeaturedProducts({
                     <span>عروض فقط</span>
                   </label>
                 </div>
-                {/* Sort Options */}
+                
                 <div>
                   <label className="block mb-2 font-medium">ترتيب حسب</label>
                   <select

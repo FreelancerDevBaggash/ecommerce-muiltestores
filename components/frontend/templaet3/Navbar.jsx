@@ -2,7 +2,8 @@
 'use client';
 
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useSession } from 'next-auth/react';
+// import { useSession } from 'next-auth/react';
+import useCustomerSession from '@/hooks/useCustomerSession';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
@@ -70,13 +71,14 @@ export default function Navbar({ slugDomain, storeData ={}, customization = {} }
   }
 
   // ============== حالات المكون ==============
-  const { data: session, status } = useSession();
+  const {  session, loading } = useCustomerSession();
   // const [store, setStore] = useState(null);
   const [categories, setCategories] = useState([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const pathname = usePathname();
+ const status = session ? "authenticated" : "unauthenticated";
 
   // ============== تأثيرات التمرير ==============
   useEffect(() => {
@@ -279,7 +281,7 @@ export default function Navbar({ slugDomain, storeData ={}, customization = {} }
                     aria-label="حساب المستخدم"
                     aria-expanded={isDropdownOpen}
                   >
-                    <UserAvatar user={session?.user} />
+                    <UserAvatar user={session?.user} slugDomain={slugDomain} />
                   </motion.button>
                 </div>
               )}

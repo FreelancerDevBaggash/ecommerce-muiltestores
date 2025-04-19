@@ -1,620 +1,487 @@
-// // pages/ma-yumayyizuna.js
 // "use client";
-// import React, { useState, useEffect, useRef } from 'react';
+// import React, { useState, useEffect } from 'react';
 // import Head from 'next/head';
 // import { 
-//   FaMedal, 
-//   FaShieldAlt, 
-//   FaHeadset, 
-//   FaTruck, 
-//   FaExchangeAlt, 
-//   FaCreditCard,
-//   FaMoon,
-//   FaSun,
-//   FaAward,
-//   FaUserShield,
-//   FaHandshake
+//   FaGem, FaCrown, FaShieldAlt, 
+//   FaHeadset, FaShippingFast, FaExchangeAlt,
+//   FaAward, FaStar, FaMedal, FaRibbon
 // } from 'react-icons/fa';
-// import { motion, useAnimation, AnimatePresence } from 'framer-motion';
-// import { useInView } from 'react-intersection-observer';
+// import { motion, useAnimation } from 'framer-motion';
+// import { useTheme } from 'next-themes';
 
-// const FlipIconCard = ({ frontIcon, backIcon, title, description, darkMode }) => {
-//   const [isHovered, setIsHovered] = useState(false);
-//   const [ref, inView] = useInView({ threshold: 0.5, triggerOnce: false });
-//   const controls = useAnimation();
+// const PremiumFeatureCard = ({ storeId = {}, customization = {} }) => {
+//   const { resolvedTheme } = useTheme();
+//   const [mounted, setMounted] = useState(false);
+//   const [years] = useState(15);
+//   const [animatedYears, setAnimatedYears] = useState(0);
 
-//   useEffect(() => {
-//     if (inView) {
-//       controls.start("visible");
-//     } else {
-//       controls.start("hidden");
-//     }
-//   }, [inView, controls]);
-
-//   const cardVariants = {
-//     hidden: { opacity: 0, y: 50 },
-//     visible: { 
-//       opacity: 1, 
-//       y: 0,
-//       transition: { duration: 0.6, ease: "easeOut" }
-//     }
+//   // نظام الألوان مع دعم التخصيص الكامل
+//   const colors = {
+//     primary: customization?.primaryColor || '#8B5FBF',
+//     secondary: customization?.secondaryColor || '#FF9F1C',
+//     accent: customization?.accentColor || '#2EC4B6',
+//     background: resolvedTheme === 'dark' 
+//       ? customization?.darkBackgroundColor || '#1A1A2E' 
+//       : customization?.backgroundColor || '#F8F9FA',
+//     text: resolvedTheme === 'dark' 
+//       ? customization?.darkTextColor || '#E6E6E6' 
+//       : customization?.textColor || '#333333',
+//     cardBg: resolvedTheme === 'dark' 
+//       ? customization?.darkCardBackground || '#16213E' 
+//       : customization?.cardBackground || '#FFFFFF',
+//     border: resolvedTheme === 'dark' 
+//       ? customization?.darkBorderColor || '#0F3460' 
+//       : customization?.borderColor || '#E0E0E0',
+//     button: customization?.buttonColor || '#8B5FBF',
+//     buttonText: customization?.buttonTextColor || '#FFFFFF',
+//     icon: customization?.iconColor || '#8B5FBF',
+//     award: customization?.awardColor || '#FF9F1C'
 //   };
 
-//   const flipVariants = {
-//     initial: { rotateY: 0 },
-//     flipped: { rotateY: 180 }
-//   };
-
-//   return (
-//     <motion.div
-//       ref={ref}
-//       initial="hidden"
-//       animate={controls}
-//       variants={cardVariants}
-//       whileHover={{ scale: 1.05, zIndex: 10 }}
-//       onHoverStart={() => setIsHovered(true)}
-//       onHoverEnd={() => setIsHovered(false)}
-//       className={`relative p-8 rounded-2xl shadow-2xl transition-all duration-500 border-2 ${
-//         darkMode ? 
-//         'bg-gray-800 border-blue-500/30 hover:shadow-blue-500/20' : 
-//         'bg-white border-blue-200 hover:shadow-blue-200/40'
-//       } text-center h-full transform-style-preserve-3d`}
-//       style={{
-//         transformStyle: 'preserve-3d',
-//         perspective: '1000px'
-//       }}
-//     >
-//       {/* 3D Floating Effect */}
-//       <motion.div
-//         animate={{
-//           rotateX: isHovered ? -5 : 0,
-//           rotateY: isHovered ? 5 : 0,
-//         }}
-//         transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-//         className="h-full flex flex-col items-center"
-//       >
-//         {/* Icon with Flip Animation */}
-//         <div className="relative w-20 h-20 mb-8" style={{ perspective: '1000px' }}>
-//           <AnimatePresence mode="wait">
-//             <motion.div
-//               key={isHovered ? "back" : "front"}
-//               initial="initial"
-//               animate={isHovered ? "flipped" : "initial"}
-//               variants={flipVariants}
-//               transition={{ duration: 0.6 }}
-//               className="absolute inset-0 flex justify-center items-center"
-//               style={{ backfaceVisibility: 'hidden' }}
-//             >
-//               {isHovered ? (
-//                 <div className="text-5xl text-blue-400">{backIcon}</div>
-//               ) : (
-//                 <div className="text-5xl">{frontIcon}</div>
-//               )}
-//             </motion.div>
-//           </AnimatePresence>
-//         </div>
-
-//         {/* Floating Glow Effect */}
-//         {isHovered && (
-//           <motion.div 
-//             initial={{ opacity: 0 }}
-//             animate={{ opacity: 1 }}
-//             className="absolute inset-0 rounded-2xl pointer-events-none"
-//             style={{
-//               background: `radial-gradient(circle at center, ${
-//                 darkMode ? 'rgba(59, 130, 246, 0.2)' : 'rgba(96, 165, 250, 0.2)'
-//               }, transparent 70%)`,
-//               zIndex: -1
-//             }}
-//           />
-//         )}
-
-//         <h3 className={`text-2xl font-bold mb-4 ${
-//           darkMode ? 'text-white' : 'text-gray-800'
-//         }`}>
-//           {title}
-//         </h3>
-//         <p className={darkMode ? 'text-gray-300' : 'text-gray-600'}>
-//           {description}
-//         </p>
-//       </motion.div>
-//     </motion.div>
-//   );
-// };
-
-// const MaYumayyizunaPage = () => {
-//   const [darkMode, setDarkMode] = useState(false);
-//   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  
-//   const features = [
+//   // مميزات فاخرة
+//   const excellenceFeatures = [
 //     {
-//       title: "جودة عالية",
-//       description: "منتجات أصلية بجودة عالية وموثوقة",
-//       frontIcon: <FaMedal className={darkMode ? "text-yellow-400" : "text-yellow-600"} />,
-//       backIcon: <FaAward className="text-blue-400" />
+//       icon: <FaGem className="text-3xl" style={{ color: colors.icon }} />,
+//       title: "جودة استثنائية",
+//       description: "منتجاتنا تُصنع بأعلى معايير الجودة العالمية"
 //     },
 //     {
-//       title: "ضمان المنتجات",
-//       description: "جميع المنتجات مضمونة حسب سياسة الضمان",
-//       frontIcon: <FaShieldAlt className={darkMode ? "text-blue-400" : "text-blue-600"} />,
-//       backIcon: <FaUserShield className="text-blue-400" />
+//       icon: <FaCrown className="text-3xl" style={{ color: colors.icon }} />,
+//       title: "فخامة لا مثيل لها",
+//       description: "تصاميم حصرية تُلبي أذواق العملاء المميزين"
 //     },
 //     {
-//       title: "دعم فني",
-//       description: "خدمة عملاء متاحة على مدار الساعة",
-//       frontIcon: <FaHeadset className={darkMode ? "text-green-400" : "text-green-600"} />,
-//       backIcon: <FaHandshake className="text-blue-400" />
+//       icon: <FaShieldAlt className="text-3xl" style={{ color: colors.icon }} />,
+//       title: "حماية وضمان",
+//       description: "ضمان ممتد لجميع منتجاتنا لمدة 3 سنوات"
 //     },
 //     {
-//       title: "توصيل سريع",
-//       description: "خدمة توصيل سريعة لجميع أنحاء المملكة",
-//       frontIcon: <FaTruck className={darkMode ? "text-red-400" : "text-red-600"} />,
-//       backIcon: <FaTruck className="text-blue-400" />
+//       icon: <FaHeadset className="text-3xl" style={{ color: colors.icon }} />,
+//       title: "خدمة VIP",
+//       description: "فريق خدمة عملاء خاص للعملاء المميزين"
 //     },
 //     {
-//       title: "سياسة مرنة",
-//       description: "إمكانية الإستبدال أو الإرجاع خلال 14 يوم",
-//       frontIcon: <FaExchangeAlt className={darkMode ? "text-purple-400" : "text-purple-600"} />,
-//       backIcon: <FaExchangeAlt className="text-blue-400" />
+//       icon: <FaShippingFast className="text-3xl" style={{ color: colors.icon }} />,
+//       title: "توصيل فاخر",
+//       description: "تغليف وتوصيل بمعايير فندقية خمس نجوم"
 //     },
 //     {
-//       title: "دفع آمن",
-//       description: "طرق دفع متعددة وآمنة بنسبة 100%",
-//       frontIcon: <FaCreditCard className={darkMode ? "text-indigo-400" : "text-indigo-600"} />,
-//       backIcon: <FaCreditCard className="text-blue-400" />
+//       icon: <FaExchangeAlt className="text-3xl" style={{ color: colors.icon }} />,
+//       title: "تبديل مجاني",
+//       description: "سياسة إرجاع وتبديل بدون أي متاعب"
 //     }
 //   ];
 
-//   const handleMouseMove = (e) => {
-//     setCursorPos({
-//       x: e.clientX,
-//       y: e.clientY
-//     });
-//   };
+//   // عرض سنوات الخبرة بشكل متحرك
+//   useEffect(() => {
+//     if (animatedYears < years) {
+//       const timer = setTimeout(() => {
+//         setAnimatedYears(animatedYears + 1);
+//       }, 100);
+//       return () => clearTimeout(timer);
+//     }
+//   }, [animatedYears, years]);
+
+//   useEffect(() => {
+//     setMounted(true);
+//   }, []);
+
+//   if (!mounted) {
+//     return null;
+//   }
 
 //   return (
-//     <div 
-//       dir="rtl" 
-//       onMouseMove={handleMouseMove}
-//       className={`min-h-screen transition-colors duration-500 ${
-//         darkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800'
-//       }`}
-//     >
-//       {/* 3D Cursor Effect */}
-//       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-//         <motion.div
-//           className="absolute w-64 h-64 rounded-full opacity-10 blur-xl"
-//           animate={{
-//             x: cursorPos.x - 128,
-//             y: cursorPos.y - 128,
-//             background: darkMode ? 'radial-gradient(circle, #3b82f6, transparent)' : 'radial-gradient(circle, #60a5fa, transparent)'
-//           }}
-//           transition={{ type: 'spring', mass: 0.1 }}
-//         />
-//       </div>
-
+//     <div dir="rtl" className="min-h-screen" style={{ 
+//       backgroundColor: colors.background,
+//       color: colors.text
+//     }}>
 //       <Head>
-//         <title>ما يميزنا | متجرنا</title>
-//         <meta name="description" content="اكتشف المميزات والخدمات الحصرية التي نقدمها" />
+//         <title>تميزنا | علامتنا التجارية الفاخرة</title>
+//         <meta name="description" content="اكتشف ما يجعلنا الخيار الأفضل للعملاء المميزين" />
 //       </Head>
 
-//       {/* Dark Mode Toggle with 3D Effect */}
-//       <motion.button
-//         onClick={() => setDarkMode(!darkMode)}
-//         whileHover={{ scale: 1.1 }}
-//         whileTap={{ scale: 0.9 }}
-//         className={`fixed bottom-8 left-8 p-4 rounded-full z-50 shadow-2xl ${
-//           darkMode ? 'bg-yellow-400 text-gray-900' : 'bg-gray-800 text-yellow-400'
-//         }`}
-//         style={{
-//           boxShadow: darkMode 
-//             ? '0 0 20px rgba(234, 179, 8, 0.7)' 
-//             : '0 0 20px rgba(59, 130, 246, 0.5)'
-//         }}
-//       >
-//         {darkMode ? (
-//           <FaSun className="text-2xl" />
-//         ) : (
-//           <FaMoon className="text-2xl" />
-//         )}
-//       </motion.button>
+//       {/* قسم البطل */}
+//       <div className="relative py-32 overflow-hidden" style={{
+//         background: customization?.heroGradient || `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`
+//       }}>
+//         <div className="absolute inset-0 opacity-10 bg-[url('/pattern.png')]" />
+        
+//         <div className="container mx-auto px-4 text-center relative z-10">
+//           <motion.div
+//             initial={{ opacity: 0, y: 50 }}
+//             animate={{ opacity: 1, y: 0 }}
+//             transition={{ duration: 0.8 }}
+//             className="inline-block mb-8"
+//           >
+//             <div className="relative inline-block">
+//               <FaAward className="text-5xl text-white" />
+//               <motion.div
+//                 animate={{ rotate: 360 }}
+//                 transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+//                 className="absolute inset-0 flex items-center justify-center"
+//               >
+//                 <FaMedal className="text-3xl" style={{ color: colors.accent }} />
+//               </motion.div>
+//             </div>
+//           </motion.div>
 
-//       {/* 3D Hero Section with Parallax */}
-//       <div 
-//         className={`relative py-32 text-center overflow-hidden ${
-//           darkMode ? 
-//           'bg-gradient-to-br from-gray-800 via-gray-900 to-black' : 
-//           'bg-gradient-to-br from-blue-700 via-blue-800 to-gray-900'
-//         }`}
-//       >
-//         <motion.div 
-//           initial={{ opacity: 0, y: 50 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ duration: 0.8 }}
-//           className="relative z-10 container mx-auto px-4"
-//         >
 //           <motion.h1 
-//             className="text-5xl md:text-6xl font-bold mb-6 text-white"
+//             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white"
 //             initial={{ opacity: 0 }}
 //             animate={{ opacity: 1 }}
 //             transition={{ delay: 0.2, duration: 0.8 }}
 //           >
-//             ما يميزنا
+//             <span className="block mb-4">تميزنا الفريد</span>
+//             <span className="inline-block px-4 py-2 rounded-full" style={{ 
+//               backgroundColor: colors.accent,
+//               color: colors.buttonText
+//             }}>
+//               {animatedYears}+ عاماً من التميز
+//             </span>
 //           </motion.h1>
+          
 //           <motion.p 
-//             className={`text-xl md:text-2xl max-w-3xl mx-auto ${
-//               darkMode ? 'text-blue-200' : 'text-blue-100'
-//             }`}
+//             className="text-xl md:text-2xl max-w-3xl mx-auto text-white/90"
 //             initial={{ opacity: 0 }}
 //             animate={{ opacity: 1 }}
 //             transition={{ delay: 0.4, duration: 0.8 }}
 //           >
-//             نقدم لكم تجربة تسوق فريدة بمعايير عالمية وتقنيات ثلاثية الأبعاد
+//             نصنع الفارق من خلال التفاصيل الدقيقة وخدمة العملاء الاستثنائية
 //           </motion.p>
-//         </motion.div>
-
-//         {/* 3D Floating Elements */}
-//         <motion.div 
-//           className="absolute top-1/4 left-1/4 w-16 h-16 rounded-full bg-blue-400 opacity-20"
-//           animate={{
-//             y: [0, -20, 0],
-//             x: [0, 10, 0]
-//           }}
-//           transition={{
-//             duration: 8,
-//             repeat: Infinity,
-//             ease: "easeInOut"
-//           }}
-//         />
-//         <motion.div 
-//           className="absolute top-1/3 right-1/3 w-24 h-24 rounded-full bg-purple-400 opacity-20"
-//           animate={{
-//             y: [0, 20, 0],
-//             x: [0, -15, 0]
-//           }}
-//           transition={{
-//             duration: 10,
-//             repeat: Infinity,
-//             ease: "easeInOut",
-//             delay: 1
-//           }}
-//         />
-//       </div>
-
-//       {/* 3D Features Grid */}
-//       <div className="relative container mx-auto px-4 py-20 z-10">
-//         <motion.div 
-//           initial={{ opacity: 0 }}
-//           whileInView={{ opacity: 1 }}
-//           transition={{ duration: 0.8 }}
-//           viewport={{ once: true, margin: "-100px" }}
-//           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"
-//         >
-//           {features.map((feature, index) => (
-//             <FlipIconCard
-//               key={index}
-//               frontIcon={feature.frontIcon}
-//               backIcon={feature.backIcon}
-//               title={feature.title}
-//               description={feature.description}
-//               darkMode={darkMode}
-//             />
-//           ))}
-//         </motion.div>
-//       </div>
-
-//       {/* 3D Stats Section */}
-//       <motion.div 
-//         className={`relative py-20 ${
-//           darkMode ? 'bg-gray-800' : 'bg-blue-800 text-white'
-//         }`}
-//         initial={{ opacity: 0 }}
-//         whileInView={{ opacity: 1 }}
-//         transition={{ duration: 0.8 }}
-//         viewport={{ once: true }}
-//       >
-//         <div className="container mx-auto px-4 text-center">
-//           <motion.h2 
-//             className="text-3xl font-bold mb-16"
-//             initial={{ y: 20, opacity: 0 }}
-//             whileInView={{ y: 0, opacity: 1 }}
-//             transition={{ duration: 0.6 }}
-//             viewport={{ once: true }}
-//           >
-//             لماذا نتميز عن الآخرين؟
-//           </motion.h2>
-//           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-//             {[
-//               { value: "100%", label: "رضا عملاء", color: "text-emerald-300" },
-//               { value: "24/7", label: "دعم فني", color: "text-blue-300" },
-//               { value: "14 يوم", label: "إرجاع مجاني", color: "text-purple-300" },
-//               { value: "5 نجوم", label: "تقييمات", color: "text-yellow-300" }
-//             ].map((stat, index) => (
-//               <motion.div
-//                 key={index}
-//                 initial={{ scale: 0.9, opacity: 0 }}
-//                 whileInView={{ scale: 1, opacity: 1 }}
-//                 transition={{ duration: 0.5, delay: index * 0.1 }}
-//                 viewport={{ once: true }}
-//                 whileHover={{ y: -10 }}
-//                 className="p-6 rounded-xl bg-white/10 backdrop-blur-sm"
-//               >
-//                 <div className={`text-5xl font-bold mb-3 ${stat.color}`}>
-//                   {stat.value}
-//                 </div>
-//                 <div className="text-xl">{stat.label}</div>
-//               </motion.div>
-//             ))}
-//           </div>
 //         </div>
 
-//         {/* Floating Particles Background */}
-//         {[...Array(20)].map((_, i) => (
+//         {/* عناصر متحركة في الخلفية */}
+//         {[...Array(12)].map((_, i) => (
 //           <motion.div
 //             key={i}
-//             className={`absolute rounded-full ${
-//               darkMode ? 'bg-blue-400/30' : 'bg-white/30'
-//             }`}
+//             className="absolute rounded-full"
 //             style={{
-//               width: Math.random() * 10 + 5 + 'px',
-//               height: Math.random() * 10 + 5 + 'px',
-//               top: Math.random() * 100 + '%',
-//               left: Math.random() * 100 + '%',
+//               width: `${Math.random() * 60 + 20}px`,
+//               height: `${Math.random() * 60 + 20}px`,
+//               top: `${Math.random() * 100}%`,
+//               left: `${Math.random() * 100}%`,
+//               backgroundColor: `rgba(255, 255, 255, ${Math.random() * 0.2 + 0.05})`
 //             }}
 //             animate={{
 //               y: [0, (Math.random() - 0.5) * 100],
-//               x: [0, (Math.random() - 0.5) * 50],
-//               opacity: [0.3, 1, 0.3],
+//               x: [0, (Math.random() - 0.5) * 100],
+//               opacity: [0.2, 0.5, 0.2],
 //             }}
 //             transition={{
-//               duration: Math.random() * 10 + 10,
+//               duration: Math.random() * 20 + 10,
 //               repeat: Infinity,
 //               repeatType: 'reverse',
 //               delay: Math.random() * 5,
 //             }}
 //           />
 //         ))}
-//       </motion.div>
+//       </div>
+
+//       {/* قسم المميزات */}
+//       <div className="container mx-auto px-4 py-20">
+//         <motion.h2
+//           initial={{ opacity: 0, y: 50 }}
+//           whileInView={{ opacity: 1, y: 0 }}
+//           transition={{ duration: 0.6 }}
+//           viewport={{ once: true }}
+//           className="text-3xl md:text-4xl font-bold mb-16 text-center relative"
+//           style={{ color: colors.primary }}
+//         >
+//           <span className="relative inline-block">
+//             رحلة التميز
+//             <motion.span
+//               animate={{ rotate: 360 }}
+//               transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+//               className="absolute -top-4 -right-6"
+//             >
+//               <FaRibbon style={{ color: colors.secondary }} />
+//             </motion.span>
+//           </span>
+//         </motion.h2>
+        
+//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+//           {excellenceFeatures.map((feature, index) => (
+//             <motion.div
+//               key={index}
+//               initial={{ opacity: 0, y: 50 }}
+//               whileInView={{ opacity: 1, y: 0 }}
+//               whileHover={{ y: -10 }}
+//               transition={{ duration: 0.5, delay: index * 0.1 }}
+//               viewport={{ once: true }}
+//               className="relative overflow-hidden rounded-2xl p-8 border"
+//               style={{
+//                 backgroundColor: colors.cardBg,
+//                 borderColor: colors.border,
+//                 boxShadow: `0 10px 30px -15px ${colors.primary}20`
+//               }}
+//             >
+//               <div className="absolute -top-10 -right-10 opacity-10">
+//                 <FaStar className="text-6xl" style={{ color: colors.primary }} />
+//               </div>
+              
+//               <div className="relative z-10">
+//                 <div className="h-16 w-16 mb-6 flex items-center justify-center rounded-full mx-auto" 
+//                   style={{ backgroundColor: `${colors.primary}10` }}>
+//                   {feature.icon}
+//                 </div>
+                
+//                 <h3 className="text-2xl font-bold mb-4 text-center" style={{ color: colors.secondary }}>
+//                   {feature.title}
+//                 </h3>
+//                 <p className="text-center leading-relaxed">
+//                   {feature.description}
+//                 </p>
+//               </div>
+//             </motion.div>
+//           ))}
+//         </div>
+//       </div>
+
+//       {/* قسم الشهادات */}
+//       <div className="py-20" style={{ backgroundColor: colors.cardBg }}>
+//         <div className="container mx-auto px-4">
+//           <motion.h2
+//             initial={{ opacity: 0, y: 50 }}
+//             whileInView={{ opacity: 1, y: 0 }}
+//             transition={{ duration: 0.6 }}
+//             viewport={{ once: true }}
+//             className="text-3xl md:text-4xl font-bold mb-16 text-center"
+//             style={{ color: colors.secondary }}
+//           >
+//             جوائز وتقديرات
+//           </motion.h2>
+          
+//           <div className="flex flex-wrap justify-center gap-8">
+//             {[1, 2, 3, 4].map((item, index) => (
+//               <motion.div
+//                 key={index}
+//                 initial={{ opacity: 0, scale: 0.8 }}
+//                 whileInView={{ opacity: 1, scale: 1 }}
+//                 whileHover={{ scale: 1.05 }}
+//                 transition={{ duration: 0.5, delay: index * 0.1 }}
+//                 viewport={{ once: true }}
+//                 className="rounded-xl p-6 w-64 h-64 flex flex-col items-center justify-center shadow-lg"
+//                 style={{ 
+//                   backgroundColor: colors.background,
+//                   border: `1px solid ${colors.border}`
+//                 }}
+//               >
+//                 <div className="mb-4 p-4 rounded-full" 
+//                   style={{ backgroundColor: `${colors.primary}10` }}>
+//                   <FaAward className="text-4xl" style={{ color: colors.primary }} />
+//                 </div>
+//                 <h3 className="text-xl font-bold mb-2" style={{ color: colors.primary }}>
+//                   جائزة التميز {2023 - index}
+//                 </h3>
+//                 <p className="text-center text-sm">
+//                   أفضل علامة تجارية في مجالها
+//                 </p>
+//               </motion.div>
+//             ))}
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* ختام الصفحة */}
+//       <div className="py-16 text-center" style={{ 
+//         backgroundColor: colors.primary,
+//         background: customization?.footerGradient || colors.primary
+//       }}>
+//         <div className="container mx-auto px-4">
+//           <motion.h2
+//             initial={{ opacity: 0, y: 50 }}
+//             whileInView={{ opacity: 1, y: 0 }}
+//             transition={{ duration: 0.6 }}
+//             viewport={{ once: true }}
+//             className="text-3xl md:text-4xl font-bold mb-6 text-white"
+//           >
+//             نستحق ثقتكم
+//           </motion.h2>
+          
+//           <motion.p
+//             initial={{ opacity: 0 }}
+//             whileInView={{ opacity: 1 }}
+//             transition={{ duration: 0.6 }}
+//             viewport={{ once: true }}
+//             className="text-xl mb-8 max-w-2xl mx-auto text-white/90"
+//           >
+//             ثقة آلاف العملاء منذ {years} عاماً هي شهادتنا الحقيقية
+//           </motion.p>
+          
+//           <motion.div
+//             initial={{ opacity: 0, scale: 0.9 }}
+//             whileInView={{ opacity: 1, scale: 1 }}
+//             whileHover={{ scale: 1.05 }}
+//             whileTap={{ scale: 0.95 }}
+//             transition={{ duration: 0.3 }}
+//             viewport={{ once: true }}
+//             className="inline-block px-8 py-4 rounded-full font-bold text-lg shadow-lg"
+//             style={{ 
+//               backgroundColor: colors.button,
+//               color: colors.buttonText,
+//               boxShadow: `0 4px 20px ${colors.button}80`
+//             }}
+//           >
+//             اكتشف منتجاتنا
+//           </motion.div>
+//         </div>
+//       </div>
 //     </div>
 //   );
 // };
 
-// export default MaYumayyizunaPage;
+// export default PremiumFeatureCard;
 "use client";
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { 
-  FaGem, FaAward, FaCrown, FaShieldAlt, 
-  FaHeadset, FaShippingFast, FaExchangeAlt
+  FaGem, FaCrown, FaShieldAlt, 
+  FaHeadset, FaShippingFast, FaExchangeAlt,
+  FaAward, FaStar, FaMedal, FaRibbon
 } from 'react-icons/fa';
-import { motion, useAnimation, AnimatePresence } from 'framer-motion';
-import useSWR from 'swr';
+import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes';
 
-const fetcher = (url) => fetch(url).then((res) => res.json());
-
-const PremiumFeatureCard = ({ icon, title, description, index, colors }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const controls = useAnimation();
-
-  useEffect(() => {
-    if (isHovered) {
-      controls.start({
-        y: -15,
-        rotateX: 5,
-        boxShadow: `0 25px 50px -12px ${colors.accent}30`,
-        transition: { type: 'spring', stiffness: 300 }
-      });
-    } else {
-      controls.start({
-        y: 0,
-        rotateX: 0,
-        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-        transition: { type: 'spring', stiffness: 300 }
-      });
-    }
-  }, [isHovered, colors.accent]);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.15, duration: 0.8 }}
-      viewport={{ once: true, margin: "0px 0px -100px 0px" }}
-      animate={controls}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      className="relative overflow-hidden rounded-3xl p-8 h-full border"
-      style={{
-        transformStyle: 'preserve-3d',
-        perspective: '1000px',
-        backgroundColor: colors.cardBg,
-        borderColor: colors.border
-      }}
-    >
-      <motion.div
-        animate={{
-          x: isHovered ? 0 : -100,
-          opacity: isHovered ? 0.1 : 0
-        }}
-        className="absolute inset-0 bg-gradient-to-r from-accent/20 to-transparent"
-        style={{ backgroundColor: `${colors.accent}20` }}
-      />
-      
-      <motion.div
-        animate={{
-          scale: isHovered ? 1.2 : 1,
-          rotateY: isHovered ? 360 : 0
-        }}
-        transition={{ type: 'spring', stiffness: 300 }}
-        className="relative z-10 h-20 w-20 mx-auto mb-6 flex items-center justify-center rounded-full"
-        style={{ backgroundColor: `${colors.secondary}10` }}
-      >
-        <motion.div
-          animate={{
-            y: isHovered ? [-5, 5, -5] : 0
-          }}
-          transition={{
-            duration: 2,
-            repeat: isHovered ? Infinity : 0,
-            ease: "easeInOut"
-          }}
-          className="text-4xl"
-          style={{ color: colors.primary }}
-        >
-          {icon}
-        </motion.div>
-      </motion.div>
-
-      <h3 className="text-2xl font-bold mb-4 text-center" style={{ color: colors.secondary }}>
-        {title}
-      </h3>
-      <p className="text-center" style={{ color: colors.text }}>
-        {description}
-      </p>
-
-      {isHovered && (
-        <motion.div
-          initial={{ x: -100, opacity: 0 }}
-          animate={{ x: 400, opacity: 0.4 }}
-          transition={{ duration: 0.8 }}
-          className="absolute top-0 left-0 w-20 h-full"
-          style={{
-            backgroundColor: `${colors.accent}30`,
-            transform: 'skewX(-20deg)',
-            filter: 'blur(10px)'
-          }}
-        />
-      )}
-    </motion.div>
-  );
-};
-
-export default function MaYumayyizunaPage({ storeId }) {
-  const { theme, resolvedTheme } = useTheme();
-  const { data: customizations, error } = useSWR(
-    `/api/customizations/Customizationes/${storeId}`,
-    fetcher
-  );
-
-  const [yearsExperience] = useState(20);
-  const [animatedYears, setAnimatedYears] = useState(0);
+const PremiumFeatureCard = ({ 
+  storeData = {}, 
+  customization = {},
+  coupons = [],
+  reviews = []
+}) => {
+  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [years] = useState(15);
+  const [animatedYears, setAnimatedYears] = useState(0);
 
-  // نظام الألوان مع دعم الوضع الليلي
-  const colors = React.useMemo(() => ({
-    primary: customizations?.primaryColor || '#3b82f6',
-    secondary: customizations?.secondaryColor || '#10b981',
-    accent: customizations?.accentColor || '#f59e0b',
+  // دمج بيانات المتجر مع القيم الافتراضية
+  const store = {
+    businessName: "متجرنا الفاخر",
+    whatsappPhone: "+966501234567",
+    socialLinks: {
+      twitter: "#",
+      instagram: "#",
+      snapchat: "#"
+    },
+    ...storeData
+  };
+
+  // نظام الألوان مع تأثيرات مضيئة
+  const colors = {
+    primary: customization?.primaryColor || '#A855F7', // بنفسجي مضيء
+    secondary: customization?.secondaryColor || '#F59E0B', // برتقالي ذهبي مضيء
+    accent: customization?.accentColor || '#10B981', // أخضر فيروزي مضيء
     background: resolvedTheme === 'dark' 
-      ? customizations?.darkBackgroundColor || '#1e293b'
-      : customizations?.backgroundColor || '#f8fafc',
-    text: resolvedTheme === 'dark'
-      ? customizations?.secondaryColor || '#f8fafc'
-      : customizations?.textColor || '#1e293b',
-    cardBg: resolvedTheme === 'dark'
-      ? customizations?.darkCardBackground || '#334155'
-      : customizations?.backgroundColor || '#ffffff',
-    border: resolvedTheme === 'dark'
-      ? customizations?.darkBorderColor || '#475569'
-      : customizations?.borderColor || '#e2e8f0',
-    buttonBg: resolvedTheme === 'dark'
-      ? customizations?.darkButtonColor || '#475569'
-      : customizations?.buttonColor || '#3b82f6',
-    buttonText: resolvedTheme === 'dark'
-      ? customizations?.darkButtonTextColor || '#ffffff'
-      : customizations?.buttonTextColor || '#ffffff',
-  }), [customizations, resolvedTheme]);
+      ? customization?.darkBackgroundColor || '#111827' 
+      : customization?.backgroundColor || '#F9FAFB',
+    text: resolvedTheme === 'dark' 
+      ? customization?.darkTextColor || '#F3F4F6' 
+      : customization?.textColor || '#1F2937',
+    cardBg: resolvedTheme === 'dark' 
+      ? customization?.darkCardBackground || '#1F2937' 
+      : customization?.cardBackground || '#FFFFFF',
+    border: resolvedTheme === 'dark' 
+      ? customization?.darkBorderColor || '#374151' 
+      : customization?.borderColor || '#E5E7EB',
+    button: customization?.buttonColor || '#A855F7',
+    buttonText: customization?.buttonTextColor || '#FFFFFF',
+    icon: customization?.iconColor || '#F59E0B',
+    award: customization?.awardColor || '#F59E0B',
+    heroGradient: customization?.heroGradient || 
+      `linear-gradient(135deg, ${customization?.primaryColor || '#A855F7'}, ${customization?.secondaryColor || '#F59E0B'})`,
+    footerGradient: customization?.footerGradient || customization?.primaryColor || '#A855F7',
+    glow: {
+      primary: `0 0 15px ${customization?.primaryColor || '#A855F7'}80`,
+      secondary: `0 0 15px ${customization?.secondaryColor || '#F59E0B'}80`,
+      accent: `0 0 15px ${customization?.accentColor || '#10B981'}80`
+    }
+  };
 
-  const features = [
+  // مميزات فاخرة مع تأثيرات مضيئة
+  const excellenceFeatures = [
     {
-      title: "خبرة 20 عاماً",
-      description: "عقود من الخبرة في توفير أفضل المنتجات",
-      icon: <FaGem />
+      icon: <FaGem className="text-3xl" style={{ 
+        color: colors.icon,
+        filter: 'drop-shadow(0 0 8px rgba(245, 158, 11, 0.7))'
+      }} />,
+      title: "جودة استثنائية",
+      description: "منتجاتنا تُصنع بأعلى معايير الجودة العالمية"
     },
     {
-      title: "جودة فاخرة",
-      description: "منتجات حصرية بمواصفات عالمية",
-      icon: <FaCrown />
+      icon: <FaCrown className="text-3xl" style={{ 
+        color: colors.icon,
+        filter: 'drop-shadow(0 0 8px rgba(245, 158, 11, 0.7))'
+      }} />,
+      title: "فخامة لا مثيل لها",
+      description: "تصاميم حصرية تُلبي أذواق العملاء المميزين"
     },
     {
-      title: "ضمان مميز",
-      description: "ضمان شامل على جميع منتجاتنا",
-      icon: <FaShieldAlt />
+      icon: <FaShieldAlt className="text-3xl" style={{ 
+        color: colors.icon,
+        filter: 'drop-shadow(0 0 8px rgba(245, 158, 11, 0.7))'
+      }} />,
+      title: "حماية وضمان",
+      description: "ضمان ممتد لجميع منتجاتنا لمدة 3 سنوات"
     },
     {
-      title: "دعم فني فاخر",
-      description: "خدمة عملاء VIP على مدار الساعة",
-      icon: <FaHeadset />
+      icon: <FaHeadset className="text-3xl" style={{ 
+        color: colors.icon,
+        filter: 'drop-shadow(0 0 8px rgba(245, 158, 11, 0.7))'
+      }} />,
+      title: "خدمة VIP",
+      description: "فريق خدمة عملاء خاص للعملاء المميزين"
     },
     {
-      title: "توصيل فوري",
-      description: "خدمة توصيل سريعة بمعايير فاخرة",
-      icon: <FaShippingFast />
+      icon: <FaShippingFast className="text-3xl" style={{ 
+        color: colors.icon,
+        filter: 'drop-shadow(0 0 8px rgba(245, 158, 11, 0.7))'
+      }} />,
+      title: "توصيل فاخر",
+      description: "تغليف وتوصيل بمعايير فندقية خمس نجوم"
     },
     {
-      title: "سياسة مرنة",
-      description: "إرجاع واستبدال بدون مشاكل",
-      icon: <FaExchangeAlt />
+      icon: <FaExchangeAlt className="text-3xl" style={{ 
+        color: colors.icon,
+        filter: 'drop-shadow(0 0 8px rgba(245, 158, 11, 0.7))'
+      }} />,
+      title: "تبديل مجاني",
+      description: "سياسة إرجاع وتبديل بدون أي متاعب"
     }
   ];
 
-  // Animate years counter
+  // عرض سنوات الخبرة بشكل متحرك
   useEffect(() => {
-    if (animatedYears < yearsExperience) {
+    if (animatedYears < years) {
       const timer = setTimeout(() => {
         setAnimatedYears(animatedYears + 1);
       }, 100);
       return () => clearTimeout(timer);
     }
-  }, [animatedYears, yearsExperience]);
+  }, [animatedYears, years]);
 
-  // التأكد من أن الوضع الليلي قد تم تحميله
   useEffect(() => {
     setMounted(true);
   }, []);
 
   if (!mounted) {
-    return null; // أو عرض شاشة تحميل
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-red-500 text-lg">حدث خطأ في تحميل التخصيصات</div>
-      </div>
-    );
-  }
-
-  if (!customizations) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
+    return null;
   }
 
   return (
-    <div 
-      dir="rtl"
-      className="min-h-screen transition-colors duration-300"
-      style={{ 
-        backgroundColor: colors.background,
-        color: colors.text
-      }}
-    >
+    <div dir="rtl" className="min-h-screen" style={{ 
+      backgroundColor: colors.background,
+      color: colors.text,
+      fontFamily: customization?.fontFamily || 'inherit'
+    }}>
       <Head>
-        <title>تميزنا | خبرة 20 عاماً في التميز</title>
-        <meta name="description" content="خبرة عقدين في تقديم الأفضل لعملائنا" />
+        <title>تميزنا | {store.businessName}</title>
+        <meta name="description" content="اكتشف ما يجعلنا الخيار الأفضل للعملاء المميزين" />
       </Head>
 
-      {/* Premium Hero Section */}
-      <div 
-        className="relative py-40 overflow-hidden"
-        style={{ 
-          background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})`
-        }}
-      >
+      {/* قسم البطل مع تأثيرات مضيئة */}
+      <div className="relative py-32 overflow-hidden" style={{
+        background: colors.heroGradient,
+        boxShadow: `inset 0 0 50px ${colors.primary}40`
+      }}>
         <div className="absolute inset-0 opacity-10 bg-[url('/pattern.png')]" />
         
         <div className="container mx-auto px-4 text-center relative z-10">
@@ -622,32 +489,40 @@ export default function MaYumayyizunaPage({ storeId }) {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="inline-block mb-6"
+            className="inline-block mb-8"
           >
-            <motion.div
-              animate={{
-                rotate: [0, 10, -10, 0],
-                scale: [1, 1.1, 1]
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                repeatType: 'reverse'
-              }}
-              className="inline-block p-4 rounded-full"
-              style={{ backgroundColor: `${colors.accent}20` }}
-            >
-              <FaAward className="text-4xl" style={{ color: colors.accent }} />
-            </motion.div>
+            <div className="relative inline-block">
+              <FaAward className="text-5xl text-white" style={{
+                filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.7))'
+              }} />
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                <FaMedal className="text-3xl" style={{ 
+                  color: colors.accent,
+                  filter: 'drop-shadow(0 0 8px rgba(16, 185, 129, 0.7))'
+                }} />
+              </motion.div>
+            </div>
           </motion.div>
 
           <motion.h1 
-            className="text-5xl md:text-6xl font-bold mb-6 text-white"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.8 }}
+            style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}
           >
-            تميزنا على مدى <span style={{ color: colors.accent }}>{animatedYears}</span> عاماً
+            <span className="block mb-4">تميز {store.businessName}</span>
+            <span className="inline-block px-4 py-2 rounded-full" style={{ 
+              backgroundColor: colors.accent,
+              color: colors.buttonText,
+              boxShadow: colors.glow.accent
+            }}>
+              {animatedYears}+ عاماً من التميز
+            </span>
           </motion.h1>
           
           <motion.p 
@@ -656,19 +531,22 @@ export default function MaYumayyizunaPage({ storeId }) {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.8 }}
           >
-            خبرة عقدين في تقديم الأفضل لعملائنا الكرام
+            نصنع الفارق من خلال التفاصيل الدقيقة وخدمة العملاء الاستثنائية
           </motion.p>
         </div>
 
-        {[...Array(8)].map((_, i) => (
+        {/* عناصر متحركة مضيئة في الخلفية */}
+        {[...Array(12)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full bg-white/20"
+            className="absolute rounded-full"
             style={{
-              width: `${Math.random() * 100 + 30}px`,
-              height: `${Math.random() * 100 + 30}px`,
+              width: `${Math.random() * 60 + 20}px`,
+              height: `${Math.random() * 60 + 20}px`,
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
+              backgroundColor: `rgba(255, 255, 255, ${Math.random() * 0.2 + 0.05})`,
+              boxShadow: `0 0 ${Math.random() * 20 + 10}px rgba(255, 255, 255, 0.5)`
             }}
             animate={{
               y: [0, (Math.random() - 0.5) * 100],
@@ -676,7 +554,7 @@ export default function MaYumayyizunaPage({ storeId }) {
               opacity: [0.2, 0.5, 0.2],
             }}
             transition={{
-              duration: Math.random() * 15 + 10,
+              duration: Math.random() * 20 + 10,
               repeat: Infinity,
               repeatType: 'reverse',
               delay: Math.random() * 5,
@@ -685,58 +563,83 @@ export default function MaYumayyizunaPage({ storeId }) {
         ))}
       </div>
 
-      {/* Premium Features Section */}
-      <div className="container mx-auto px-4 py-24">
+      {/* قسم المميزات مع تأثيرات مضيئة */}
+      <div className="container mx-auto px-4 py-20">
         <motion.h2
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-4xl font-bold mb-16 text-center"
-          style={{ color: colors.accent }}
+          className="text-3xl md:text-4xl font-bold mb-16 text-center relative"
+          style={{ color: colors.primary }}
         >
-          رحلة التميز
+          <span className="relative inline-block">
+            رحلة التميز
+            <motion.span
+              animate={{ rotate: 360 }}
+              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+              className="absolute -top-4 -right-6"
+            >
+              <FaRibbon style={{ 
+                color: colors.secondary,
+                filter: 'drop-shadow(0 0 8px rgba(245, 158, 11, 0.7))'
+              }} />
+            </motion.span>
+          </span>
         </motion.h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-          {features.map((feature, index) => (
-            <PremiumFeatureCard
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {excellenceFeatures.map((feature, index) => (
+            <motion.div
               key={index}
-              index={index}
-              colors={colors}
-              {...feature}
-            />
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -10 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className="relative overflow-hidden rounded-2xl p-8 border"
+              style={{
+                backgroundColor: colors.cardBg,
+                borderColor: colors.border,
+                boxShadow: `0 10px 30px -15px ${colors.primary}20`,
+                backdropFilter: 'blur(5px)'
+              }}
+            >
+              <div className="absolute -top-10 -right-10 opacity-10">
+                <FaStar className="text-6xl" style={{ 
+                  color: colors.primary,
+                  filter: 'drop-shadow(0 0 10px rgba(168, 85, 247, 0.5))'
+                }} />
+              </div>
+              
+              <div className="relative z-10">
+                <div className="h-16 w-16 mb-6 flex items-center justify-center rounded-full mx-auto" 
+                  style={{ 
+                    backgroundColor: `${colors.primary}10`,
+                    boxShadow: `0 0 15px ${colors.primary}20`
+                  }}>
+                  {feature.icon}
+                </div>
+                
+                <h3 className="text-2xl font-bold mb-4 text-center" style={{ 
+                  color: colors.secondary,
+                  textShadow: `0 2px 5px ${colors.secondary}30`
+                }}>
+                  {feature.title}
+                </h3>
+                <p className="text-center leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>
 
-  
-
-      {/* Luxury Footer */}
-      {/* <div 
-        className="py-12 text-white"
-        style={{ 
-          backgroundColor: colors.primary
-        }}
-      >
-        <div className="container mx-auto px-4 text-center">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="flex justify-center mb-6"
-          >
-            <FaAward className="text-4xl" style={{ color: colors.accent }} />
-          </motion.div>
-          <p className="text-xl mb-4">
-            ثقتكم غالية علينا منذ {yearsExperience} عاماً
-          </p>
-          <p className="opacity-80">
-            © جميع الحقوق محفوظة {new Date().getFullYear()}
-          </p>
-        </div>
-      </div> */}
+      {/* قسم ختام الصفحة مع تأثيرات مضيئة */}
+     
     </div>
   );
-}
+};
+
+export default PremiumFeatureCard;

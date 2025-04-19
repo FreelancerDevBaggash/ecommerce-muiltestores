@@ -1,4 +1,3 @@
-
 "use client";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
@@ -9,7 +8,7 @@ import { Mail, Phone, MapPin, Clock, ArrowRight, Facebook, Twitter, Instagram, Y
 import { useTheme } from "next-themes";
 import Link from "next/link";
 
-const MerchantFooter = ({ slugDomain, storeId, customization = {}, categories = [],}) => {        
+const Footer = ({ slugDomain={}, customization = {}, categories,}) => {        
     const { data: session, status } = useSession();
     const { theme } = useTheme();
     const [store, setStore] = useState(null);
@@ -19,7 +18,6 @@ const MerchantFooter = ({ slugDomain, storeId, customization = {}, categories = 
     const [businessHours, setBusinessHours] = useState([]);
     const [storePaymentSettings, setStorePaymentSettings] = useState([]);
 
-  
     useEffect(() => {
         async function fetchStoreData() {
             if (slugDomain) {
@@ -27,7 +25,6 @@ const MerchantFooter = ({ slugDomain, storeId, customization = {}, categories = 
                     const storeData = await getData(`stores/store/${slugDomain}`);
                     setStore(storeData);
                     
-                    // Fetch payment settings
                     if (storeData?.id) {
                         const paymentSettings = await getData(`/storePaymentSetting?storeId=${storeData.id}`);
                         setStorePaymentSettings(paymentSettings);
@@ -46,11 +43,9 @@ const MerchantFooter = ({ slugDomain, storeId, customization = {}, categories = 
         fetchStoreData();
     }, [slugDomain]);
 
-
-    // Color system with dark mode support
     const colors = {
-        primary: customization?.primaryColor || '#1a5b2a', // Dark green
-        secondary: customization?.secondaryColor || '#f0a500', // Gold
+        primary: customization?.primaryColor || '#1a5b2a',
+        secondary: customization?.secondaryColor || '#f0a500',
         accent: customization?.accentColor || '#1a5b2a',
         background: theme === 'dark' 
             ? customization?.darkBackgroundColor || '#111827'
@@ -71,11 +66,10 @@ const MerchantFooter = ({ slugDomain, storeId, customization = {}, categories = 
             ? customization?.darkInputTextColor || '#f9fafb'
             : customization?.inputTextColor || '#111827',
         linkHover: theme === 'dark'
-            ? customization?.darkLinkHoverColor || '#f0a500' // Gold
-            : customization?.linkHoverColor || '#1a5b2a' // Dark green
+            ? customization?.darkLinkHoverColor || '#f0a500'
+            : customization?.linkHoverColor || '#1a5b2a'
     };
 
-    // Convert HEX to RGBA
     function hexToRgba(hex, opacity = 1) {
         const r = parseInt(hex.slice(1, 3), 16);
         const g = parseInt(hex.slice(3, 5), 16);
@@ -83,11 +77,9 @@ const MerchantFooter = ({ slugDomain, storeId, customization = {}, categories = 
         return `rgba(${r}, ${g}, ${b}, ${opacity})`;
     }
 
-    // Handle newsletter subscription
     const handleSubscribe = async (e) => {
         e.preventDefault();
         try {
-            // API call to subscribe email
             const response = await fetch('/api/newsletter/subscribe', {
                 method: 'POST',
                 headers: {
@@ -95,7 +87,7 @@ const MerchantFooter = ({ slugDomain, storeId, customization = {}, categories = 
                 },
                 body: JSON.stringify({ 
                     email, 
-                    storeId,
+                    storeId: store?.id,
                     storeName: store?.businessName 
                 }),
             });
@@ -124,20 +116,18 @@ const MerchantFooter = ({ slugDomain, storeId, customization = {}, categories = 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="pt-16 pb-10 sm:pt-20 lg:pt-28 transition-colors duration-300"
+            className="pt-12 pb-8 transition-colors duration-300"
             style={{
                 backgroundColor: colors.background,
                 color: colors.text,
                 borderTop: `1px solid ${hexToRgba(colors.border, 0.2)}`
             }}
         >
-            <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
-                    {/* Store Information */}
-                    <motion.div 
-                        whileHover={{ y: -5 }}
-                        className="space-y-6"
-                    >
+            <div className="container mx-auto px-4">
+                {/* Main Footer Content - Responsive layout */}
+                <div className="flex flex-col lg:flex-row gap-8">
+                    {/* Store Info - First column (stays first on all devices) */}
+                    <div className="lg:w-1/4 space-y-6 order-1">
                         <Link href="/" className="flex items-center space-x-4">
                             <motion.div 
                                 whileHover={{ rotate: 5 }}
@@ -152,14 +142,14 @@ const MerchantFooter = ({ slugDomain, storeId, customization = {}, categories = 
                                     alt={`${store?.businessName} logo`}
                                     fill
                                     className="object-cover transition-transform duration-500 hover:scale-110"
-                                    sizes="(max-width: 768px) 64px, 80px"
+                                    sizes="64px"
                                 />
                             </motion.div>
                             <h2 
                                 className="text-xl font-bold hover:underline"
                                 style={{ color: colors.primary }}
                             >
-                                {store?.businessName }
+                                {store?.businessName}
                             </h2>
                         </Link>
 
@@ -211,10 +201,13 @@ const MerchantFooter = ({ slugDomain, storeId, customization = {}, categories = 
                                 </div>
                             )}
                         </div>
-                    </motion.div>
+                    </div>
 
-                    {/* Store Categories */}
-                    <div className="space-y-6">
+                    {/* Social Media - Second column on mobile */}
+            
+
+                    {/* Categories - Third column on mobile */}
+                    <div className="lg:w-1/4 space-y-6 order-3 lg:order-2">
                         <h3 
                             className="text-lg font-semibold uppercase tracking-wider"
                             style={{ color: colors.primary }}
@@ -224,7 +217,7 @@ const MerchantFooter = ({ slugDomain, storeId, customization = {}, categories = 
                         <ul className="space-y-3">
                             {categories.slice(0, 6).map((category) => (
                                 <motion.li 
-                                    key={category._id}
+                                    key={category.id}
                                     whileHover={{ x: 5 }}
                                     transition={{ type: 'spring', stiffness: 300 }}
                                 >
@@ -247,8 +240,8 @@ const MerchantFooter = ({ slugDomain, storeId, customization = {}, categories = 
                         </ul>
                     </div>
 
-                    {/* Merchant Quick Links */}
-                    <div className="space-y-6">
+                    {/* Quick Links - Fourth column on mobile */}
+                    <div className="lg:w-1/4 space-y-6 order-4 lg:order-3">
                         <h3 
                             className="text-lg font-semibold uppercase tracking-wider"
                             style={{ color: colors.primary }}
@@ -265,6 +258,7 @@ const MerchantFooter = ({ slugDomain, storeId, customization = {}, categories = 
                                 { name: "الشروط والأحكام", path: "/terms" },
                                 { name: "سياسة الخصوصية", path: "/privacy" },
                                 { name: "اتصل بنا", path: "/contact" }
+                                
                             ].filter(link => !link.vendorOnly || session?.user?.role === 'VENDOR').map((item, index) => (
                                 <motion.li 
                                     key={index}
@@ -289,81 +283,31 @@ const MerchantFooter = ({ slugDomain, storeId, customization = {}, categories = 
                             ))}
                         </ul>
                     </div>
+                </div>
 
-                    {/* Newsletter & Social Media */}
-                    <div className="space-y-6">
-                        <h3 
-                            className="text-lg font-semibold uppercase tracking-wider"
-                            style={{ color: colors.primary }}
-                        >
-                            النشرة البريدية
-                        </h3>
-                        <p style={{ color: hexToRgba(colors.text, 0.8) }}>
-                            اشترك ليصلك كل جديد عن عروضنا و منتجاتنا
-                        </p>
-                        
-                        {isSubscribed ? (
-                            <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="p-4 rounded-lg text-center"
-                                style={{ 
-                                    backgroundColor: hexToRgba(colors.secondary, 0.1),
-                                    border: `1px solid ${colors.secondary}`
-                                }}
+                {/* Divider */}
+                <motion.div 
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="my-8 h-px"
+                    style={{ backgroundColor: hexToRgba(colors.primary, 0.2) }}
+                ></motion.div>
+        <div className="lg:w-1/4 space-y-6 order-2 lg:order-4">
+                        <div className="pt-0 lg:pt-6">
+                            <h3 
+                                className="text-lg font-semibold uppercase tracking-wider lg:hidden"
+                                style={{ color: colors.primary }}
                             >
-                                <p style={{ color: colors.secondary }}>شكراً لك على الاشتراك!</p>
-                            </motion.div>
-                        ) : (
-                            <form onSubmit={handleSubscribe} className="space-y-4">
-                                <div className="relative">
-                                    <input 
-                                        type="email" 
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        placeholder="بريدك الإلكتروني"
-                                        required
-                                        className="w-full px-5 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-all"
-                                        style={{
-                                            backgroundColor: colors.inputBg,
-                                            borderColor: colors.border,
-                                            color: colors.inputText,
-                                            '--tw-ring-color': colors.secondary
-                                        }}
-                                    />
-                                    <Mail 
-                                        className="absolute left-4 top-3.5 h-5 w-5" 
-                                        style={{ color: hexToRgba(colors.text, 0.5) }}
-                                    />
-                                </div>
-                                <motion.button
-                                    type="submit"
-                                    className="w-full px-6 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2"
-                                    style={{ 
-                                        backgroundColor: colors.secondary,
-                                        color: '#ffffff'
-                                    }}
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.98 }}
-                                >
-                                    اشترك الآن
-                                    <ArrowRight className="h-4 w-4" />
-                                </motion.button>
-                            </form>
-                        )}
-
-                        {/* Social Media Links */}
-                        <div className="pt-6">
-                            <h4 className="text-md font-medium mb-4" style={{ color: colors.primary }}>
-                                تابعنا على
-                            </h4>
-                            <div className="flex space-x-4">
+                                تواصل معنا
+                            </h3>
+                            <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
                                 {[
-                                    { name: 'فيسبوك', icon: <Facebook className="h-6 w-6" />, url: store?.socialMedia?.facebook || '#' },
-                                    { name: 'تويتر', icon: <Twitter className="h-6 w-6" />, url: store?.socialMedia?.twitter || '#' },
-                                    { name: 'إنستغرام', icon: <Instagram className="h-6 w-6" />, url: store?.socialMedia?.instagram || '#' },
-                                    { name: 'يوتيوب', icon: <Youtube className="h-6 w-6" />, url: store?.socialMedia?.youtube || '#' },
-                                    { name: 'لينكدإن', icon: <Linkedin className="h-6 w-6" />, url: store?.socialMedia?.linkedin || '#' }
+                                    { name: "فيسبوك", icon: <Facebook className="h-6 w-6" />, url: store?.socialMedia?.facebook || '#' },
+                                    { name: "تويتر", icon: <Twitter className="h-6 w-6" />, url: store?.socialMedia?.twitter || '#' },
+                                    { name: "إنستغرام", icon: <Instagram className="h-6 w-6" />, url: store?.socialMedia?.instagram || '#' },
+                                    { name: "يوتيوب", icon: <Youtube className="h-6 w-6" />, url: store?.socialMedia?.youtube || '#' },
+                                    { name: "لينكدإن", icon: <Linkedin className="h-6 w-6" />, url: store?.socialMedia?.linkedin || '#' }
                                 ].map((social, index) => (
                                     <motion.a
                                         key={index}
@@ -388,22 +332,57 @@ const MerchantFooter = ({ slugDomain, storeId, customization = {}, categories = 
                             </div>
                         </div>
                     </div>
-                </div>
-
-                {/* Divider */}
-                <motion.div 
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="my-12 h-px"
-                    style={{ backgroundColor: hexToRgba(colors.primary, 0.2) }}
-                ></motion.div>
-
-                {/* Copyright and Payment Methods */}
-                <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                    <div className="text-center md:text-left">
+                {/* Footer Bottom - Responsive order */}
+                <div className="flex flex-col md:flex-row justify-between items-center">
+                    {/* Payment Methods - First on mobile */}
+                    <div className="w-full md:w-auto order-1 md:order-2 mb-4 md:mb-0">
+                        <div className="flex overflow-x-auto pb-2 hide-scrollbar justify-center md:justify-start">
+                            <div className="flex space-x-4">
+                                {storePaymentSettings
+                                    .filter(setting => setting.isActive && setting.paymentProvider?.isActive)
+                                    .slice(0, 5)
+                                    .map((setting) => (
+                                        <motion.div
+                                            key={setting.paymentProvider.id}
+                                            whileHover={{ scale: 1.1 }}
+                                            className="flex-shrink-0 relative w-10 h-6"
+                                            style={{ 
+                                                filter: theme === 'dark' ? 'brightness(0) invert(1)' : 'none',
+                                            }}
+                                            title={setting.paymentProvider.name}
+                                        >
+                                            {setting.paymentProvider.imageUrl ? (
+                                                <Image
+                                                    src={setting.paymentProvider.imageUrl}
+                                                    alt={setting.paymentProvider.name}
+                                                    fill
+                                                    className="object-contain"
+                                                    sizes="40px"
+                                                />
+                                            ) : (
+                                                <div 
+                                                    className="flex items-center justify-center w-full h-full rounded"
+                                                    style={{
+                                                        backgroundColor: hexToRgba(colors.secondary, 0.1),
+                                                        color: colors.secondary,
+                                                    }}
+                                                >
+                                                    <span className="text-xs font-medium">
+                                                        {setting.paymentProvider.name.substring(0, 2)}
+                                                    </span>
+                                                </div>
+                                            )}
+                                        </motion.div>
+                                    ))
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Copyright - Second on mobile */}
+                    <div className="text-center md:text-left order-2 md:order-1">
                         <p style={{ color: hexToRgba(colors.text, 0.6) }}>
-                            © {new Date().getFullYear()} {store?.businessName }. جميع الحقوق محفوظة.
+                            © {new Date().getFullYear()} {store?.businessName}. جميع الحقوق محفوظة.
                         </p>
                         {store?.commercialRegistration && (
                             <p className="text-xs mt-1" style={{ color: hexToRgba(colors.text, 0.5) }}>
@@ -411,63 +390,10 @@ const MerchantFooter = ({ slugDomain, storeId, customization = {}, categories = 
                             </p>
                         )}
                     </div>
-                    
-                    {/* Payment Methods */}
-                {/* Payment Methods */}
-                <div className="relative">
-  {/* Container with scroll */}
-  <div className="flex space-x-4 overflow-x-auto pb-2 -mx-4 px-4 hide-scrollbar">
-    {storePaymentSettings
-      .filter(setting => setting.isActive && setting.paymentProvider?.isActive)
-      .slice(0, 5) // Limit to 8 items max for better performance
-      .map((setting) => (
-        <motion.div
-          key={setting.paymentProvider.id}
-          whileHover={{ scale: 1.1 }}
-          className="flex-shrink-0 relative w-10 h-6"
-          style={{ 
-            filter: theme === 'dark' ? 'brightness(0) invert(1)' : 'none',
-          }}
-          title={setting.paymentProvider.name} // Show name on hover
-        >
-          {setting.paymentProvider.imageUrl ? (
-            <Image
-              src={setting.paymentProvider.imageUrl}
-              alt={setting.paymentProvider.name}
-              fill
-              className="object-contain"
-              sizes="(max-width: 768px) 40px, 60px"
-            />
-          ) : (
-            <div 
-              className="flex items-center justify-center w-full h-full rounded"
-              style={{
-                backgroundColor: hexToRgba(themeColors.secondary, 0.1),
-                color: themeColors.secondary,
-              }}
-            >
-              <span className="text-xs font-medium">
-                {setting.paymentProvider.name.substring(0, 2)}
-              </span>
-            </div>
-          )}
-        </motion.div>
-      ))
-    }
-  </div>
-
-  {/* Scroll indicators (only show if scrollable) */}
-  <div 
-    className="absolute right-0 top-0 bottom-0 w-8 pointer-events-none"
-    style={{
-      background: `linear-gradient(90deg, transparent, ${colors.background})`,
-    }}
-  />
-</div>
                 </div>
             </div>
         </motion.footer>
     );
 };
 
-export default MerchantFooter;
+export default Footer;

@@ -155,28 +155,37 @@
 "use client";
 import { Modal } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { CornerDownLeft, Headphones, HelpCircle, MessageSquare, Truck, X, MessageCircle, ShoppingBag, RefreshCw } from 'lucide-react';
+import {
+  CornerDownLeft,
+  Headphones,
+  HelpCircle,
+  MessageSquare,
+  Truck,
+  X,
+  MessageCircle,
+  ShoppingBag,
+  RefreshCw
+} from 'lucide-react';
 import Link from "next/link";
 import { getData } from '../../../lib/getData';
 import { motion } from "framer-motion";
 
-export default function HelpModalstore({ slugDomain={}, customization = {} }) {
+export default function HelpModalstore({ slugDomain = {}, customization = {} }) {
   const [openModal, setOpenModal] = useState(false);
   const [phone, setPhoneNumber] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Get store phone number
   useEffect(() => {
     async function fetchStorePhone() {
       try {
         setLoading(true);
         if (slugDomain) {
           const storeData = await getData(`stores/store/${slugDomain}`);
-          setPhoneNumber(storeData?.phone || "Not Available");
+          setPhoneNumber(storeData?.phone || "غير متوفر");
         }
       } catch (error) {
-        console.error("Failed to fetch store phone:", error);
-        setPhoneNumber("Not Available");
+        console.error("فشل في جلب رقم الهاتف:", error);
+        setPhoneNumber("غير متوفر");
       } finally {
         setLoading(false);
       }
@@ -184,12 +193,10 @@ export default function HelpModalstore({ slugDomain={}, customization = {} }) {
     fetchStorePhone();
   }, [slugDomain]);
 
-  // WhatsApp link generator
-  const whatsappLink = phone && phone !== "Not Available" 
-    ? `https://wa.me/${phone}?text=Hello%20I%20need%20help%20with%20my%20order` 
+  const whatsappLink = phone && phone !== "غير متوفر"
+    ? `https://wa.me/${phone}?text=مرحبًا، أحتاج مساعدة في طلبي.`
     : "#";
 
-  // Custom colors from props with fallbacks
   const colors = {
     primary: customization.primaryColor || '#4CAF50',
     secondary: customization.secondaryColor || '#8BC34A',
@@ -205,53 +212,53 @@ export default function HelpModalstore({ slugDomain={}, customization = {} }) {
 
   const helpItems = [
     {
-      title: "Customer Support",
+      title: "الدعم الفني",
       icon: <Headphones className="w-5 h-5" />,
       link: `tel:${phone}`,
-      available: phone && phone !== "Not Available",
-      description: "Speak directly with our support team"
+      available: phone && phone !== "غير متوفر",
+      description: "تواصل مباشرة مع فريق الدعم"
     },
     {
-      title: "Track Order",
+      title: "تتبع الطلب",
       icon: <Truck className="w-5 h-5" />,
       link: '/track',
       available: true,
-      description: "Check your order delivery status"
+      description: "تحقق من حالة طلبك"
     },
     {
-      title: "Returns & Refunds",
+      title: "المرتجعات والمبالغ",
       icon: <RefreshCw className="w-5 h-5" />,
       link: whatsappLink,
-      available: phone && phone !== "Not Available",
-      description: "Initiate return or refund process"
+      available: phone && phone !== "غير متوفر",
+      description: "ابدأ عملية الإرجاع أو الاسترداد"
     },
     {
-      title: "Live Chat",
+      title: "دردشة مباشرة",
       icon: <MessageCircle className="w-5 h-5" />,
       link: `tel:${phone}`,
-      available: phone && phone !== "Not Available",
-      description: "Instant messaging with our agents"
+      available: phone && phone !== "غير متوفر",
+      description: "مراسلة فورية مع ممثلينا"
     },
     {
-      title: "Order Issues",
+      title: "مشاكل الطلب",
       icon: <ShoppingBag className="w-5 h-5" />,
       link: whatsappLink,
-      available: phone && phone !== "Not Available",
-      description: "Report problems with your order"
+      available: phone && phone !== "غير متوفر",
+      description: "أبلغ عن مشكلة في طلبك"
     },
     {
-      title: "مركز الأسئلة الشائعة",
+      title: "الأسئلة الشائعة",
       icon: <HelpCircle className="w-5 h-5" />,
-      link: `/${slugDomain}/faq`,  // Correct link format
+      link: `/${slugDomain}/faq`,
       available: true,
-      description: "ابحث عن إجابات للأسئلة الشائعة"
+      description: "اعثر على إجابات لاستفساراتك"
     }
   ];
 
   return (
-    <>
-      <motion.button 
-        onClick={() => setOpenModal(true)} 
+    <div dir="rtl">
+      <motion.button
+        onClick={() => setOpenModal(true)}
         className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all"
         style={{
           backgroundColor: colors.primary,
@@ -261,11 +268,11 @@ export default function HelpModalstore({ slugDomain={}, customization = {} }) {
         whileTap={{ scale: 0.95 }}
       >
         <HelpCircle className="w-5 h-5" />
-        <span>Help Center</span>
+        <span>مركز المساعدة</span>
       </motion.button>
 
-      <Modal 
-        show={openModal} 
+      <Modal
+        show={openModal}
         onClose={() => setOpenModal(false)}
         size="xl"
         position="center"
@@ -278,9 +285,9 @@ export default function HelpModalstore({ slugDomain={}, customization = {} }) {
           <div className="flex items-center justify-between w-full">
             <h3 className="text-xl font-bold flex items-center gap-2">
               <HelpCircle className="text-green-500" />
-              Customer Support Center
+              مركز الدعم الفني
             </h3>
-            <button 
+            <button
               onClick={() => setOpenModal(false)}
               className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
             >
@@ -288,6 +295,7 @@ export default function HelpModalstore({ slugDomain={}, customization = {} }) {
             </button>
           </div>
         </Modal.Header>
+
         <Modal.Body>
           {loading ? (
             <div className="flex justify-center items-center py-10">
@@ -305,13 +313,13 @@ export default function HelpModalstore({ slugDomain={}, customization = {} }) {
                   <Link
                     href={item.link}
                     target={item.link.startsWith('http') ? '_blank' : '_self'}
-                    className={`flex items-start p-4 rounded-lg transition-all ${item.available 
-                      ? 'hover:bg-green-50 dark:hover:bg-gray-800 cursor-pointer' 
+                    className={`flex items-start p-4 rounded-lg transition-all ${item.available
+                      ? 'hover:bg-green-50 dark:hover:bg-gray-800 cursor-pointer'
                       : 'opacity-50 cursor-not-allowed'}`}
                     onClick={!item.available ? (e) => e.preventDefault() : null}
                   >
-                    <div 
-                      className="flex items-center justify-center p-3 rounded-full mr-3"
+                    <div
+                      className="flex items-center justify-center p-3 rounded-full ml-3"
                       style={{
                         backgroundColor: `${colors.primary}20`,
                         color: colors.primary
@@ -325,7 +333,7 @@ export default function HelpModalstore({ slugDomain={}, customization = {} }) {
                         {item.description}
                       </p>
                       {!item.available && (
-                        <span className="text-xs text-red-500">Currently unavailable</span>
+                        <span className="text-xs text-red-500">غير متاح حاليًا</span>
                       )}
                     </div>
                   </Link>
@@ -334,17 +342,18 @@ export default function HelpModalstore({ slugDomain={}, customization = {} }) {
             </div>
           )}
         </Modal.Body>
+
         <Modal.Footer className="border-t border-gray-200 dark:border-gray-700">
           <div className="w-full text-center text-sm text-gray-500 dark:text-gray-400">
-            <p>Our support team is available 24/7 to assist you</p>
-            {phone && phone !== "Not Available" && (
+            <p>فريق الدعم متواجد لخدمتكم على مدار الساعة</p>
+            {phone && phone !== "غير متوفر" && (
               <p className="mt-1 font-medium">
-                Direct line: <span className="text-green-600">{phone}</span>
+                رقم التواصل المباشر: <span className="text-green-600">{phone}</span>
               </p>
             )}
           </div>
         </Modal.Footer>
       </Modal>
-    </>
+    </div>
   );
 }

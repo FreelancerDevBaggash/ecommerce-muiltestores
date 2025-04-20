@@ -844,7 +844,7 @@ import UserAvatar from './UserAvatar';
 import { useTheme } from 'next-themes';
 import WishlistButton from './WishlistButton';
 
-export default function Navbar({ slugDomain, storeData = {}, categories ,customization = {}, storeId }) {
+export default function Navbar({ slugDomain={}, storeData = {}, categories ,customization = {}, storeId }) {
   // Default values for empty props
   const safeStoreData = useMemo(() => ({
     profileImageUrl: '/default-store.png',

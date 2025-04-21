@@ -143,7 +143,7 @@ export default function TestimonialsSection() {
                     ))}
                   </div>
                   <blockquote className="text-xl text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                    "{testimonials[currentIndex].content}"
+                    {testimonials[currentIndex].content}
                   </blockquote>
                   <div>
                     <p className="font-bold text-indigo-600 dark:text-indigo-400 text-lg">

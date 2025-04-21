@@ -134,10 +134,10 @@ export default async function ProductDetailPage({ params: { slug } }) {
                     {productPrice && (
                       <div className="flex items-center gap-3">
                         <span className="text-3xl font-bold text-primary-600 dark:text-primary-400">
-                          {salePrice?.toLocaleString()} ر.س
+                          {salePrice?.toLocaleString()} ر.ي
                         </span>
                         <del className="text-gray-400 dark:text-gray-500 text-lg">
-                          {productPrice?.toLocaleString()} ر.س
+                          {productPrice?.toLocaleString()} ر.ي
                         </del>
                         {discountPercentage > 0 && (
                           <span className="bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-200 px-2 py-1 rounded-full text-sm">
@@ -148,7 +148,7 @@ export default async function ProductDetailPage({ params: { slug } }) {
                     )}
                     {!productPrice && (
                       <span className="text-3xl font-bold text-primary-600 dark:text-primary-400">
-                        {salePrice?.toLocaleString()} ر.س
+                        {salePrice?.toLocaleString()} ر.ي
                       </span>
                     )}
                     <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -193,7 +193,7 @@ export default async function ProductDetailPage({ params: { slug } }) {
                     </div>
                     <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm">
                       <p className="text-sm text-gray-500 dark:text-gray-400">سعر القطعة</p>
-                      <p className="font-bold">{wholesalePrice?.toLocaleString()} ر.س</p>
+                      <p className="font-bold">{wholesalePrice?.toLocaleString()} ر.ي</p>
                     </div>
                   </div>
                 </div>

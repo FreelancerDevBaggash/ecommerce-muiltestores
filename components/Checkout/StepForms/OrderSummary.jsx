@@ -410,6 +410,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { useTheme } from "next-themes";
+import { clearCart } from "@/redux/slices/cartSlice";
 
 export default function OrderSummary({ slugDomain, customization = {} }) {
   const { theme } = useTheme(); // تحديد وضع الثيم الحالي
@@ -459,7 +460,9 @@ export default function OrderSummary({ slugDomain, customization = {} }) {
       if (response.ok) {
         setLoading(false);
         toast.success("تم إنشاء الطلب بنجاح");
+        
         router.push(`/${slugDomain}/order-confirmation/${responseData.id}`);
+        dispatch(clearCart());
       } else {
         setLoading(false);
         toast.error("حدث خطأ ما");

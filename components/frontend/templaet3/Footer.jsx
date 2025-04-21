@@ -1,7 +1,8 @@
 
 "use client";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
+import useCustomerSession from "@/hooks/useCustomerSession";
 import React, { useEffect, useState } from 'react';
 import { getData } from '../../../lib/getData';
 import { motion } from "framer-motion";
@@ -10,7 +11,7 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 
 const MerchantFooter = ({ slugDomain, storeId, customization = {}, categories = [],}) => {        
-    const { data: session, status } = useSession();
+    const {  session, status } = useCustomerSession();
     const { theme } = useTheme();
     const [store, setStore] = useState(null);
     const [loading, setLoading] = useState(true);

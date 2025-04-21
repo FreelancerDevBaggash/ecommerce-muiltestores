@@ -269,14 +269,180 @@
   
 //   )
 // }
+
+// import { Badge } from "../../components/ui/badge"
+// import Image from "next/image"
+
+// export default function OrderCard({ order }) {
+//   // حساب المبلغ الإجمالي إذا كانت هناك عناصر طلب
+//   const totalAmount = order.orderItems
+//     ? order.orderItems.reduce((total, item) => total + item.price * item.quantity, 0) + order.shippingCost
+//     : Number.parseFloat(order.amount?.replace("ريال ", "") || "0")
+
+//   return (
+//     <div className="bg-white rounded-lg p-6 max-w-3xl mx-auto">
+//       <div className="flex justify-between items-center mb-6 border-b pb-4">
+//         <div>
+//           <h2 className="text-2xl font-bold">تفاصيل الطلب #{order.orderNumber || order.id}</h2>
+//           <p className="text-gray-500">تاريخ الطلب: {new Date(order.createdAt).toLocaleDateString("ar-SA")}</p>
+//         </div>
+//         <div>
+//           <Badge className={getStatusBadgeClass(order.orderStatus)}>{order.orderStatus}</Badge>
+//         </div>
+//       </div>
+
+//       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+//         <div>
+//           <h3 className="font-semibold mb-2">معلومات العميل</h3>
+//           <p>
+//             الاسم: {order.firstName} {order.lastName}
+//           </p>
+//           <p>البريد الإلكتروني: {order.email}</p>
+//           <p>رقم الهاتف: {order.phone}</p>
+//           <p>طريقة الدفع: {order.paymentMethod}</p>
+//         </div>
+//         <div>
+//           <h3 className="font-semibold mb-2">معلومات الشحن</h3>
+//           <p>العنوان: {order.streetAddress}</p>
+//           <p>المدينة: {order.city}</p>
+//           <p>الحي: {order.district}</p>
+//           <p>البلد: {order.country}</p>
+//           <p>تكلفة الشحن: {order.shippingCost.toFixed(2)} ر.ي</p>
+//         </div>
+//       </div>
+
+//       <div className="mb-6">
+//         <h3 className="font-semibold mb-2">المنتجات</h3>
+//         <div className="border rounded-lg overflow-hidden">
+//           <table className="w-full">
+//             <thead className="bg-gray-50">
+//               <tr>
+//                 <th className="py-2 px-4 text-right">المنتج</th>
+//                 <th className="py-2 px-4 text-center">الصورة</th>
+//                 <th className="py-2 px-4 text-right">السعر</th>
+//                 <th className="py-2 px-4 text-right">الكمية</th>
+//                 <th className="py-2 px-4 text-right">المجموع</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {order.orderItems ? (
+//                 order.orderItems.map((item, index) => (
+//                   <tr key={index} className="border-t">
+//                     <td className="py-3 px-4">{item.title}</td>
+//                     <td className="py-3 px-4 text-center">
+//                       <div className="flex justify-center">
+//                         <Image
+//                           src={item.imageUrl || "/placeholder.svg?height=50&width=50"}
+//                           alt={item.title}
+//                           width={50}
+//                           height={50}
+//                           className="rounded-md object-cover"
+//                         />
+//                       </div>
+//                     </td>
+//                     <td className="py-3 px-4">ر.ي {item.price.toFixed(2)}</td>
+//                     <td className="py-3 px-4">{item.quantity}</td>
+//                     <td className="py-3 px-4">ر.ي {(item.price * item.quantity).toFixed(2)}</td>
+//                   </tr>
+//                 ))
+//               ) : (
+//                 <tr className="border-t">
+//                   <td colSpan={5} className="py-3 px-4 text-center text-gray-500">
+//                     لا توجد تفاصيل للمنتجات
+//                   </td>
+//                 </tr>
+//               )}
+//             </tbody>
+//             <tfoot className="bg-gray-50">
+//               <tr>
+//                 <td colSpan={4} className="py-3 px-4 text-left font-semibold">
+//                   تكلفة الشحن
+//                 </td>
+//                 <td className="py-3 px-4 font-semibold">ر.ي {order.shippingCost?.toFixed(2) || "0.00"}</td>
+//               </tr>
+//               <tr>
+//                 <td colSpan={4} className="py-3 px-4 text-left font-semibold">
+//                   المجموع الكلي
+//                 </td>
+//                 <td className="py-3 px-4 font-semibold">ر.ي {totalAmount.toFixed(2)}</td>
+//               </tr>
+//             </tfoot>
+//           </table>
+//         </div>
+//       </div>
+
+//       <div className="flex justify-end gap-2">
+//         <button className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">طباعة الفاتورة</button>
+//         <button className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300">تحديث الحالة</button>
+//       </div>
+//     </div>
+//   )
+// }
+
+// function getStatusBadgeClass(status) {
+//   switch (status) {
+//     case "جديد":
+//       return "bg-green-100 text-green-800"
+//     case "جاري التجهيز":
+//       return "bg-purple-100 text-purple-800"
+//     case "جاهز":
+//       return "bg-blue-100 text-blue-800"
+//     case "جاري التوصيل":
+//       return "bg-amber-100 text-amber-800"
+//     case "تم التوصيل":
+//       return "bg-teal-100 text-teal-800"
+//     case "ملغي":
+//       return "bg-red-100 text-red-800"
+//     default:
+//       return "bg-gray-100 text-gray-800"
+//   }
+// }
+
+ 'use client'
+import { useState, useEffect } from 'react'
 import { Badge } from "../../components/ui/badge"
 import Image from "next/image"
+import ReviewModal from './ReviewModal'
 
-export default function OrderCard({ order }) {
-  // حساب المبلغ الإجمالي إذا كانت هناك عناصر طلب
+export default function OrderCard({ order, userId }) {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [hasReviewed, setHasReviewed] = useState(false)
+
+  // حساب المبلغ الإجمالي
   const totalAmount = order.orderItems
     ? order.orderItems.reduce((total, item) => total + item.price * item.quantity, 0) + order.shippingCost
     : Number.parseFloat(order.amount?.replace("ريال ", "") || "0")
+
+  // دالة للتحقق من التقييمات السابقة
+  const checkIfReviewed = async () => {
+    try {
+      const response = await fetch(`/api/reviews?storeId=${order.storeId}&customerStoreId=${order.CustomerStoreId}`)
+      const reviews = await response.json()
+      if (reviews.length > 0) {
+        setHasReviewed(true) // إذا كان العميل قد قيم المتجر
+      }
+    } catch (error) {
+      console.error("Error fetching reviews:", error)
+    }
+  }
+
+  // فتح الـ Modal عندما تكون حالة الطلب "تم التوصيل" ولم يقيم العميل المتجر
+  const handleModalOpen = () => {
+    if (order.orderStatus === "DELIVERED" && !hasReviewed) {
+      setIsModalOpen(true)
+    }
+  }
+
+  // إغلاق الـ Modal
+  const handleModalClose = () => {
+    setIsModalOpen(false)
+  }
+
+  // تحقق عند أول تحميل
+  useEffect(() => {
+    checkIfReviewed()
+    handleModalOpen()
+  }, [order, hasReviewed])
 
   return (
     <div className="bg-white rounded-lg p-6 max-w-3xl mx-auto">
@@ -306,7 +472,7 @@ export default function OrderCard({ order }) {
           <p>المدينة: {order.city}</p>
           <p>الحي: {order.district}</p>
           <p>البلد: {order.country}</p>
-          <p>تكلفة الشحن: SAR {order.shippingCost.toFixed(2)}</p>
+          <p>تكلفة الشحن: {order.shippingCost.toFixed(2)} ر.ي</p>
         </div>
       </div>
 
@@ -339,9 +505,9 @@ export default function OrderCard({ order }) {
                         />
                       </div>
                     </td>
-                    <td className="py-3 px-4">SAR {item.price.toFixed(2)}</td>
+                    <td className="py-3 px-4">ر.ي {item.price.toFixed(2)}</td>
                     <td className="py-3 px-4">{item.quantity}</td>
-                    <td className="py-3 px-4">SAR {(item.price * item.quantity).toFixed(2)}</td>
+                    <td className="py-3 px-4">ر.ي {(item.price * item.quantity).toFixed(2)}</td>
                   </tr>
                 ))
               ) : (
@@ -357,13 +523,13 @@ export default function OrderCard({ order }) {
                 <td colSpan={4} className="py-3 px-4 text-left font-semibold">
                   تكلفة الشحن
                 </td>
-                <td className="py-3 px-4 font-semibold">SAR {order.shippingCost?.toFixed(2) || "0.00"}</td>
+                <td className="py-3 px-4 font-semibold">ر.ي {order.shippingCost?.toFixed(2) || "0.00"}</td>
               </tr>
               <tr>
                 <td colSpan={4} className="py-3 px-4 text-left font-semibold">
                   المجموع الكلي
                 </td>
-                <td className="py-3 px-4 font-semibold">SAR {totalAmount.toFixed(2)}</td>
+                <td className="py-3 px-4 font-semibold">ر.ي {totalAmount.toFixed(2)}</td>
               </tr>
             </tfoot>
           </table>
@@ -374,6 +540,15 @@ export default function OrderCard({ order }) {
         <button className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700">طباعة الفاتورة</button>
         <button className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300">تحديث الحالة</button>
       </div>
+
+      {/* عرض الـ Modal إذا كانت الحالة "تم التوصيل" ولم يقيم العميل المتجر */}
+      {isModalOpen && !hasReviewed && (
+        <ReviewModal
+          storeId={order.storeId}
+          customerStoreId={order.CustomerStoreId}
+          onClose={handleModalClose}
+        />
+      )}
     </div>
   )
 }

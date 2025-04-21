@@ -26,7 +26,44 @@ export async function GET(request, {params:{id}}){
     
     }
 
-
+    export async function PATCH(request, { params }) {
+        const { id } = params
+      
+        try {
+          const body = await request.json()
+          const { orderStatus } = body
+      
+          // تحقق من صحة القيمة المدخلة
+          const validStatuses = ["PENDING", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELED"]
+          if (!validStatuses.includes(orderStatus)) {
+            return NextResponse.json(
+              { message: `الحالة غير صالحة. القيم المسموحة: ${validStatuses.join(", ")}` },
+              { status: 400 }
+            )
+          }
+      
+          const existingOrder = await db.order.findUnique({ where: { id } })
+      
+          if (!existingOrder) {
+            return NextResponse.json({ message: "الطلب غير موجود" }, { status: 404 })
+          }
+      
+          const updatedOrder = await db.order.update({
+            where: { id },
+            data: {
+              orderStatus, // تحديث حالة الطلب فقط
+            },
+          })
+      
+          return NextResponse.json(updatedOrder)
+        } catch (error) {
+          console.error("خطأ في تحديث الطلب:", error)
+          return NextResponse.json(
+            { message: "فشل في تحديث الطلب", error: error.message },
+            { status: 500 }
+          )
+        }
+      }
 
     export async function DELETE(request, {params:{id}}){
         try{

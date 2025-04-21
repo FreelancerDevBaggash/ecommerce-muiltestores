@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { FadeIn, SlideIn } from "@/components/effects/scroll-animations";
 
 export default function TermsPage() {
-  const lastUpdated = "15 أبريل 2023";
+  const lastUpdated = "15 أبريل 2025";
 
   return (
     <div className="pt-20 pb-16">
@@ -12,7 +12,7 @@ export default function TermsPage() {
         <div className="bg-gradient-to-b from-indigo-50 to-white dark:from-slate-900 dark:to-slate-800 py-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-              الشروط{" "}
+              الشروط
               <span className="text-indigo-600 dark:text-indigo-400">
                 والأحكام
               </span>
@@ -30,9 +30,9 @@ export default function TermsPage() {
             <div className="prose prose-lg dark:prose-invert prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-600 dark:prose-p:text-gray-400 max-w-none">
               <h2>مقدمة</h2>
               <p>
-                مرحباً بك في منصة أتجر ("المنصة"). تُشغل هذه المنصة بواسطة شركة
-                أتجر للتجارة الإلكترونية ("نحن"، "لنا"، "الشركة"). باستخدامك
-                للمنصة، فإنك توافق على الالتزام بهذه الشروط والأحكام ("الشروط").
+                مرحباً بك في منصة أتجر المنصة. تُشغل هذه المنصة بواسطة شركة
+                أتجر للتجارة الإلكترونية. باستخدامك
+                للمنصة، فإنك توافق على الالتزام بهذه الشروط والأحكام الشروط.
                 يرجى قراءة هذه الشروط بعناية قبل استخدام المنصة.
               </p>
               <p>
@@ -44,19 +44,19 @@ export default function TermsPage() {
 
               <h2>التعريفات</h2>
               <p>
-                <strong>"المنصة"</strong>: تشير إلى موقع أتجر الإلكتروني
+                <strong>المنصة</strong>: تشير إلى موقع أتجر الإلكتروني
                 وتطبيقاته وخدماته.
               </p>
               <p>
-                <strong>"المستخدم"</strong>: يشير إلى أي شخص يستخدم المنصة،
+                <strong>المستخدم</strong>: يشير إلى أي شخص يستخدم المنصة،
                 سواء كان زائراً أو صاحب متجر أو مشترياً.
               </p>
               <p>
-                <strong>"صاحب المتجر"</strong>: يشير إلى المستخدم الذي أنشأ
+                <strong>صاحب المتجر</strong>: يشير إلى المستخدم الذي أنشأ
                 متجراً على المنصة.
               </p>
               <p>
-                <strong>"المشتري"</strong>: يشير إلى المستخدم الذي يشتري
+                <strong>المشتري</strong>: يشير إلى المستخدم الذي يشتري
                 منتجات من متجر على المنصة.
               </p>
 

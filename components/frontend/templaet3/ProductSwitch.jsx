@@ -236,14 +236,14 @@
 //               className="text-xl font-bold"
 //               style={{ color: themeColors.text }}
 //             >
-//               {product.salePrice.toFixed(2)} ر.س
+//               {product.salePrice.toFixed(2)} ر.ي
 //             </span>
 //             {product.productPrice > product.salePrice && (
 //               <span 
 //                 className="text-sm line-through"
 //                 style={{ color: hexToRgba(themeColors.text, 0.5) }}
 //               >
-//                 {product.productPrice.toFixed(2)} ر.س
+//                 {product.productPrice.toFixed(2)} ر.ي
 //               </span>
 //             )}
 //           </div>
@@ -558,14 +558,14 @@ export default function ProductSwitchs({ product, colors, customizations = {}, s
               className="text-xl font-bold"
               style={{ color: themeColors.text }}
             >
-              {product.salePrice.toFixed(2)} ر.س
+              {product.salePrice.toFixed(2)} ر.ي
             </span>
             {product.productPrice > product.salePrice && (
               <span 
                 className="text-sm line-through"
                 style={{ color: hexToRgba(themeColors.text, 0.5) }}
               >
-                {product.productPrice.toFixed(2)} ر.س
+                {product.productPrice.toFixed(2)} ر.ي
               </span>
             )}
           </div>

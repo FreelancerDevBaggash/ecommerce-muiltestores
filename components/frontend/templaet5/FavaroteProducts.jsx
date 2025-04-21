@@ -159,10 +159,10 @@
 // //                 </div>
 // //                 <div className="flex items-center justify-between">
 // //                   <div>
-// //                     <span className="text-lg font-bold text-gray-900 dark:text-white">{product.price} ر.س</span>
+// //                     <span className="text-lg font-bold text-gray-900 dark:text-white">{product.price} ر.ي</span>
 // //                     {product.oldPrice && (
 // //                       <span className="text-sm text-gray-500 dark:text-gray-400 line-through mr-2">
-// //                         {product.oldPrice} ر.س
+// //                         {product.oldPrice} ر.ي
 // //                       </span>
 // //                     )}
 // //                   </div>
@@ -340,10 +340,10 @@
 // //                 </div>
 // //                 <div className="flex items-center justify-between">
 // //                   <div>
-// //                     <span className="text-lg font-bold text-gray-900 dark:text-white">{product.price} ر.س</span>
+// //                     <span className="text-lg font-bold text-gray-900 dark:text-white">{product.price} ر.ي</span>
 // //                     {product.oldPrice && (
 // //                       <span className="text-sm text-gray-500 dark:text-gray-400 line-through mr-2">
-// //                         {product.oldPrice} ر.س
+// //                         {product.oldPrice} ر.ي
 // //                       </span>
 // //                     )}
 // //                   </div>
@@ -528,10 +528,10 @@
 //                 </div>
 //                 <div className="flex items-center justify-between">
 //                   <div>
-//                     <span className="text-lg font-bold text-gray-900 dark:text-white">{product.price} ر.س</span>
+//                     <span className="text-lg font-bold text-gray-900 dark:text-white">{product.price} ر.ي</span>
 //                     {product.oldPrice && (
 //                       <span className="text-sm text-gray-500 dark:text-gray-400 line-through mr-2">
-//                         {product.oldPrice} ر.س
+//                         {product.oldPrice} ر.ي
 //                       </span>
 //                     )}
 //                   </div>
@@ -776,11 +776,11 @@
 //                           className="text-lg font-bold"
 //                           style={{ color: accentColor }}
 //                         >
-//                           {product.salePrice || product.productPrice} ر.س
+//                           {product.salePrice || product.productPrice} ر.ي
 //                         </span>
 //                         {product.salePrice && (
 //                           <span className="text-sm text-gray-500 dark:text-gray-400 line-through mr-2">
-//                             {product.productPrice} ر.س
+//                             {product.productPrice} ر.ي
 //                           </span>
 //                         )}
 //                       </div>
@@ -1025,11 +1025,11 @@
 //                           className="text-lg font-bold"
 //                           style={{ color: accentColor }}
 //                         >
-//                           {product.salePrice || product.productPrice} ر.س
+//                           {product.salePrice || product.productPrice} ر.ي
 //                         </span>
 //                         {product.salePrice && (
 //                           <span className="text-sm text-gray-500 dark:text-gray-400 line-through mr-2">
-//                             {product.productPrice} ر.س
+//                             {product.productPrice} ر.ي
 //                           </span>
 //                         )}
 //                       </div>
@@ -1286,11 +1286,11 @@
 //                           className="text-lg font-bold"
 //                           style={{ color: accentColor }}
 //                         >
-//                           {product.salePrice || product.productPrice} ر.س
+//                           {product.salePrice || product.productPrice} ر.ي
 //                         </span>
 //                         {product.salePrice && (
 //                           <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
-//                             {product.productPrice} ر.س
+//                             {product.productPrice} ر.ي
 //                           </span>
 //                         )}
 //                       </div>
@@ -1579,11 +1579,11 @@
 //                           className="text-lg font-bold"
 //                           style={{ color: accentColor }}
 //                         >
-//                           {product.salePrice || product.productPrice} ر.س
+//                           {product.salePrice || product.productPrice} ر.ي
 //                         </span>
 //                         {product.salePrice && (
 //                           <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
-//                             {product.productPrice} ر.س
+//                             {product.productPrice} ر.ي
 //                           </span>
 //                         )}
 //                       </div>
@@ -1788,9 +1788,9 @@ export default function FeaturedProducts({ products, customization = {}, categor
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-lg font-bold" style={{ color: accentColor }}>
-                {product.salePrice || product.productPrice} ر.س
+                {product.salePrice || product.productPrice} ر.ي
               </span>
-              {product.salePrice && <span className="text-sm line-through text-gray-500 dark:text-gray-400">{product.productPrice} ر.س</span>}
+              {product.salePrice && <span className="text-sm line-through text-gray-500 dark:text-gray-400">{product.productPrice} ر.ي</span>}
             </div>
             <button
               onClick={(e) => handleAddToCart(e, product)}
@@ -2107,11 +2107,11 @@ export default function FeaturedProducts({ products, customization = {}, categor
 //                             className="text-lg font-bold"
 //                             style={{ color: accentColor }}
 //                           >
-//                             {product.salePrice || product.productPrice} ر.س
+//                             {product.salePrice || product.productPrice} ر.ي
 //                           </span>
 //                           {product.salePrice && (
 //                             <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
-//                               {product.productPrice} ر.س
+//                               {product.productPrice} ر.ي
 //                             </span>
 //                           )}
 //                         </div>
@@ -2328,11 +2328,11 @@ export default function FeaturedProducts({ products, customization = {}, categor
 //                 <div className="flex items-center justify-between">
 //                   <div>
 //                     <span className="text-lg font-bold" style={{ color: accentColor }}>
-//                       {product.salePrice || product.productPrice} ر.س
+//                       {product.salePrice || product.productPrice} ر.ي
 //                     </span>
 //                     {product.salePrice && (
 //                       <span className="text-sm text-gray-500 dark:text-gray-400 line-through mr-2">
-//                         {product.productPrice} ر.س
+//                         {product.productPrice} ر.ي
 //                       </span>
 //                     )}
 //                   </div>

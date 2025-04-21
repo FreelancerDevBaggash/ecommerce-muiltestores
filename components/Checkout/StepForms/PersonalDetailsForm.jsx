@@ -197,8 +197,10 @@ export default function PersonalDetailsForm({ storeId }) {
   const customerId = session?.user.id;
   const [customerStore, setCustomerStore] = useState(null);
   // جلب customerStore بناءً على storeId و customerId
+  console.log('lllllll', loading)
+  console.log('ssssssssss', customerStore)
   useEffect(() => {
-    if (loading === "authenticated" && customerId && storeId) {
+    if (loading === false && customerId && storeId) {
       const fetchCustomerStore = async () => {
         try {
           const response = await fetch(`/api/customerStores?storeId=${storeId}&customerId=${customerId}`);

@@ -1,63 +1,85 @@
-import React, { useState } from 'react'
 
-export default function ReviewModal({ storeId, orderId, customerId, onClose }) {
-  const [rating, setRating] = useState(0)
-  const [comment, setComment] = useState('')
-  const [loading, setLoading] = useState(false)
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
-  const submitReview = async () => {
-    setLoading(true)
+function ReviewModal({ storeId, customerStoreId, onClose }) {
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState('');
+  const [hasReviewed, setHasReviewed] = useState(false);
+
+  // الدالة لجلب التقييمات السابقة من الـ API
+  const checkIfReviewed = async () => {
     try {
-      // إرسال التقييم مع userId
-      await fetch('/api/reviews', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ storeId, customerId, rating, comment }),
-      })
-      onClose()
-    } catch (err) {
-      console.error('فشل إرسال التقييم', err)
-    } finally {
-      setLoading(false)
+      const response = await fetch(`/api/reviews?storeId=${storeId}&customerStoreId=${customerStoreId}`);
+      const reviews = await response.json();
+      if (reviews.length > 0) {
+        setHasReviewed(true); // إذا كان العميل قد قيم المتجر بالفعل
+      }
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
     }
-  }
+  };
+
+  // دالة إرسال التقييم الجديد إلى الـ API
+  const submitReview = async () => {
+    try {
+      if (hasReviewed) {
+        alert("لقد قمت بتقييم هذا المتجر من قبل.");
+        return;
+      }
+
+      const response = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          storeId,
+          customerStoreId,
+          rating,
+          comment,
+        }),
+      });
+
+      const data = await response.json();
+      alert("تم إرسال التقييم بنجاح!");
+      onClose(); // إغلاق الـ Modal بعد إرسال التقييم
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      alert("حدث خطأ أثناء إرسال التقييم");
+    }
+  };
+
+  useEffect(() => {
+    checkIfReviewed();
+  }, [storeId, customerStoreId]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-      <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-lg">
-        <h2 className="text-lg font-bold mb-4">قيم المتجر</h2>
-
-        <div className="flex space-x-1 justify-center mb-4 flex-row-reverse">
-          {[1, 2, 3, 4, 5].map((star) => (
-            <button key={star} onClick={() => setRating(star)}>
-              <span className={star <= rating ? 'text-yellow-500' : 'text-gray-300'}>★</span>
-            </button>
-          ))}
+    <div className="modal">
+      <div className="modal-content">
+        <h2>يرجى تقييم المتجر</h2>
+        <div>
+          <label>التقييم:</label>
+          <select onChange={(e) => setRating(Number(e.target.value))}>
+            <option value={0}>اختر التقييم</option>
+            <option value={1}>1</option>
+            <option value={2}>2</option>
+            <option value={3}>3</option>
+            <option value={4}>4</option>
+            <option value={5}>5</option>
+          </select>
         </div>
-
-        <textarea
-          placeholder="أضف تعليقك"
-          className="w-full p-2 border rounded-md mb-4"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-        />
-
-        <div className="flex justify-end gap-2">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 text-sm border rounded-md"
-          >
-            إغلاق
-          </button>
-          <button
-            disabled={loading}
-            onClick={submitReview}
-            className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md"
-          >
-            {loading ? '...جارٍ الإرسال' : 'إرسال'}
-          </button>
+        <div>
+          <label>اعطينا رأيك في المتجر:</label>
+          <textarea onChange={(e) => setComment(e.target.value)} value={comment}></textarea>
+        </div>
+        <div>
+          <button onClick={submitReview}>إرسال التقييم</button>
+          <button onClick={onClose}>إغلاق</button>
         </div>
       </div>
     </div>
-  )
+  );
 }
+
+export default ReviewModal;

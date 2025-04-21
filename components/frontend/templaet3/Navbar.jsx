@@ -214,7 +214,7 @@ export default function Navbar({ slugDomain, storeData ={}, customization = {} }
                   />
                 </motion.div>
                 <motion.h1 
-                  className={`${logoTextSize} font-extrabold text-primary whitespace-nowrap ${
+                  className={`${logoTextSize} font-extrabold text-primary dark:text-white whitespace-nowrap ${
                     scrolled ? 'scale-95' : ''
                   }`}
                   whileHover={{ color: 'var(--primary-600)' }}
@@ -244,7 +244,7 @@ export default function Navbar({ slugDomain, storeData ={}, customization = {} }
                     className="p-2 rounded-full hover:bg-primary-100 dark:hover:bg-gray-700 relative transition-colors"
                     aria-label="سلة التسوق"
                   >
-                    <ShoppingCart className="w-5 h-5 text-primary" />
+                    <ShoppingCart className="w-5 h-5 text-primary dark:text-white" />
                   </motion.button>
                 </CartCount>
               </div>

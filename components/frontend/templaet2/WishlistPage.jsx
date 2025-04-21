@@ -103,7 +103,7 @@ const WishlistPage = ({ slugDomain }) => {
                 <div className="flex items-center justify-between mt-4">
                   <div>
                     <span className="text-lg font-bold text-gray-800 dark:text-gray-200">
-                      {product.price} ر.س
+                      {product.price} ر.ي
                     </span>
                   </div>
 

@@ -48,40 +48,45 @@
 //   ]
 // };
 
-
-// middleware.js (في جذر المشروع أو /app)
+// middleware.js
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-// احرص أن NEXTAUTH_SECRET معرف في .env.local
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 
 export async function middleware(req) {
   const { pathname } = req.nextUrl;
 
-  // 1) تحقق من جلسة next-auth (Vendor)
+  // 1) حاول جلب جلسة الـ Vendor
   const vendorToken = await getToken({ req, secret: NEXTAUTH_SECRET });
-
-  // 2) تحقق من JWT الكوكي للعملاء
+  // 2) حاول جلب JWT عميل من الكوكي
   const customerToken = req.cookies.get("customer_token")?.value;
 
-  // إذا وجد أيٍ من الجلستين → اترك المستخدم يمر
-  if (vendorToken || customerToken) {
-    return NextResponse.next();
-  }
-
-  // خلاف ذلك → يحتاج لتسجيل الدخول
-  // مثال: منع لوحة التحكم
+  // مسارات لوحة التحكم – خاصّة بالتجار فقط
   if (pathname.startsWith("/dashboard")) {
+    if (vendorToken) {
+      return NextResponse.next();
+    }
     return NextResponse.redirect(new URL("/login", req.url));
   }
-  // مثال: منع checkout للمتجر
-  if (pathname.includes("/checkout")) {
-    // نقرأ slug من المسار
-    const slug = pathname.split("/")[1] || "default";
-    return NextResponse.redirect(new URL(`/${slug}/loginCustomer`, req.url));
+
+  // مسارات الدفع – خاصّة بالعملاء فقط
+  // نستخدم matcher لكل من /checkout و /:slug/checkout
+  if (pathname === "/checkout" || pathname.match(/^\/[^/]+\/checkout$/)) {
+    if (customerToken) {
+      return NextResponse.next();
+    }
+    // إذا كان في مسار /:slug/checkout نعيد توجيههم ل slug/loginCustomer
+    // أما إذا كان /checkout فقط نرسلهم إلى /loginCustomer
+    const parts = pathname.split("/").filter(Boolean);
+    const slug = parts.length === 2 ? parts[0] : null;
+    const redirectTo = slug
+      ? `/${slug}/loginCustomer`
+      : `/loginCustomer`;
+    return NextResponse.redirect(new URL(redirectTo, req.url));
   }
 
+  // باقي الصفحات مفتوحة للجميع
   return NextResponse.next();
 }
 

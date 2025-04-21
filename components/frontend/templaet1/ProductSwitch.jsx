@@ -299,11 +299,11 @@ export default function ProductSwitch({ product, customization = {} }) {
                   className="text-2xl font-bold"
                   style={{ color: primaryColor }}
                 >
-                  {product.salePrice?.toLocaleString()} ر.س
+                  {product.salePrice?.toLocaleString()} ر.ي
                 </span>
                 {product.productPrice && (
                   <del className="text-sm text-gray-400 dark:text-gray-500">
-                    {product.productPrice?.toLocaleString()} ر.س
+                    {product.productPrice?.toLocaleString()} ر.ي
                   </del>
                 )}
               </div>

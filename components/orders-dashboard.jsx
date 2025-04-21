@@ -1116,10 +1116,292 @@
 //     default: return "text-gray-600 bg-gray-50"
 //   }
 // }
+
+// "use client"
+
+// import React from "react"
+// import { useState, useEffect } from "react"
+// import { Checkbox } from "../components/ui/checkbox"
+// import { Button } from "../components/ui/button"
+// import DataTable from "../components/data-table-components/DataTable"
+// import SortableColumn from "../components/DateTableColumns/SortableColumn"
+// import DateColumn from "../components/DateTableColumns/DateColumn"
+// import ActionColumn from "../components/DateTableColumns/ActionColumn"
+// import ModalComponent from "../components/Actions/ModalComponent"
+// import OrderCard from "../components/Order/OrderCard"
+// import SmallCards from "../components/backoffice/SmallCards"
+// import { getData } from "../lib/getData"
+// import { useSession } from "next-auth/react"
+
+// export default function OrdersDashboard() {
+//   const { data: session, status } = useSession()
+//   const [selectedStatus, setSelectedStatus] = useState("all")
+//   const [filteredOrders, setFilteredOrders] = useState([])
+//   const [isModalOpen, setIsModalOpen] = useState(false)
+//   const [selectedOrder, setSelectedOrder] = useState(null)
+//   const [orders, setOrders] = useState([])
+//   const [storeId, setStoreId] = useState(null)
+//   const [isLoading, setIsLoading] = useState(true)
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       if (status === "loading") return // إذا كانت الجلسة قيد التحميل
+
+//       try {
+//         setIsLoading(true)
+        
+//         if (session?.user?.id) {
+//           // جلب بيانات المتجر
+//           const storeData = await getData(`stores?vendorId=${session.user.id}`)
+          
+//           if (storeData?.length > 0) {
+//             setStoreId(storeData[0].id)
+            
+//             // جلب جميع الطلبات
+//             const ordersData = await getData('orders')
+            
+//             // تصفية الطلبات الخاصة بالمستخدم
+//             const userOrders = ordersData.filter(order => 
+//               order.storeId === storeData[0].id
+//             )
+            
+//             setOrders(ordersData)
+//             setFilteredOrders(ordersData)
+//           }
+//         }
+//       } catch (error) {
+//         console.error("حدث خطأ أثناء جلب البيانات:", error)
+//       } finally {
+//         setIsLoading(false)
+//       }
+//     }
+
+//     fetchData()
+//   }, [session, status])
+
+//   useEffect(() => {
+//     if (selectedStatus === "all") {
+//       setFilteredOrders(orders)
+//     } else {
+//       setFilteredOrders(orders.filter(order => 
+//         order.orderStatus === selectedStatus
+//       ))
+//     }
+//   }, [selectedStatus, orders])
+
+//   const handleOpenModal = (order) => {
+//     setSelectedOrder(order)
+//     setIsModalOpen(true)
+//   }
+
+//   const handleCloseModal = () => {
+//     setIsModalOpen(false)
+//     setSelectedOrder(null)
+//   }
+
+//   if (status === "loading" || isLoading) {
+//     return <p className="p-6 text-gray-500">جارٍ التحميل...</p>
+//   }
+
+//   if (!orders || orders.length === 0) {
+//     return (
+//       <div className="p-6">
+//         <p className="text-gray-500">لا توجد طلبات بعد</p>
+//         <Button 
+//           className="mt-4"
+//           onClick={() => window.location.reload()}
+//         >
+//           إعادة تحميل
+//         </Button>
+//       </div>
+//     )
+//   }
+
+//   // تعريف الأعمدة
+//   const columns = [
+//     {
+//       id: "select",
+//       header: ({ table }) => (
+//         <Checkbox
+//           checked={table.getIsAllPageRowsSelected()}
+//           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+//           aria-label="تحديد الكل"
+//         />
+//       ),
+//       cell: ({ row }) => (
+//         <Checkbox
+//           checked={row.getIsSelected()}
+//           onCheckedChange={(value) => row.toggleSelected(!!value)}
+//           aria-label="تحديد صف"
+//         />
+//       ),
+//       enableSorting: false,
+//       enableHiding: false,
+//     },
+//     {
+//       accessorKey: "orderNumber",
+//       header: ({ column }) => <SortableColumn column={column} title="رقم الطلب" />,
+//     },
+//     {
+//       accessorKey: "firstName",
+//       header: ({ column }) => <SortableColumn column={column} title="الاسم" />,
+//       cell: ({ row }) => (
+//         <div>
+//           {row.getValue("firstName")} {row.getValue("lastName")}
+//         </div>
+//       ),
+//     },
+//     {
+//       accessorKey: "phone",
+//       header: ({ column }) => <SortableColumn column={column} title="الهاتف" />,
+//     },
+//     {
+//       accessorKey: "paymentMethod",
+//       header: ({ column }) => <SortableColumn column={column} title="طريقة الدفع" />,
+//     },
+//     {
+//       accessorKey: "orderStatus",
+//       header: ({ column }) => <SortableColumn column={column} title="الحالة" />,
+//       cell: ({ row }) => {
+//         const [currentStatus, setCurrentStatus] = useState(row.getValue("orderStatus"))
+
+//         const handleStatusChange = async (e) => {
+//           const newStatus = e.target.value
+//           setCurrentStatus(newStatus)
+
+//           try {
+//             await fetch(`/api/orders/${row.original.id}`, {
+//               method: "PATCH",
+//               headers: { "Content-Type": "application/json" },
+//               body: JSON.stringify({ orderStatus: newStatus }),
+//             })
+//             // تحديث الحالة المحلية
+//             const updatedOrders = orders.map(order => 
+//               order.id === row.original.id 
+//                 ? {...order, orderStatus: newStatus} 
+//                 : order
+//             )
+//             setOrders(updatedOrders)
+//           } catch (error) {
+//             console.error("خطأ في تحديث الحالة:", error)
+//           }
+//         }
+
+//         const statusOptions = [
+//           "جديد",
+//           "جاري التجهيز",
+//           "جاهز",
+//           "جاري التوصيل",
+//           "تم التوصيل",
+//           "ملغي",
+//         ]
+
+//         return (
+//           <div className="flex items-center gap-2">
+//             <span className={`px-2 py-1 rounded-md text-sm ${getStatusColor(currentStatus)}`}>
+//               {currentStatus}
+//             </span>
+//             <select
+//               value={currentStatus}
+//               onChange={handleStatusChange}
+//               className="border rounded-md px-2 py-1 bg-gray-100 text-gray-800 text-sm"
+//             >
+//               {statusOptions.map(option => (
+//                 <option key={option} value={option}>
+//                   {option}
+//                 </option>
+//               ))}
+//             </select>
+//           </div>
+//         )
+//       },
+//     },
+//     {
+//       accessorKey: "createdAt",
+//       header: "التاريخ",
+//       cell: ({ row }) => <DateColumn row={row} accessorKey="createdAt" />,
+//     },
+//     {
+//       id: "actions",
+//       cell: ({ row }) => (
+//         <div className="flex gap-2">
+//           <Button 
+//             onClick={() => handleOpenModal(row.original)}
+//             variant="outline"
+//             size="sm"
+//           >
+//             عرض التفاصيل
+//           </Button>
+//           <ActionColumn
+//             row={row}
+//             title="الطلب"
+//             endpoint={`orders/${row.original.id}`}
+//             editEndpoint={`orders/update/${row.original.id}`}
+//           />
+//         </div>
+//       ),
+//     },
+//   ]
+
+//   return (
+//     <div className="min-h-screen font-arabic bg-gray-50">
+//       <main className="p-6">
+//         <div className="bg-white rounded-lg shadow-sm p-6">
+//           <div className="flex text-slate-600 justify-between items-center mb-6">
+//             <div>
+//               <h1 className="text-2xl font-bold text-gray-800">إدارة الطلبات</h1>
+//               <p className="text-gray-500">إجمالي الطلبات: {orders.length}</p>
+//             </div>
+//             <Button 
+//               className="bg-green-500 hover:bg-green-600"
+//               onClick={() => window.location.href = '/orders/new'}
+//             >
+//               إنشاء طلب جديد
+//             </Button>
+//           </div>
+
+//           <SmallCards 
+//             orders={orders} 
+//             onStatusSelect={setSelectedStatus} 
+//             selectedStatus={selectedStatus}
+//           />
+
+//           <DataTable 
+//             columns={columns} 
+//             data={filteredOrders} 
+//             filterKeys={["firstName", "lastName", "phone"]}
+//           />
+
+//           <ModalComponent 
+//             isOpen={isModalOpen} 
+//             onClose={handleCloseModal}
+//             title="تفاصيل الطلب"
+//           >
+//             {selectedOrder && <OrderCard order={selectedOrder} />}
+//           </ModalComponent>
+//         </div>
+//       </main>
+//     </div>
+//   )
+// }
+
+// // دالة مساعدة لتحديد ألوان الحالة
+// function getStatusColor(status) {
+//   const colors = {
+//     "جديد": "text-green-800 bg-green-100",
+//     "جاري التجهيز": "text-blue-800 bg-blue-100",
+//     "جاهز": "text-purple-800 bg-purple-100",
+//     "جاري التوصيل": "text-amber-800 bg-amber-100",
+//     "تم التوصيل": "text-teal-800 bg-teal-100",
+//     "ملغي": "text-red-800 bg-red-100",
+//   }
+//   return colors[status] || "text-gray-800 bg-gray-100"
+// }
+
+
 "use client"
 
-import React from "react"
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { Checkbox } from "../components/ui/checkbox"
 import { Button } from "../components/ui/button"
 import DataTable from "../components/data-table-components/DataTable"
@@ -1144,28 +1426,22 @@ export default function OrdersDashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (status === "loading") return // إذا كانت الجلسة قيد التحميل
+      if (status === "loading") return
 
       try {
         setIsLoading(true)
         
         if (session?.user?.id) {
-          // جلب بيانات المتجر
           const storeData = await getData(`stores?vendorId=${session.user.id}`)
           
           if (storeData?.length > 0) {
             setStoreId(storeData[0].id)
-            
-            // جلب جميع الطلبات
+
             const ordersData = await getData('orders')
-            
-            // تصفية الطلبات الخاصة بالمستخدم
-            const userOrders = ordersData.filter(order => 
-              order.storeId === storeData[0].id
-            )
-            
-            setOrders(ordersData)
-            setFilteredOrders(ordersData)
+            const userOrders = ordersData.filter(order => order.storeId === storeData[0].id)
+
+            setOrders(userOrders)
+            setFilteredOrders(userOrders)
           }
         }
       } catch (error) {
@@ -1182,9 +1458,7 @@ export default function OrdersDashboard() {
     if (selectedStatus === "all") {
       setFilteredOrders(orders)
     } else {
-      setFilteredOrders(orders.filter(order => 
-        order.orderStatus === selectedStatus
-      ))
+      setFilteredOrders(orders.filter(order => order.orderStatus === selectedStatus))
     }
   }, [selectedStatus, orders])
 
@@ -1206,17 +1480,44 @@ export default function OrdersDashboard() {
     return (
       <div className="p-6">
         <p className="text-gray-500">لا توجد طلبات بعد</p>
-        <Button 
-          className="mt-4"
-          onClick={() => window.location.reload()}
-        >
+        <Button className="mt-4" onClick={() => window.location.reload()}>
           إعادة تحميل
         </Button>
       </div>
     )
   }
 
-  // تعريف الأعمدة
+  // دوال الترجمة
+  const translateOrderStatus = (status) => {
+    const translations = {
+      "PENDING": "قيد الانتظار",
+      "PROCESSING": "جاري المعالجة",
+      "SHIPPED": "تم الشحن",
+      "DELIVERED": "تم التوصيل",
+      "CANCELED": "ملغي",
+    }
+    return translations[status] || status
+  }
+
+  const reverseTranslateOrderStatus = (arabicStatus) => {
+    const reverseTranslations = {
+      "قيد الانتظار": "PENDING",
+      "جاري المعالجة": "PROCESSING",
+      "تم الشحن": "SHIPPED",
+      "تم التوصيل": "DELIVERED",
+      "ملغي": "CANCELED",
+    }
+    return reverseTranslations[arabicStatus] || arabicStatus
+  }
+
+  const statusOptions = [
+    "قيد الانتظار",
+    "جاري المعالجة",
+    "تم الشحن",
+    "تم التوصيل",
+    "ملغي",
+  ]
+
   const columns = [
     {
       id: "select",
@@ -1245,9 +1546,7 @@ export default function OrdersDashboard() {
       accessorKey: "firstName",
       header: ({ column }) => <SortableColumn column={column} title="الاسم" />,
       cell: ({ row }) => (
-        <div>
-          {row.getValue("firstName")} {row.getValue("lastName")}
-        </div>
+        <div>{row.getValue("firstName")} {row.getValue("lastName")}</div>
       ),
     },
     {
@@ -1265,7 +1564,8 @@ export default function OrdersDashboard() {
         const [currentStatus, setCurrentStatus] = useState(row.getValue("orderStatus"))
 
         const handleStatusChange = async (e) => {
-          const newStatus = e.target.value
+          const arabicStatus = e.target.value
+          const newStatus = reverseTranslateOrderStatus(arabicStatus)
           setCurrentStatus(newStatus)
 
           try {
@@ -1274,10 +1574,10 @@ export default function OrdersDashboard() {
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ orderStatus: newStatus }),
             })
-            // تحديث الحالة المحلية
+
             const updatedOrders = orders.map(order => 
               order.id === row.original.id 
-                ? {...order, orderStatus: newStatus} 
+                ? { ...order, orderStatus: newStatus }
                 : order
             )
             setOrders(updatedOrders)
@@ -1286,22 +1586,13 @@ export default function OrdersDashboard() {
           }
         }
 
-        const statusOptions = [
-          "جديد",
-          "جاري التجهيز",
-          "جاهز",
-          "جاري التوصيل",
-          "تم التوصيل",
-          "ملغي",
-        ]
-
         return (
           <div className="flex items-center gap-2">
             <span className={`px-2 py-1 rounded-md text-sm ${getStatusColor(currentStatus)}`}>
-              {currentStatus}
+              {translateOrderStatus(currentStatus)}
             </span>
             <select
-              value={currentStatus}
+              value={translateOrderStatus(currentStatus)}
               onChange={handleStatusChange}
               className="border rounded-md px-2 py-1 bg-gray-100 text-gray-800 text-sm"
             >
@@ -1384,19 +1675,16 @@ export default function OrdersDashboard() {
   )
 }
 
-// دالة مساعدة لتحديد ألوان الحالة
+// دالة تحديد ألوان الحالة
 function getStatusColor(status) {
   const colors = {
-    "جديد": "text-green-800 bg-green-100",
-    "جاري التجهيز": "text-blue-800 bg-blue-100",
-    "جاهز": "text-purple-800 bg-purple-100",
-    "جاري التوصيل": "text-amber-800 bg-amber-100",
-    "تم التوصيل": "text-teal-800 bg-teal-100",
-    "ملغي": "text-red-800 bg-red-100",
+    "PENDING": "text-green-800 bg-green-100",
+    "PROCESSING": "text-blue-800 bg-blue-100",
+    "SHIPPED": "text-purple-800 bg-purple-100",
+    "DELIVERED": "text-teal-800 bg-teal-100",
+    "CANCELED": "text-red-800 bg-red-100",
   }
   return colors[status] || "text-gray-800 bg-gray-100"
 }
-
-
 
 

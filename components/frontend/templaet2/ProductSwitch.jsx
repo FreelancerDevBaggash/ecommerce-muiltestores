@@ -236,14 +236,14 @@
 // //               className="text-xl font-bold"
 // //               style={{ color: themeColors.text }}
 // //             >
-// //               {product.salePrice.toFixed(2)} ر.س
+// //               {product.salePrice.toFixed(2)} ر.ي
 // //             </span>
 // //             {product.productPrice > product.salePrice && (
 // //               <span 
 // //                 className="text-sm line-through"
 // //                 style={{ color: hexToRgba(themeColors.text, 0.5) }}
 // //               >
-// //                 {product.productPrice.toFixed(2)} ر.س
+// //                 {product.productPrice.toFixed(2)} ر.ي
 // //               </span>
 // //             )}
 // //           </div>
@@ -558,14 +558,14 @@
 //               className="text-xl font-bold"
 //               style={{ color: themeColors.text }}
 //             >
-//               {product.salePrice.toFixed(2)} ر.س
+//               {product.salePrice.toFixed(2)} ر.ي
 //             </span>
 //             {product.productPrice > product.salePrice && (
 //               <span 
 //                 className="text-sm line-through"
 //                 style={{ color: hexToRgba(themeColors.text, 0.5) }}
 //               >
-//                 {product.productPrice.toFixed(2)} ر.س
+//                 {product.productPrice.toFixed(2)} ر.ي
 //               </span>
 //             )}
 //           </div>
@@ -912,11 +912,11 @@ const ProductCard = ({ product, customization = {} }) => {
               <div className="flex items-center justify-between">
                 <div className="flex items-baseline gap-2">
                   <span className="text-xl font-bold" style={{ color: primaryColor }}>
-                    {product.salePrice?.toLocaleString()} ر.س
+                    {product.salePrice?.toLocaleString()} ر.ي
                   </span>
                   {product.productPrice && (
                     <del className="text-sm text-gray-400 dark:text-gray-500">
-                      {product.productPrice?.toLocaleString()} ر.س
+                      {product.productPrice?.toLocaleString()} ر.ي
                     </del>
                   )}
                 </div>

@@ -115,7 +115,7 @@ const ModalComponent = ({ isOpen, onClose, children, triggerRef }) => {
   return (
     <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center" onClick={onClose}>
       <div
-        className="bg-white dark:bg-slate-800 rounded-xl shadow-xl overflow-y-auto max-h-[90vh] w-full max-w-3xl mx-4"
+        className="bg-white dark:bg-slate-800 text-gray-500 dark:text-gray-300 rounded-xl shadow-xl overflow-y-auto max-h-[90vh] w-full max-w-3xl mx-4"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-end p-2">

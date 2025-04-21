@@ -196,8 +196,13 @@ export default function UserAvatar({ user = {}, customization = {}, slugDomain }
   };
 
   async function handleLogout() {
-    await signOut();
-    router.push(`/${slugDomain}`);
+    // await signOut();
+    // router.push(`/${slugDomain}`);
+    await fetch("/api/customerAuth/logout", { method: "POST" });
+
+    // 2) إذا كنت تستخدم next-auth أيضاً:
+    await signOut({ redirect: false });
+      router.push(`/${slugDomain}`);
   }
 
   return (

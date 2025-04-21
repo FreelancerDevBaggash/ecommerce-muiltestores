@@ -486,8 +486,8 @@ export default function FeaturedProducts({
                           className="range-slider"
                         />
                         <div className="flex justify-between mt-2 text-sm text-gray-600 dark:text-gray-400">
-                          <span>{priceRange[0]} ر.س</span>
-                          <span>{priceRange[1]} ر.س</span>
+                          <span>{priceRange[0]} ر.ي</span>
+                          <span>{priceRange[1]} ر.ي</span>
                         </div>
                       </div>
                       
@@ -728,11 +728,11 @@ export default function FeaturedProducts({
                                   textShadow: `0 2px 4px rgba(${colors.accentRgb}, 0.1)`
                                 }}
                               >
-                                {product.salePrice || product.productPrice} ر.س
+                                {product.salePrice || product.productPrice} ر.ي
                               </span>
                               {product.salePrice && (
                                 <span className="text-sm text-gray-500 dark:text-gray-400 line-through block">
-                                  {product.productPrice} ر.س
+                                  {product.productPrice} ر.ي
                                 </span>
                               )}
                             </div>
@@ -863,8 +863,8 @@ export default function FeaturedProducts({
                     className="range-slider"
                   />
                   <div className="flex justify-between mt-2 text-sm text-gray-600 dark:text-gray-400">
-                    <span>{priceRange[0]} ر.س</span>
-                    <span>{priceRange[1]} ر.س</span>
+                    <span>{priceRange[0]} ر.ي</span>
+                    <span>{priceRange[1]} ر.ي</span>
                   </div>
                 </div>
                 

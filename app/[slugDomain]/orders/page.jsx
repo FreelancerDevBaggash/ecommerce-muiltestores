@@ -94,25 +94,31 @@
 import React from 'react';
 import OrderCard from '@/components/Order/OrderCard';
 import { getData } from '@/lib/getData';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/authOptions';
-
-export default async function page() {
+// import { getServerSession } from 'next-auth';
+// import { authOptions } from '@/lib/authOptions';
+import { getCustomerSession } from '@/lib/getCustomerSession';
+export default async function page({ params: { slugDomain } }) {
   // Fetch All Orders 
+    const store = await getData(`/stores/store/${slugDomain}`);
+    if (!store || !store.businessNameEn) {
+      return <h1 className="bg-slate-50 text-slate-500">Store not found</h1>;
+    }
+    const storeId = store.id;
   const orders = await getData("orders", { mode: 'real-time' });
 
   // Get the User Id
-  const session = await getServerSession(authOptions);
+  const session = getCustomerSession();
   if (!session) return;
 
   const userId = session?.user?.id;
-
+  const customerStore = await getData(`customerStores?storeId=${storeId}&customerId=${userId}`)
+  const customerStoreId = customerStore.id;
   if (!orders || orders.length === 0) {
     return <p className="text-center text-gray-700 mt-6">لا توجد طلبات حتى الآن</p>
   }
 
   // Filter By User Id
-  const userOrders = orders.filter((order) => order.customersId === userId);
+  const userOrders = orders.filter((order) => order.CustomerStoreId === customerStoreId);
   
   return (
     <section dir="rtl" className="py-16 bg-white sm:py-16 lg:py-20">

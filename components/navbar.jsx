@@ -8,7 +8,7 @@ import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
-import { Logo } from "@/components/ui/logo"
+// import { Logo } from "@/components/ui/logo"
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -52,7 +52,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="flex items-center">
-              <Logo className="h-10 w-auto" />
+              {/* <Logo className="h-10 w-auto" /> */}
               <span className="mr-2 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-l from-indigo-600 to-indigo-400 dark:from-indigo-400 dark:to-indigo-200">
                 أتجر
               </span>

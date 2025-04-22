@@ -1,3 +1,5 @@
+
+
 "use client"
 
 import { useRef, useEffect } from "react"
@@ -25,13 +27,14 @@ import Appdownloadsection from "@/components/sections/app-download-section"
 import ProductShowcaseSection from "@/components/sections/product-showcase-section"
 
 
-// Register GSAP plugins
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, MotionPathPlugin)
 
 export default function Home() {
   const containerRef = useRef(null)
 
   useEffect(() => {
+    // Register GSAP plugins
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, MotionPathPlugin)
+
     // Initialize ScrollTrigger
     ScrollTrigger.defaults({
       toggleActions: "play pause resume reset",

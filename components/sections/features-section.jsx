@@ -190,11 +190,11 @@ export default function FeaturesSection() {
   ]
 
   return (
-    <section id="management" className="py-24 bg-gradient-to-b from-gray-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800">
+    <section ref={ref}  id="management" className="py-24 bg-gradient-to-b from-gray-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* العنوان الرئيسي */}
         <div className="text-center mb-20">
-          <FadeIn>
+          <FadeIn inView={isInView}>
             <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
                 أنظمة إدارة متكاملة
@@ -204,7 +204,7 @@ export default function FeaturesSection() {
             </h2>
           </FadeIn>
           
-          <SlideIn>
+          <SlideIn inView={isInView}>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mt-6">
               نظام إدارة شامل يوفر تحكمًا كاملاً في عملياتك اليومية ويسهل إدارة كافة جوانب متجرك الإلكتروني
             </p>
@@ -212,8 +212,9 @@ export default function FeaturesSection() {
         </div>
 
         {/* أنظمة الإدارة */}
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Stagger>
+       
+          <Stagger inView={isInView}>
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {managementSystems.map((system, index) => (
               <Card
                 key={index}
@@ -251,12 +252,14 @@ export default function FeaturesSection() {
                 </CardContent>
               </Card>
             ))}
+              </div>
           </Stagger>
-        </div>
+      
 
         {/* إحصائيات مع الصور */}
-        <div className="mt-16 grid lg:grid-cols-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Stagger>
+        
+          <Stagger inView={isInView}>
+          <div className="mt-16 grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {stats.map((stat, index) => (
               <div 
                 key={index}
@@ -283,12 +286,13 @@ export default function FeaturesSection() {
                 </div>
               </div>
             ))}
+               </div>
           </Stagger>
-        </div>
+     
 
         {/* لوحة التحكم */}
         <div className="mt-16 mx-auto max-w-7xl">
-          <FadeIn delay={0.4}>
+          <FadeIn delay={0.4} inView={isInView}>
             <div className="relative aspect-video rounded-xl sm:rounded-2xl overflow-hidden shadow-xl sm:shadow-2xl border-4 sm:border-8 border-white dark:border-gray-800">
               <Image
                 src="/images/dashboard.webp"

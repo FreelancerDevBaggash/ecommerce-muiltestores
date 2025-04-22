@@ -1,191 +1,325 @@
+// "use client"
+
+// import { useState, useEffect } from "react"
+// import Link from "next/link"
+// import { usePathname } from "next/navigation"
+// import { motion, AnimatePresence } from "framer-motion"
+// import { Menu, X, Moon, Sun } from "lucide-react"
+// import { Button } from "@/components/ui/button"
+// import { useTheme } from "next-themes"
+// import { Logo } from "@/components/ui/logo"
+
+// export default function Navbar() {
+//   const [isOpen, setIsOpen] = useState(false)
+//   const [isScrolled, setIsScrolled] = useState(false)
+//   const { theme, setTheme } = useTheme()
+//   const pathname = usePathname()
+
+//   useEffect(() => {
+//     const handleScroll = () => {
+//       if (window.scrollY > 10) {
+//         setIsScrolled(true)
+//       } else {
+//         setIsScrolled(false)
+//       }
+//     }
+
+//     window.addEventListener("scroll", handleScroll)
+//     return () => window.removeEventListener("scroll", handleScroll)
+//   }, [])
+
+//   const toggleMenu = () => setIsOpen(!isOpen)
+//   const closeMenu = () => setIsOpen(false)
+
+//   const navItems = [
+//     { label: "الرئيسية", href: "/" },
+//     { label: "المميزات", href: "/#features" },
+//     { label: "الأسعار", href: "/#pricing" },
+//     { label: "الدعم", href: "/support" },
+//     { label: "مركز المساعدة", href: "/help" },
+//     { label: "الأسئلة الشائعة", href: "/faq" },
+//   ]
+
+//   return (
+//     <header
+//       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+//         isScrolled ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm" : "bg-transparent"
+//       }`}
+//     >
+//       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+//         <div className="flex items-center justify-between h-16 md:h-20">
+//           <div className="flex items-center">
+//             <Link href="/" className="flex items-center" onClick={closeMenu}>
+//               <Logo className="h-8 w-auto" />
+//             </Link>
+//           </div>
+
+//           {/* Desktop Navigation */}
+//           <nav className="hidden md:flex items-center space-x-1 space-x-reverse">
+//             {navItems.map((item, index) => (
+//               <Link
+//                 key={index}
+//                 href={item.href}
+//                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+//                   pathname === item.href
+//                     ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20"
+//                     : "text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+//                 }`}
+//               >
+//                 {item.label}
+//               </Link>
+//             ))}
+//           </nav>
+
+//           <div className="flex items-center space-x-4 space-x-reverse">
+//             <button
+//               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+//               className="p-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none"
+//               aria-label="Toggle theme"
+//             >
+//               <AnimatePresence mode="wait" initial={false}>
+//                 <motion.div
+//                   key={theme}
+//                   initial={{ y: -20, opacity: 0 }}
+//                   animate={{ y: 0, opacity: 1 }}
+//                   exit={{ y: 20, opacity: 0 }}
+//                   transition={{ duration: 0.2 }}
+//                 >
+//                   {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+//                 </motion.div>
+//               </AnimatePresence>
+//             </button>
+
+//             <div className="hidden md:block">
+//               <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">ابدأ الآن مجاناً</Button>
+//             </div>
+
+//             <button
+//               onClick={toggleMenu}
+//               className="md:hidden p-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none"
+//               aria-label="Toggle menu"
+//             >
+//               {isOpen ? <X size={24} /> : <Menu size={24} />}
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Mobile Navigation */}
+//       <AnimatePresence>
+//         {isOpen && (
+//           <motion.div
+//             initial={{ opacity: 0, height: 0 }}
+//             animate={{ opacity: 1, height: "auto" }}
+//             exit={{ opacity: 0, height: 0 }}
+//             transition={{ duration: 0.3 }}
+//             className="md:hidden bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800"
+//           >
+//             <div className="container mx-auto px-4 py-4">
+//               <nav className="flex flex-col space-y-2">
+//                 {navItems.map((item, index) => (
+//                   <motion.div
+//                     key={index}
+//                     initial={{ opacity: 0, x: -20 }}
+//                     animate={{ opacity: 1, x: 0 }}
+//                     transition={{ duration: 0.2, delay: index * 0.05 }}
+//                   >
+//                     <Link
+//                       href={item.href}
+//                       className={`px-4 py-2 rounded-md text-sm font-medium block transition-colors ${
+//                         pathname === item.href
+//                           ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20"
+//                           : "text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+//                       }`}
+//                       onClick={closeMenu}
+//                     >
+//                       {item.label}
+//                     </Link>
+//                   </motion.div>
+//                 ))}
+//                 <motion.div
+//                   initial={{ opacity: 0, x: -20 }}
+//                   animate={{ opacity: 1, x: 0 }}
+//                   transition={{ duration: 0.2, delay: navItems.length * 0.05 }}
+//                   className="pt-2"
+//                 >
+//                   <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">ابدأ الآن مجاناً</Button>
+//                 </motion.div>
+//               </nav>
+//             </div>
+//           </motion.div>
+//         )}
+//       </AnimatePresence>
+//     </header>
+//   )
+// }
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
-import { motion, useScroll, useTransform } from "framer-motion"
-import { Menu, X, Moon, Sun, ChevronDown } from "lucide-react"
-import { useTheme } from "next-themes"
+import { usePathname } from "next/navigation"
+import { motion, AnimatePresence } from "framer-motion"
+import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { cn } from "@/lib/utils"
-// import { Logo } from "@/components/ui/logo"
+import { ThemeToggle } from "@/components/ui/theme-toggle"
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
-  const { theme, setTheme } = useTheme()
-  const { scrollY } = useScroll()
+  const [isScrolled, setIsScrolled] = useState(false)
+  const pathname = usePathname()
 
-  const navBackground = useTransform(scrollY, [0, 100], ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.9)"])
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true)
+      } else {
+        setIsScrolled(false)
+      }
+    }
 
-  const navBackgroundDark = useTransform(scrollY, [0, 100], ["rgba(15, 23, 42, 0)", "rgba(15, 23, 42, 0.9)"])
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
-  const navShadow = useTransform(scrollY, [0, 100], ["0 0 0 rgba(0, 0, 0, 0)", "0 4px 20px rgba(0, 0, 0, 0.1)"])
+  const toggleMenu = () => setIsOpen(!isOpen)
+  const closeMenu = () => setIsOpen(false)
 
-  const navLinks = [
-    { name: "الرئيسية", href: "#hero" },
-    {
-      name: "المنتجات",
-      href: "#",
-      dropdown: [
-        { name: "المتجر الإلكتروني", href: "#features" },
-        { name: "تطبيقات الجوال", href: "#apps" },
-        { name: "نقاط البيع", href: "#pos" },
-      ],
-    },
-    { name: "المميزات", href: "#features" },
-    { name: "الأسعار", href: "#pricing" },
-    { name: "المدونة", href: "#blog" },
-    { name: "تواصل معنا", href: "#contact" },
+  const navItems = [
+    { label: "الرئيسية", href: "/" },
+    { label: "المميزات", href: "/#features" },
+    { label: "الأسعار", href: "/#pricing" },
+    { label: "الدعم", href: "/support" },
+    { label: "مركز المساعدة", href: "/help" },
+    { label: "الأسئلة الشائعة", href: "/faq" },
   ]
 
   return (
-    <motion.nav
-      style={{
-        backgroundColor: theme === "dark" ? navBackgroundDark : navBackground,
-        boxShadow: navShadow,
-        backdropFilter: "blur(10px)",
-      }}
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+    <header
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
+        isScrolled ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-lg" : "bg-transparent"
+      }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="flex items-center">
-              {/* <Logo className="h-10 w-auto" /> */}
-              <span className="mr-2 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-l from-indigo-600 to-indigo-400 dark:from-indigo-400 dark:to-indigo-200">
-                أتجر
-              </span>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 md:h-20">
+          <div className="flex items-center">
+            <Link href="/" className="flex items-center" onClick={closeMenu}>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="flex items-center"
+              >
+                <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white font-bold text-xl">
+                  ا
+                </div>
+                <span className="mr-2 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-indigo-400 dark:from-indigo-400 dark:to-indigo-300">
+                  اتجر
+                </span>
+              </motion.div>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8 space-x-reverse">
-            {navLinks.map((link) =>
-              link.dropdown ? (
-                <DropdownMenu key={link.name}>
-                  <DropdownMenuTrigger asChild>
-                    <button className="flex items-center text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                      {link.name}
-                      <ChevronDown className="h-4 w-4 mr-1" />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    {link.dropdown.map((item) => (
-                      <DropdownMenuItem key={item.name} asChild>
-                        <Link href={item.href}>{item.name}</Link>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                >
-                  {link.name}
-                </Link>
-              ),
-            )}
-          </div>
+          <nav className="hidden md:flex items-center space-x-1 space-x-reverse">
+            {navItems.map((item, index) => (
+              <Link
+                key={index}
+                href={item.href}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  pathname === item.href
+                    ? "text-indigo-600 dark:text-indigo-400 bg-amber-50 dark:bg-amber-900/20"
+                    : "text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
 
-          {/* Actions */}
-          <div className="hidden md:flex items-center space-x-4 space-x-reverse">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-gray-700 dark:text-gray-200">
-                  <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                  <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                  <span className="sr-only">تبديل السمة</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setTheme("light")}>فاتح</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("dark")}>داكن</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("system")}>النظام</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Link href="/login">
-            <Button
-              variant="outline"
-              className="border-indigo-600 text-indigo-600 hover:bg-indigo-50 dark:border-indigo-400 dark:text-indigo-400 dark:hover:bg-indigo-950/30"
-            >
-              
-              تسجيل الدخول
-            </Button>
-            </Link>
+          <div className="flex items-center space-x-4 space-x-reverse">
+            <ThemeToggle />
+
+            <div className="hidden md:block">
             <Link href="/register">
-            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">ابدأ الآن مجاناً</Button>
-            </Link>
-          </div>
+              <Button className="rounded-full bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300">
+                ابدأ الآن مجاناً
+              </Button>
+              </Link>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+              <Link href="/login">
+              <Button className="rounded-full mr-1 bg-gradient-to-r from-white to-indigo-50 hover:from-indigo-50 hover:to-white text-indigo shadow-lg hover:shadow-xl transition-all duration-300">
+              تسجيل الدخول
+              </Button>
+              </Link>
+
+            </div>
+
             <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 focus:outline-none"
-              aria-expanded="false"
+              onClick={toggleMenu}
+              className="md:hidden p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none transition-colors duration-300"
+              aria-label="Toggle menu"
             >
-              <span className="sr-only">فتح القائمة الرئيسية</span>
-              {isOpen ? <X className="block h-6 w-6" /> : <Menu className="block h-6 w-6" />}
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile menu */}
-      <div className={cn("md:hidden", isOpen ? "block" : "hidden")}>
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: isOpen ? 1 : 0, height: isOpen ? "auto" : 0 }}
-          transition={{ duration: 0.3 }}
-          className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shadow-lg"
-        >
-          {navLinks.map((link) => (
-            <div key={link.name}>
-              {link.dropdown ? (
-                <div className="space-y-1">
-                  <div className="text-gray-700 dark:text-gray-200 px-3 py-2 rounded-md text-base font-medium">
-                    {link.name}
-                  </div>
-                  <div className="pr-4 space-y-1 border-r-2 border-indigo-200 dark:border-indigo-800">
-                    {link.dropdown.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 block px-3 py-2 rounded-md text-sm"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <Link
-                  href={link.href}
-                  className="text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 block px-3 py-2 rounded-md text-base font-medium"
-                  onClick={() => setIsOpen(false)}
+      {/* Mobile Navigation */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-gray-800"
+          >
+            <div className="container mx-auto px-4 py-4">
+              <nav className="flex flex-col space-y-2">
+                {navItems.map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.2, delay: index * 0.05 }}
+                  >
+                    <Link
+                      href={item.href}
+                      className={`px-4 py-3 rounded-lg text-sm font-medium block transition-colors ${
+                        pathname === item.href
+                          ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-amber-900/20"
+                          : "text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                      }`}
+                      onClick={closeMenu}
+                    >
+                      {item.label}
+                    </Link>
+                  </motion.div>
+                ))}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2, delay: navItems.length * 0.05 }}
+                  className="pt-2"
                 >
-                  {link.name}
-                </Link>
-              )}
+<Link href="/login">
+  <Button className="w-full rounded-lg bg-gradient-to-r from-slate-100 to-slate-600 hover:from-indigo-600 hover:to-indigo-700 text-indigo-600">
+    تسجيل الدخول 
+  </Button>
+</Link>
+<Link href="/register">
+  <Button className="w-full rounded-lg bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white">
+    ابدأ الآن مجاناً
+  </Button>
+</Link>
+
+                </motion.div>
+              </nav>
             </div>
-          ))}
-          <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
-         
-           <Button 
-              variant="outline"
-              className="w-1/2 ml-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 dark:border-indigo-400 dark:text-indigo-400 dark:hover:bg-indigo-950/30"
-            >
-              تسجيل الدخول
-            </Button>
-          
-            <Button className="w-1/2 bg-indigo-600 hover:bg-indigo-700 text-white">ابدأ الآن</Button>
-          </div>
-        </motion.div>
-      </div>
-    </motion.nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
   )
 }

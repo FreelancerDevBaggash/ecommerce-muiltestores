@@ -6,7 +6,7 @@ import { Search, Plus, Minus } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { FadeIn, SlideIn, Stagger } from "@/components/effects/scroll-animations"
+import { FadeIn, SlideIn, Stagger } from "@/components/animations/scroll-animations"
 
 export default function FAQPage() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -179,7 +179,7 @@ export default function FAQPage() {
   }
 
   return (
-    <div className="pt-20 pb-16">
+    <div dir="rtl" className="pt-20 pb-16">
       <FadeIn>
         <div className="bg-gradient-to-b from-indigo-50 to-white dark:from-slate-900 dark:to-slate-800 py-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">

@@ -1,150 +1,49 @@
-// "use client"
-
-// import "./globals.css"
-// import { Tajawal } from "next/font/google"
-// import { ThemeProvider } from "@/components/theme-provider"
-// import Navbar from "@/components/navbar"
-// import Footer from "@/components/footer"
-// import { cn } from "@/lib/utils"
-// import { Toaster } from "@/components/ui/toaster"
-// import { MousePositionProvider } from "@/components/providers/mouse-position-provider"
-// import { MotionConfig } from "framer-motion"
-// import Script from "next/script"
-
-// const tajawal = Tajawal({
-//   subsets: ["arabic"],
-//   weight: ["300", "400", "500", "700", "800", "900"],
-//   variable: "--font-tajawal",
-// })
-
-// export default function ClientLayout({ children }) {
-//   return (
-//     <html lang="ar" dir="rtl" className={cn("scroll-smooth", tajawal.variable)}>
-//       <body className="font-tajawal">
-//         <MotionConfig transition={{ duration: 0.4, ease: [0.6, 0.01, -0.05, 0.9] }}>
-//           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-//             <MousePositionProvider>
-//               <Navbar />
-//               {children}
-//               <Footer />
-//               <Toaster />
-//             </MousePositionProvider>
-//           </ThemeProvider>
-//         </MotionConfig>
-//         <Script src="https://kit.fontawesome.com/545b13b23c.js" crossOrigin="anonymous" />
-//       </body>
-//     </html>
-//   )
-// }
-// "use client"
-
-// import "./globals.css"
-// import { Tajawal } from "next/font/google"
-// import { ThemeProvider } from "@/components/theme-provider"
-// import Navbar from "@/components/navbar"
-// import Footer from "@/components/footer"
-// import { cn } from "@/lib/utils"
-// import { Toaster } from "@/components/ui/toaster"
-// import { MousePositionProvider } from "@/components/providers/mouse-position-provider"
-// import { MotionConfig } from "framer-motion"
-// import Script from "next/script"
-
-// const tajawal = Tajawal({
-//   subsets: ["arabic"],
-//   weight: ["300", "400", "500", "700", "800", "900"],
-//   variable: "--font-tajawal",
-// })
-
-// export default function ClientLayout({ children }) {
-//   return (
-//     <html lang="ar" dir="rtl" className={cn("", tajawal.variable)}>
-//       <body className="font-tajawal">
-//         <MotionConfig transition={{ duration: 0.4, ease: [0.6, 0.01, -0.05, 0.9] }}>
-//           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-//             <MousePositionProvider>
-//               <Navbar />
-//               {children}
-//               <Footer />
-//               <Toaster />
-//             </MousePositionProvider>
-//           </ThemeProvider>
-//         </MotionConfig>
-//         <Script src="https://kit.fontawesome.com/545b13b23c.js" crossOrigin="anonymous" />
-//       </body>
-//     </html>
-//   )
-// }
-// "use client"
-
-// import "./globals.css"
-// import { Tajawal } from "next/font/google"
-// import { ThemeProvider } from "@/components/theme-provider"
-// import Navbar from "@/components/navbar"
-// import Footer from "@/components/footer"
-// import { cn } from "@/lib/utils"
-// import { Toaster } from "@/components/ui/toaster"
-// import { MousePositionProvider } from "@/components/providers/mouse-position-provider"
-// import { MotionConfig } from "framer-motion"
-// import Script from "next/script"
-
-// const tajawal = Tajawal({
-//   subsets: ["arabic"],
-//   weight: ["300", "400", "500", "700", "800", "900"],
-//   variable: "--font-tajawal",
-// })
-
-// export default function ClientLayout({ children }) {
-//   return (
-//     <html lang="ar" dir="rtl" className={cn("scroll-smooth", tajawal.variable)}>
-//       <body className="font-tajawal">
-//         <MotionConfig transition={{ duration: 0.4, ease: [0.6, 0.01, -0.05, 0.9] }}>
-//           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-//             <MousePositionProvider>
-//               <Navbar />
-//               {children}
-//               <Footer />
-//               <Toaster />
-//             </MousePositionProvider>
-//           </ThemeProvider>
-//         </MotionConfig>
-//         <Script src="https://kit.fontawesome.com/545b13b23c.js" crossOrigin="anonymous" />
-//       </body>
-//     </html>
-//   )
-// }
 "use client"
 
-import "./globals.css"
-import { Tajawal } from "next/font/google"
+import { useState, useEffect } from "react"
 import { ThemeProvider } from "@/components/theme-provider"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
-import { cn } from "@/lib/utils"
-import { Toaster } from "@/components/ui/toaster"
+import { FloatingNav } from "@/components/ui/floating-nav"
 import { MousePositionProvider } from "@/components/providers/mouse-position-provider"
-import { MotionConfig } from "framer-motion"
-import Script from "next/script"
-
-const tajawal = Tajawal({
-  subsets: ["arabic"],
-  weight: ["300", "400", "500", "700", "800", "900"],
-  variable: "--font-tajawal",
-})
+import { SmoothScroll } from "@/components/effects/smooth-scroll"
+import { ScrollProgress } from "@/components/effects/scroll-progress"
+import { CursorEffect } from "@/components/effects/cursor-effect"
+import { PageTransition } from "@/components/effects/page-transition"
+import { AnimatePresence } from "framer-motion"
+import { usePathname } from "next/navigation"
 
 export default function ClientLayout({ children }) {
+  const [mounted, setMounted] = useState(false)
+  const pathname = usePathname()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
+
   return (
-    <html lang="ar" dir="rtl" className={cn(tajawal.variable)}>
-      <body className="font-tajawal overflow-x-hidden">
-        <MotionConfig transition={{ duration: 0.4, ease: [0.6, 0.01, -0.05, 0.9] }}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <MousePositionProvider>
-              <Navbar />              {children}
+    <html lang="ar" dir="rtl" className="scroll-smooth">
+      <body className="min-h-screen bg-background font-tajawal antialiased rtl">
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <MousePositionProvider>
+            <SmoothScroll>
+              <ScrollProgress />
+              <CursorEffect />
+              <Navbar />
+              <AnimatePresence mode="wait">
+                <PageTransition key={pathname}>
+                  <main className="relative">{children}</main>
+                </PageTransition>
+              </AnimatePresence>
               <Footer />
-              <Toaster />
-            </MousePositionProvider>
-          </ThemeProvider>
-        </MotionConfig>
-        <Script src="https://kit.fontawesome.com/545b13b23c.js" crossOrigin="anonymous" />
+              <FloatingNav />
+            </SmoothScroll>
+          </MousePositionProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

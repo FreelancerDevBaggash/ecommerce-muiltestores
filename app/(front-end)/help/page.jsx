@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 import { Search, ChevronRight, BookOpen, Video, FileText, Code, Lightbulb, ArrowRight } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { FadeIn, SlideIn, Stagger, TypeText } from "@/components/effects/scroll-animations"
+import { FadeIn, SlideIn, Stagger, TypeText } from "@/components/animations/scroll-animations"
 
 export default function HelpCenterPage() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -146,7 +146,7 @@ export default function HelpCenterPage() {
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">استكشف حسب الفئة</h2>
         </SlideIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 mb-16">
           <Stagger>
             {categories.map((category, index) => (
               <motion.a
@@ -165,7 +165,7 @@ export default function HelpCenterPage() {
           </Stagger>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-3 lg:grid-cols-3 gap-8 ">
           <div className="lg:col-span-2">
             <SlideIn direction="right">
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">المقالات الشائعة</h2>

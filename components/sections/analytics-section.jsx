@@ -1,160 +1,228 @@
+// "use client"
+
+// import { useRef } from "react"
+// import { motion, useInView } from "framer-motion"
+// import Image from "next/image"
+// import { Button } from "@/components/ui/button"
+// import { FadeIn, SlideIn } from "@/components/animations/scroll-animations"
+
+// export default function AnalyticsSection() {
+//   const ref = useRef(null)
+//   const isInView = useInView(ref, { once: true, threshold: 0.1 })
+
+//   const analyticsFeatures = [
+//     {
+//       title: "لوحة تحكم شاملة",
+//       description: "لوحة تحكم تعرض جميع المؤشرات الرئيسية لمتجرك في مكان واحد",
+//       icon: "/placeholder.svg?height=40&width=40&text=📊",
+//     },
+//     {
+//       title: "تقارير المبيعات",
+//       description: "تقارير مفصلة عن المبيعات والإيرادات والمنتجات الأكثر مبيعًا",
+//       icon: "/placeholder.svg?height=40&width=40&text=📈",
+//     },
+//     {
+//       title: "تحليل سلوك العملاء",
+//       description: "فهم سلوك العملاء وتفضيلاتهم لتحسين استراتيجيتك التسويقية",
+//       icon: "/placeholder.svg?height=40&width=40&text=👥",
+//     },
+//     {
+//       title: "تنبؤات ذكية",
+//       description: "تنبؤات مبنية على الذكاء الاصطناعي لمساعدتك في اتخاذ قرارات أفضل",
+//       icon: "/placeholder.svg?height=40&width=40&text=🔮",
+//     },
+//   ]
+
+//   return (
+//     <section id="analytics" className="py-20 bg-white dark:bg-gray-800">
+//       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+//         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+//           <div className="relative order-2 lg:order-1">
+//             <FadeIn>
+//               <div className="relative rounded-2xl overflow-hidden shadow-xl">
+//                 {/* استبدال Lottie بصورة ثابتة */}
+//                 <div className="aspect-square relative">
+//                   <Image
+//                     src="/placeholder.svg?height=600&width=600&text=تحليلات+متقدمة"
+//                     alt="تحليلات متقدمة"
+//                     fill
+//                     className="object-cover"
+//                   />
+//                 </div>
+//               </div>
+//             </FadeIn>
+
+//             {/* عناصر زخرفية */}
+//             <div className="absolute -top-6 -left-6 w-24 h-24 bg-indigo-100 dark:bg-indigo-900/30 rounded-full z-0"></div>
+//             <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-indigo-50 dark:bg-indigo-900/20 rounded-full z-0"></div>
+//           </div>
+
+//           <div ref={ref} className="order-1 lg:order-2">
+//             <SlideIn direction="right">
+//               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+//                 <span className="text-indigo-600 dark:text-indigo-400">تحليلات</span> متقدمة لاتخاذ قرارات أفضل
+//               </h2>
+//             </SlideIn>
+
+//             <SlideIn direction="right" delay={0.1}>
+//               <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
+//                 تحليلات متقدمة ورؤى دقيقة تساعدك على فهم أداء متجرك واتخاذ قرارات مبنية على البيانات
+//               </p>
+//             </SlideIn>
+
+//             <div className="space-y-6">
+//               {analyticsFeatures.map((feature, index) => (
+//                 <motion.div
+//                   key={index}
+//                   initial={{ opacity: 0, x: 50 }}
+//                   animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+//                   transition={{ duration: 0.5, delay: index * 0.1 + 0.2 }}
+//                   className="flex gap-4"
+//                 >
+//                   <div className="flex-shrink-0">
+//                     <div className="w-12 h-12 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+//                       <Image src={feature.icon || "/placeholder.svg"} alt={feature.title} width={40} height={40} />
+//                     </div>
+//                   </div>
+//                   <div>
+//                     <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{feature.title}</h3>
+//                     <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
+//                   </div>
+//                 </motion.div>
+//               ))}
+//             </div>
+
+//             <motion.div
+//               initial={{ opacity: 0, y: 20 }}
+//               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+//               transition={{ duration: 0.5, delay: 0.6 }}
+//               className="mt-8"
+//             >
+//               <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white">
+//                 استكشف التحليلات
+//               </Button>
+//             </motion.div>
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+//   )
+// }
 "use client"
 
-import { useRef, useEffect } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
-import { gsap } from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import Lottie from "lottie-web"
-import { GlassMorphism } from "@/components/ui/glass-morphism"
-import { BarChart, PieChart, LineChart, TrendingUp } from "lucide-react"
+import { useRef } from "react"
+import { motion, useInView } from "framer-motion"
+import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { FadeIn, SlideIn } from "@/components/animations/scroll-animations"
+import {
+  BarChart2,
+  TrendingUp,
+  Users,
+  Zap
+} from "lucide-react"  // استيراد الأيقونات
 
 export default function AnalyticsSection() {
-  const sectionRef = useRef(null)
-  const lottieRef = useRef(null)
-  const chartRefs = useRef([])
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, threshold: 0.1 })
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  })
-
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "20%"])
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
-
-  const charts = [
+  const analyticsFeatures = [
     {
-      icon: <BarChart className="h-6 w-6" />,
-      title: "تحليل المبيعات",
-      description: "تتبع مبيعاتك وتحليلها حسب الفترة والمنتج والعميل.",
-      color: "bg-blue-100 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400",
-      lottie: "/animations/bar-chart.json",
+      title: "لوحة تحكم شاملة",
+      description: "لوحة تحكم تعرض جميع المؤشرات الرئيسية لمتجرك في مكان واحد",
+      icon: <BarChart2 size={24} className="text-indigo-600 dark:text-indigo-400" />,
     },
     {
-      icon: <PieChart className="h-6 w-6" />,
-      title: "تحليل العملاء",
-      description: "فهم سلوك عملائك وتفضيلاتهم لتحسين استراتيجيتك التسويقية.",
-      color: "bg-purple-100 text-purple-600 dark:bg-purple-900/20 dark:text-purple-400",
-      lottie: "/animations/pie-chart.json",
+      title: "تقارير المبيعات",
+      description: "تقارير مفصلة عن المبيعات والإيرادات والمنتجات الأكثر مبيعًا",
+      icon: <TrendingUp size={24} className="text-indigo-600 dark:text-indigo-400" />,
     },
     {
-      icon: <LineChart className="h-6 w-6" />,
-      title: "تحليل الزيارات",
-      description: "تتبع زيارات متجرك ومعرفة مصادر الزيارات وسلوك المتصفحين.",
-      color: "bg-green-100 text-green-600 dark:bg-green-900/20 dark:text-green-400",
-      lottie: "/animations/line-chart.json",
+      title: "تحليل سلوك العملاء",
+      description: "فهم سلوك العملاء وتفضيلاتهم لتحسين استراتيجيتك التسويقية",
+      icon: <Users size={24} className="text-indigo-600 dark:text-indigo-400" />,
     },
     {
-      icon: <TrendingUp className="h-6 w-6" />,
-      title: "تقارير الأداء",
-      description: "تقارير شاملة عن أداء متجرك لاتخاذ قرارات مبنية على البيانات.",
-      color: "bg-amber-100 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400",
-      lottie: "/animations/trending-chart.json",
+      title: "تنبؤات ذكية",
+      description: "تنبؤات مبنية على الذكاء الاصطناعي لمساعدتك في اتخاذ قرارات أفضل",
+      icon: <Zap size={24} className="text-indigo-600 dark:text-indigo-400" />,
     },
   ]
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
-
-    // Load main analytics Lottie animation
-    const anim = Lottie.loadAnimation({
-      container: lottieRef.current,
-      renderer: "svg",
-      loop: true,
-      autoplay: true,
-      path: "/animations/cart.json",
-    })
-
-    // Load chart-specific Lottie animations
-    chartRefs.current.forEach((chartRef, index) => {
-      if (chartRef) {
-        try {
-          Lottie.loadAnimation({
-            container: chartRef,
-            renderer: "svg",
-            loop: true,
-            autoplay: true,
-            path: charts[index].lottie,
-          })
-        } catch (error) {
-          console.error("Failed to load chart animation:", error)
-        }
-      }
-    })
-
-    // Staggered animation for charts
-    const chartElements = document.querySelectorAll(".analytics-chart")
-    gsap.from(chartElements, {
-      y: 50,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.2,
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top 70%",
-        toggleActions: "play none none reverse",
-      },
-    })
-
-    return () => {
-      anim.destroy()
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
-    }
-  }, [charts])
-
   return (
-    <section ref={sectionRef} className="py-20 relative overflow-hidden" id="analytics">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-5 dark:opacity-[0.02]">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
-              <circle cx="10" cy="10" r="2" fill="currentColor" />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#dots)" />
-        </svg>
-      </div>
-
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            تحليلات <span className="text-indigo-600 dark:text-indigo-400">وتقارير</span>
-          </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            تقارير تفصيلية ولوحات تحكم ذكية تساعدك على فهم أداء متجرك واتخاذ القرارات الصحيحة
-          </p>
-
-          {/* Main Lottie Animation */}
-          <div className="max-w-md mx-auto mt-8">
-            <div ref={lottieRef} className="w-full h-[200px]"></div>
+    <section id="analytics" className="py-20 bg-white dark:bg-gray-800">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          
+          {/* العمود الأيسر: الصورة */}
+          <div className="relative order-2 lg:order-1">
+            <FadeIn>
+              <div className="relative rounded-2xl overflow-hidden shadow-xl">
+                <div className="aspect-square relative">
+                  <Image
+                    src="/images/etajr.jpg"     // الصورة من مجلد public/images
+                    alt="تحليلات متقدمة"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+            </FadeIn>
+            {/* عناصر زخرفية */}
+            <div className="absolute -top-6 -left-6 w-24 h-24 bg-indigo-100 dark:bg-indigo-900/30 rounded-full z-0"></div>
+            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-indigo-50 dark:bg-indigo-900/20 rounded-full z-0"></div>
           </div>
-        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {charts.map((chart, index) => (
-            <motion.div key={index} style={{ y: y, opacity: opacity }} className="analytics-chart">
-              <GlassMorphism className="p-6 h-full">
-                <div className="flex items-start mb-4">
-                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center mr-4 ${chart.color}`}>
-                    {chart.icon}
+          {/* العمود الأيمن: النص والميزات */}
+          <div ref={ref} className="order-1 lg:order-2">
+            <SlideIn direction="right">
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+                <span className="text-indigo-600 dark:text-indigo-400">تحليلات</span> متقدمة لاتخاذ قرارات أفضل
+              </h2>
+            </SlideIn>
+            <SlideIn direction="right" delay={0.1}>
+              <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                تحليلات متقدمة ورؤى دقيقة تساعدك على فهم أداء متجرك واتخاذ قرارات مبنية على البيانات
+              </p>
+            </SlideIn>
+
+            <div className="space-y-6">
+              {analyticsFeatures.map((feature, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.5, delay: index * 0.1 + 0.2 }}
+                  className="flex gap-4 items-start"
+                >
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+                      {feature.icon}
+                    </div>
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{chart.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-400">{chart.description}</p>
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-300">
+                      {feature.description}
+                    </p>
                   </div>
-                </div>
+                </motion.div>
+              ))}
+            </div>
 
-                {/* Chart-specific Lottie animation */}
-                <div ref={(el) => (chartRefs.current[index] = el)} className="w-full h-[200px] mt-4"></div>
-              </GlassMorphism>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="mt-8"
+            >
+              <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                استكشف التحليلات
+              </Button>
             </motion.div>
-          ))}
+          </div>
         </div>
       </div>
     </section>

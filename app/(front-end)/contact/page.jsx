@@ -50,7 +50,7 @@ export default function ContactPage() {
           className="text-center mb-16"
         >
           <h1 className="text-4xl md:text-5xl font-bold text-indigo-700 dark:text-indigo-400 mb-6">تواصل معنا</h1>
-          <p className="text-xl  text-indigo-700 dark:text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             نحن هنا للإجابة على جميع استفساراتك ومساعدتك في بدء رحلتك مع منصة اتجر
           </p>
         </motion.div>
@@ -71,8 +71,9 @@ export default function ContactPage() {
                 <div>
                   <h3 className="font-bold text-gray-900 dark:text-white mb-1">العنوان</h3>
                   <p className="text-gray-600 dark:text-gray-300">
-اليمن صنعاء                     <br />
-شارع لعدل عمارة السماوي، الطابق 1
+                    الرياض، المملكة العربية السعودية
+                    <br />
+                    طريق الملك فهد، برج المملكة، الطابق 20
                   </p>
                 </div>
               </div>
@@ -81,7 +82,7 @@ export default function ContactPage() {
                 <Phone className="h-6 w-6 text-indigo-600 ml-4 mt-1" />
                 <div>
                   <h3 className="font-bold text-gray-900 dark:text-white mb-1">الهاتف</h3>
-                  <p className="text-gray-600 dark:text-gray-300">+967 77 345 6789</p>
+                  <p className="text-gray-600 dark:text-gray-300">+966 12 345 6789</p>
                 </div>
               </div>
 

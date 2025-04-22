@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { FadeIn, SlideIn, Stagger } from "@/components/effects/scroll-animations"
+import { FadeIn, SlideIn, Stagger } from "@/components/animations/scroll-animations"
 
 export default function SupportPage() {
   const [searchQuery, setSearchQuery] = useState("")

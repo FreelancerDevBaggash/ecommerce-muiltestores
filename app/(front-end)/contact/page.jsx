@@ -71,9 +71,9 @@ export default function ContactPage() {
                 <div>
                   <h3 className="font-bold text-gray-900 dark:text-white mb-1">العنوان</h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    الرياض، المملكة العربية السعودية
+                   اليمن ، صنعاء
                     <br />
-                    طريق الملك فهد، برج المملكة، الطابق 20
+                    شارع القاهره جوار البنك التجاري
                   </p>
                 </div>
               </div>
@@ -82,7 +82,7 @@ export default function ContactPage() {
                 <Phone className="h-6 w-6 text-indigo-600 ml-4 mt-1" />
                 <div>
                   <h3 className="font-bold text-gray-900 dark:text-white mb-1">الهاتف</h3>
-                  <p className="text-gray-600 dark:text-gray-300">+966 12 345 6789</p>
+                  <p className="text-gray-600 dark:text-gray-300">+967 780 800 820</p>
                 </div>
               </div>
 
@@ -90,7 +90,7 @@ export default function ContactPage() {
                 <Mail className="h-6 w-6 text-indigo-600 ml-4 mt-1" />
                 <div>
                   <h3 className="font-bold text-gray-900 dark:text-white mb-1">البريد الإلكتروني</h3>
-                  <p className="text-gray-600 dark:text-gray-300">info@etjer.com</p>
+                  <p className="text-gray-600 dark:text-gray-300">info@etjer.store</p>
                 </div>
               </div>
 

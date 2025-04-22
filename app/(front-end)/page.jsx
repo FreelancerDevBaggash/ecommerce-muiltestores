@@ -20,9 +20,9 @@ import ScrollProgress from "@/components/effects/scroll-progress"
 import CursorEffect from "@/components/effects/cursor-effect"
 import { FloatingNav } from "@/components/ui/floating-nav"
 import Partnerssection from "@/components/sections/partners-section"
-import Casestudiessection from "@/components/sections/case-studies-section"
+import CaseStudiesSection from "@/components/sections/case-studies-section"
 import Appdownloadsection from "@/components/sections/app-download-section"
-import Productshowcasesection from "@/components/sections/Product-showcase-section"
+import ProductShowcaseSection from "@/components/sections/product-showcase-section"
 
 
 // Register GSAP plugins
@@ -52,7 +52,7 @@ export default function Home() {
         <FloatingNav />
 
         <HeroSection />
-       < Casestudiessection/>
+       < CaseStudiesSection/>
         <FeaturesSection />
         <HowToStartSection />
         <Appdownloadsection/>
@@ -62,7 +62,7 @@ export default function Home() {
         <TestimonialsSection />
         <PricingSection />
        < Partnerssection/>
-       <Productshowcasesection/>
+       <ProductShowcaseSection/>
         <FAQSection />
         <IntegrationsSection />
         <ContactSection />

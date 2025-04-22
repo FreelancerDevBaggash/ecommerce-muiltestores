@@ -90,7 +90,7 @@ import { useRef } from "react"
 import { ShoppingBag, CreditCard, BarChart, Smartphone, Globe, Shield, Truck, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-export default function FeaturesSection() {
+export default function Partnerssection() {
   const features = [
     {
       icon: <ShoppingBag className="h-10 w-10 text-indigo-600 dark:text-indigo-400" />,

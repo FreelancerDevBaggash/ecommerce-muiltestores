@@ -238,7 +238,7 @@
 
 // app/api/notifications/route.js
 import { NextResponse } from 'next/server'
-import prisma from '@/lib/db'                // أو db إذا هو الـ default export
+import db from '@/lib/db'                // أو db إذا هو الـ default export
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/authOptions'
 import { cookies } from 'next/headers'
@@ -289,12 +289,12 @@ export async function GET(request) {
   }
 
   const [notifications, unreadCount] = await Promise.all([
-    prisma.notification.findMany({
+    db.notification.findMany({
       where: { userId: user.id },
       orderBy: { createdAt: 'desc' },
       take: 50,
     }),
-    prisma.notification.count({
+    db.notification.count({
       where: { userId: user.id, read: false },
     }),
   ])
@@ -312,7 +312,7 @@ export async function POST(request) {
   const data = await request.json()
 
   // 1) إنشاء الإشعار في قاعدة البيانات
-  const notification = await prisma.notification.create({
+  const notification = await db.notification.create({
     data: {
       title:     data.title,
       body:      data.body,

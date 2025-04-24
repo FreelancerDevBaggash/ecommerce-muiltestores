@@ -61,6 +61,8 @@
     "next-auth": "^4.24.10",
     "next-themes": "^0.3.0",
     "nuka-carousel": "^8.0.1",
+    "pusher": "^5.2.0",
+    "pusher-js": "^8.4.0",
     "quill": "^2.0.2",
     "react": "^18",
     "react-chartjs-2": "^5.2.0",

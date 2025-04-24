@@ -179,7 +179,7 @@ import { useTheme } from "next-themes";
 import { motion } from "framer-motion";
 
 export default function UserAvatar({ user = {}, customization = {}, slugDomain }) {
-  const { firstName, profileImage, email } = user;
+  const { name, image, email } = user;
   const role = user?.role;
   const router = useRouter();
   const { theme } = useTheme();
@@ -196,13 +196,8 @@ export default function UserAvatar({ user = {}, customization = {}, slugDomain }
   };
 
   async function handleLogout() {
-    // await signOut();
-    // router.push(`/${slugDomain}`);
-    await fetch("/api/customerAuth/logout", { method: "POST" });
-
-    // 2) إذا كنت تستخدم next-auth أيضاً:
-    await signOut({ redirect: false });
-      router.push(`/${slugDomain}`);
+    await signOut();
+    router.push(`/${slugDomain}`);
   }
 
   return (
@@ -228,10 +223,10 @@ export default function UserAvatar({ user = {}, customization = {}, slugDomain }
             }}
             aria-label="قائمة المستخدم"
           >
-            {profileImage ? (
+            {image ? (
               <Image
-                src={profileImage}
-                alt={`صورة ${firstName || 'المستخدم'}`}
+                src={image}
+                alt={`صورة ${name || 'المستخدم'}`}
                 width={32}
                 height={32}
                 className="w-8 h-8 mr-3 rounded-full shrink-0 object-cover"
@@ -244,7 +239,7 @@ export default function UserAvatar({ user = {}, customization = {}, slugDomain }
                 <User2 className="w-4 h-4" />
               </div>
             )}
-            <span className="truncate max-w-[120px]">{firstName || "مستخدم"}</span>
+            <span className="truncate max-w-[120px]">{name || "مستخدم"}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-3 ml-3 transition-transform"
@@ -270,7 +265,7 @@ export default function UserAvatar({ user = {}, customization = {}, slugDomain }
         >
           <DropdownMenuLabel className="px-4 py-2">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium truncate">{firstName || "مستخدم"}</p>
+              <p className="text-sm font-medium truncate">{name || "مستخدم"}</p>
               {email && (
                 <p className="text-xs truncate text-gray-500 dark:text-gray-400">
                   {email}
@@ -288,15 +283,15 @@ export default function UserAvatar({ user = {}, customization = {}, slugDomain }
           </DropdownMenuItem>
 
           <DropdownMenuItem className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-            <Link href={`/${slugDomain}/profile`} className="flex items-center w-full">
+            <Link href="/dashboard/profile" className="flex items-center w-full">
               <Settings className="w-4 h-4 mr-3" style={{ color: colors.primary }} />
               <span>تعديل الملف الشخصي</span>
             </Link>
           </DropdownMenuItem>
 
-          {role === "CUSTOMER" && (
+          {role === "USER" && (
             <DropdownMenuItem className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-              <Link href={`/${slugDomain}/orders`} className="flex items-center w-full">
+              <Link href="/dashboard/orders" className="flex items-center w-full">
                 <ShoppingBag className="w-4 h-4 mr-3" style={{ color: colors.primary }} />
                 <span>طلباتي</span>
               </Link>

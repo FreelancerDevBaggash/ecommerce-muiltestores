@@ -565,20 +565,20 @@ export default function Page() {
     }
     try {
       for (const providerId of selectedProviders) {
-        const response = await fetch("/api/storeDeliverySetting", {
+        const response = await fetch("/api/storeDeliveringSetting", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            storeId,
-            deliveryProviderId: providerId,
             isActive: true,
+            storeId,
+            deliveringProviderId: providerId,
           }),
         });
         if (!response.ok) {
           throw new Error("فشل في إضافة مزود التوصيل");
         }
       }
-      const response = await fetch(`/api/storeDeliverySetting?storeId=${storeId}`);
+      const response = await fetch(`/api/storeDeliveringSetting?storeId=${storeId}`);
       const data = await response.json();
       setSavedProviders(data);
       setSelectedProviders([]);
@@ -658,16 +658,20 @@ export default function Page() {
               className="flex items-center bg-gray-100 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-xl p-4 shadow"
             >
               <Image
-                src={provider.deliveryProvider.logoUrl || `https://via.placeholder.com/150`}
-                alt={`شعار ${provider.deliveryProvider.name}`}
+                src={provider.deliveringProvider.logoUrl || `https://via.placeholder.com/150`}
+                alt={`شعار ${provider.deliveringProvider.name}`}
                 className="w-12 h-12 rounded-md object-contain ml-4"
+                width={48}           // 12 * 4px = 48px
+                height={48} 
+                unoptimized          // يحافظ على رندر الـ GIF أو أي صيغة متحركة، ويتجاوز قيود الدومين
+                  priority
               />
               <div>
                 <h4 className="text-lg font-bold text-gray-800 dark:text-white">
-                  {provider.deliveryProvider.name}
+                  {provider.deliveringProvider.name}
                 </h4>
                 <p className="text-sm text-gray-500 dark:text-gray-300">
-                  {provider.deliveryProvider.description || "لا يوجد وصف متاح"}
+                  {provider.deliveringProvider.description || "لا يوجد وصف متاح"}
                 </p>
               </div>
             </div>

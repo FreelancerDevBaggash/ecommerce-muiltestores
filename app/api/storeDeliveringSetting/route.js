@@ -4,13 +4,13 @@ export async function POST(request) {
   try {
     const body = await request.json();
     const { isActive, storeId, deliveringProviderId } = body;
-
+    console.log(body)
     // تحقق من وجود المتجر والمزود
     const storeExists = await db.store.findUnique({
       where: { id: storeId },
     });
 
-    const providerExists = await db.deliveringProviders.findUnique({
+    const providerExists = await db.deliveringProvider.findUnique({
       where: { id: deliveringProviderId },
     });
 
@@ -28,7 +28,7 @@ export async function POST(request) {
       data: {
         isActive,
         store: { connect: { id: storeId } },  // ربط المتجر
-        DeliveringProvider: { connect: { id: deliveringProviderId } },  // ربط المزود
+        deliveringProvider: { connect: { id: deliveringProviderId } },  // ربط المزود
       },
     });
 

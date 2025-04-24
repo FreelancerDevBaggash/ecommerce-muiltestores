@@ -66,7 +66,7 @@ export default function CartSubTotalCard({ subTotal, slugDomain, customization =
             className="text-sm font-extrabold"
             style={{ color: themeConfig.primaryColor }}
           >
-            {totalPrice} ر.ي
+            {totalPrice} ر.س
           </span>
         </div>
 
@@ -91,7 +91,7 @@ export default function CartSubTotalCard({ subTotal, slugDomain, customization =
 const PriceRow = ({ label, value }) => (
   <div className="flex justify-between items-center">
     <span className="text-gray-700 dark:text-gray-300">{label}</span>
-    <span className="font-medium text-gray-800 dark:text-white">{value} ر.ي</span>
+    <span className="font-medium text-gray-800 dark:text-white">{value} ر.س</span>
   </div>
 );
 

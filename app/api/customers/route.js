@@ -114,9 +114,6 @@ export async function GET(request){
             // where:{
             //     email,
             // },
-            where:{
-              password: null,
-          },
             orderBy:{
                 createdAt:"desc"
             },

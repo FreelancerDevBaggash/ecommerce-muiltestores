@@ -86,7 +86,7 @@ export default function SearchForm({ customization = {}, slugDomain }) {
           {...register("searchTerm", { required: true })}
           type="search"
           id="search"
-          className={`border bg-gray-50 text-black font-medium shadow-sm rounded-full
+          className={`border bg-gray-50  font-medium shadow-sm rounded-full
           text-gray-900 text-sm focus:ring-2 focus:ring-offset-2 block 
           w-full ps-10 py-2.5 dark:bg-gray-700 dark:border-gray-600 
           dark:text-white transition-all duration-200`}

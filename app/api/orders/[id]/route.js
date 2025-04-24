@@ -54,6 +54,18 @@ export async function GET(request, {params:{id}}){
               orderStatus, // تحديث حالة الطلب فقط
             },
           })
+          
+          if (orderStatus === 'DELIVERED') {
+            await db.notification.create({
+              data: {
+                title: 'تم توصيل طلبك',
+                body: `تم توصيل طلبك رقم ${updatedOrder.orderNumber}. نرجو تقييم تجربتك.`,
+                type: 'ORDER_STATUS_CHANGED',
+                userId: updatedOrder.CustomerStoreId,
+                orderId: updatedOrder.id,
+              },
+            })
+          }
       
           return NextResponse.json(updatedOrder)
         } catch (error) {

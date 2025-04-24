@@ -201,7 +201,7 @@ enum OrderStatus {
     lastName          String? // اسم العائلة للعميل (اختياري)
     profileImage      String? // رابط صورة الملف الشخصي للعميل (اختياري)
 
-    phone             String? @unique// رقم الهاتف للعميل (اختياري)
+    phone             String? // رقم الهاتف للعميل (اختياري)
     phoneVerified     Boolean @default(false) // حالة التحقق من الرقم (القيمة الافتراضية: false)
     verificationCode String? // رمز التحقق (اختياري)
     verificationCodeExpiresAt  DateTime?           // ← حقل جديد
@@ -599,4 +599,50 @@ model StoreCurrency {
   
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+}
+
+
+model Notification {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  body        String
+  type        NotificationType
+  read        Boolean  @default(false)
+  userId      String   // المستخدم الذي يتلقى الإشعار (بائع أو عميل)
+  storeId     String?  // للربط مع المتجر إن لزم
+  orderId     String?  // للربط مع الطلب
+  productId   String?  // للربط مع منتج معين
+  couponId    String?  // كوبون (اختياري)
+  bannerId    String?  // بنر (اختياري)
+  createdAt   DateTime @default(now())
+
+}
+
+enum NotificationType {
+  ORDER_NEW
+  ORDER_STATUS_CHANGED
+  ORDER_CANCELED
+  ORDER_REVIEW_REMINDER
+
+  PRODUCT_LOW_STOCK
+  PRODUCT_ACTIVATED
+  PRODUCT_DEACTIVATED
+
+  STORE_STATUS_CHANGED
+  STORE_REVIEW_RECEIVED
+  STORE_SETTINGS_UPDATED
+
+  COUPON_EXPIRING
+  COUPON_USAGE_UPDATE
+
+  BANNER_EXPIRING
+  BANNER_STATUS_UPDATE
+
+  PAYMENT_SUCCESS
+  PAYMENT_FAILED
+
+  SYSTEM_ANNOUNCEMENT
+  SECURITY_LOGIN
+
+  SUPPORT_MESSAGE
 }

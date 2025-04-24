@@ -70,52 +70,32 @@ export async function POST(request) {
                 // Assuming you have a productId field in each item, adjust as needed
               })),
         });
+
+         // جلب معرف البائع (vendorId) من جدول Store
+      const store = await prisma.store.findUnique({
+        where: { id: storeId },
+        select: { vendorId: true },
+      });
+
+      // إنشاء إشعار "ORDER_NEW" للبائع
+      if (store?.vendorId) {
+        await prisma.notification.create({
+          data: {
+            title: 'طلب جديد',
+            body: `وصلك طلب جديد برقم ${newOrder.orderNumber}`,
+            type: 'ORDER_NEW',
+            userId: store.vendorId,
+            orderId: newOrder.id,
+            storeId: storeId,
+          },
+        });
+      }
   
 
-
-        // const newSale = await prisma.sale.create({
-        //   data:{
-        //     orderId: newOrder.id,
-        //     productQty,
-        //      firstName ,
-        //      lastName ,
-        //      email ,
-        //      phone ,
-        //      streetAddress , 
-        //      city  ,
-        //      orderNumber:generateOrderNumber(8),
-        //      country ,
-        //      district ,
-        //      shippingCost :parseFloat(shippingCost),
-        //      paymentMethod  
-        //   }
-        //   });
-        // // Calculate total amount for each product and create a sale for each
-        // const sales = await Promise.all(
-        //   orderItems.map(async (item) => {
-        //     const totalAmount = parseFloat(item.salePrice) * parseInt(item.qty);
-  
-        //     const newSale = await prisma.sale.create({
-        //       data: {
-        //         orderId: newOrder.id,
-        //         productTitle: item.title,
-        //         productImage: item.imageUrl,
-        //         productPrice: parseFloat(item.salePrice),
-        //         productQty: parseInt(item.qty),
-        //         productId: item.id,
-        //         vendorId: item.vendorId,
-        //         total: totalAmount,
-        //       },
-        //     });
-  
-        //     return newSale;
-        //   })
-        // );
-  
         return { newOrder, newOrderItems };
       });
   
-      console.log(result.newOrder, result.newOrderItems, );
+     // console.log(result.newOrder, result.newOrderItems, );
   
       // Return the response
       return NextResponse.json(result.newOrder);
@@ -135,7 +115,7 @@ export async function POST(request) {
 
 export async function GET(request){
     try{
-        const orders = await db.order.findMany({
+        const orders = await prisma.order.findMany({
             orderBy:{
                 createdAt:"desc"
             },
@@ -157,6 +137,9 @@ export async function GET(request){
     }
     
     }
+
+    
+
     export async function PATCH(request) {
       try {
         const { id, status } = await request.json(); // جلب معرف الطلب والحالة الجديدة من الطلب

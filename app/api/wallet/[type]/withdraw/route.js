@@ -1,7 +1,7 @@
 // app/api/wallet/[type]/withdraw/route.js
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { db } from '@/lib/db';
+import db from '@/lib/db';
 import { authOptions } from '@/lib/authOptions';
 
 export async function POST(request, { params }) {

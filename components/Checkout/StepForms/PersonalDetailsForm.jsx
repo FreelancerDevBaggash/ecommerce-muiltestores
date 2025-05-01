@@ -203,7 +203,7 @@ export default function PersonalDetailsForm({ storeId }) {
     if (loading === false && customerId && storeId) {
       const fetchCustomerStore = async () => {
         try {
-          const response = await fetch(`/api/customerStores?storeId=${storeId}&customerId=${customerId}`);
+          const response = await fetch(`/api/customerStores/customer?storeId=${storeId}&customerId=${customerId}`);
           const data = await response.json();
           if (data) {
             setCustomerStore(data);
@@ -232,7 +232,7 @@ export default function PersonalDetailsForm({ storeId }) {
     if (customerId && customerStore) {
       data.customersId = customerId;
       data.storeId = storeId;
-      data.CustomerStoreId = customerStore.id;  // إضافة ID الخاص بـ customerStore هنا
+      data.CustomerStoreId = customerStore[0].id;  // إضافة ID الخاص بـ customerStore هنا
       dispatch(updateCheckoutFormData(data));
       dispatch(setCurrentStep(currentStep + 1));
     }
@@ -247,7 +247,7 @@ export default function PersonalDetailsForm({ storeId }) {
       {/* بيانات العميل */}
       {customerStore && (
         <div className="mb-4">
-          <p>Customer Store ID: {customerStore.id}</p>
+          <p>Customer Store ID: {customerStore[0].id}</p>
           {/* يمكنك إضافة المزيد من التفاصيل هنا بناءً على البيانات التي جلبتها */}
         </div>
       )}

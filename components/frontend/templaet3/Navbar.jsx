@@ -2,7 +2,8 @@
 'use client';
 
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useSession } from 'next-auth/react';
+// import { useSession } from 'next-auth/react';
+import useCustomerSession from '@/hooks/useCustomerSession';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
@@ -70,13 +71,14 @@ export default function Navbar({ slugDomain, storeData ={}, customization = {} }
   }
 
   // ============== حالات المكون ==============
-  const { data: session, status } = useSession();
+  const {  session, loading } = useCustomerSession();
   // const [store, setStore] = useState(null);
   const [categories, setCategories] = useState([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const pathname = usePathname();
+ const status = session ? "authenticated" : "unauthenticated";
 
   // ============== تأثيرات التمرير ==============
   useEffect(() => {
@@ -212,7 +214,7 @@ export default function Navbar({ slugDomain, storeData ={}, customization = {} }
                   />
                 </motion.div>
                 <motion.h1 
-                  className={`${logoTextSize} font-extrabold text-primary whitespace-nowrap ${
+                  className={`${logoTextSize} font-extrabold text-primary dark:text-white whitespace-nowrap ${
                     scrolled ? 'scale-95' : ''
                   }`}
                   whileHover={{ color: 'var(--primary-600)' }}
@@ -242,7 +244,7 @@ export default function Navbar({ slugDomain, storeData ={}, customization = {} }
                     className="p-2 rounded-full hover:bg-primary-100 dark:hover:bg-gray-700 relative transition-colors"
                     aria-label="سلة التسوق"
                   >
-                    <ShoppingCart className="w-5 h-5 text-primary" />
+                    <ShoppingCart className="w-5 h-5 text-primary dark:text-white" />
                   </motion.button>
                 </CartCount>
               </div>
@@ -263,7 +265,7 @@ export default function Navbar({ slugDomain, storeData ={}, customization = {} }
 
               {status === "unauthenticated" ? (
                 <Link
-                  href={`${slugDomain}/loginCustomer?redirect=${encodeURIComponent(pathname)}`}
+                  href={`/${slugDomain}/loginCustomer?redirect=${encodeURIComponent(pathname)}`}
                   className={`hidden sm:flex items-center px-4 py-2 rounded-[var(--rounded)] bg-primary text-white hover:bg-primary-600 transition-colors ${getHoverClass}`}
                 >
                   <User className="w-4 h-4 ml-2" />
@@ -279,7 +281,7 @@ export default function Navbar({ slugDomain, storeData ={}, customization = {} }
                     aria-label="حساب المستخدم"
                     aria-expanded={isDropdownOpen}
                   >
-                    <UserAvatar user={session?.user} />
+                    <UserAvatar user={session?.user} slugDomain={slugDomain} />
                   </motion.button>
                 </div>
               )}

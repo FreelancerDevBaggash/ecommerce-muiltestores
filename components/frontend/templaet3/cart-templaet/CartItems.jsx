@@ -350,7 +350,7 @@ export default function CartItems({ cartItems, customization = {} }) {
           className="text-lg font-medium"
           style={{ color: themeConfig.accentColor }}
         >
-          ر.س
+          ر.ي
         </span>
       </div>
     </div>

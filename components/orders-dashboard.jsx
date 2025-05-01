@@ -1563,28 +1563,110 @@ export default function OrdersDashboard() {
       cell: ({ row }) => {
         const [currentStatus, setCurrentStatus] = useState(row.getValue("orderStatus"))
 
-        const handleStatusChange = async (e) => {
-          const arabicStatus = e.target.value
-          const newStatus = reverseTranslateOrderStatus(arabicStatus)
-          setCurrentStatus(newStatus)
+        // const handleStatusChange = async (e) => {
+        //   const arabicStatus = e.target.value
+        //   const newStatus = reverseTranslateOrderStatus(arabicStatus)
+        //   setCurrentStatus(newStatus)
 
-          try {
-            await fetch(`/api/orders/${row.original.id}`, {
-              method: "PATCH",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ orderStatus: newStatus }),
-            })
+        //   try {
+        //     await fetch(`/api/orders/${row.original.id}`, {
+        //       method: "PATCH",
+        //       headers: { "Content-Type": "application/json" },
+        //       body: JSON.stringify({ orderStatus: newStatus }),
+        //     })
 
-            const updatedOrders = orders.map(order => 
-              order.id === row.original.id 
-                ? { ...order, orderStatus: newStatus }
-                : order
-            )
-            setOrders(updatedOrders)
-          } catch (error) {
-            console.error("خطأ في تحديث الحالة:", error)
-          }
-        }
+        //     const updatedOrders = orders.map(order => 
+        //       order.id === row.original.id 
+        //         ? { ...order, orderStatus: newStatus }
+        //         : order
+        //     )
+            
+        //   const totalAmount = row.original.orderItems.reduce((total, item) => {
+        //     return total + item.price * item.quantity;
+        //   }, 0);
+            
+        //   const { paymentMethod, id, orderNumber, orderItems, CustomerStoreId, storeId } = row.original;
+
+        //   if (
+        //     (paymentMethod === "الدفع عند الاستلام" && newStatus === "DELIVERED") ||
+        //     (paymentMethod === "ONLINE" && selectedStatus === "PAID")
+        //   ) {
+        //     const productQty = orderItems.reduce((total, item) => total + item.quantity, 0);
+
+        //     const salesData = {
+        //       orderId: id,
+        //       productQty: productQty,
+        //       username: `${row.original.firstName} ${row.original.lastName}`,
+        //       invoiceTotal: totalAmount,
+        //       customerStoreId : CustomerStoreId,
+        //       storeId,
+        //       saleItems: orderItems.map(item => ({
+        //         productId: item.productId,
+        //       //  vendorId: item.vendorId,
+        //         productTitle: item.title,
+        //         productImage: item.imageUrl,
+        //         productPrice: item.price,
+        //         productQty: item.quantity,
+        //       })),
+        //       date: new Date().toISOString(),
+        //     };
+
+        //     const salesResponse = await fetch("/api/sales", {
+        //       method: "POST",
+        //       headers: {
+        //         "Content-Type": "application/json",
+        //       },
+        //       body: JSON.stringify(salesData),
+        //     });
+
+        //     if (!salesResponse.ok) {
+        //       console.error("فشل في إرسال بيانات المبيعات");
+        //     }
+        //   }
+      
+        //     setOrders(updatedOrders)
+        //   } catch (error) {
+        //     console.error("خطأ في تحديث الحالة:", error)
+        //   }
+        // }
+
+        // داخل cell: ({ row }) => { ... }
+const handleStatusChange = async (e) => {
+  const arabicStatus = e.target.value
+  const newStatus = reverseTranslateOrderStatus(arabicStatus)
+  setCurrentStatus(newStatus)
+
+  try {
+    // 1) حدث حالة الطلب في الـ API
+    await fetch(`/api/orders/${row.original.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ orderStatus: newStatus }),
+    })
+
+    // 2) حدّث حالة الواجهة
+    const updated = orders.map(o =>
+      o.id === row.original.id ? { ...o, orderStatus: newStatus } : o
+    )
+    setOrders(updated)
+
+    // 3) إذا COD وانتقلنا لـ DELIVERED
+    if (row.original.paymentMethod === "COD" && newStatus === "DELIVERED") {
+      const resp = await fetch("/api/payments/cod/confirm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId: row.original.id })
+      })
+      if (!resp.ok) {
+        console.error("فشل شحن محفظة COD")
+      }
+    }
+
+  } catch (err) {
+    console.error("خطأ في تحديث الحالة:", err)
+  }
+}
+
 
         return (
           <div className="flex items-center gap-2">

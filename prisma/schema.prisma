@@ -120,6 +120,7 @@ model Product {
   barcode        String?
   productCode    String?
   unit           String?
+  oldPrice       String?
   productPrice   Float
   salePrice      Float
   wholesalePrice Float?
@@ -335,6 +336,11 @@ model Store {
   updatedAt DateTime? @updatedAt
 
   customerStores        CustomerStore[]
+  wallets Wallet[]
+  
+  subscription   Subscription?  @relation(fields: [subscriptionId], references: [id])
+  subscriptionId String?        @db.ObjectId
+
 }
 
 
@@ -389,7 +395,7 @@ model Order {
   orderNumber   String?
   //payment Method
   paymentMethod String
-
+  paymentStatuse String? // حالة الدفع 
   storeId String @db.ObjectId // الرقم التعريفي للمتجر (مفتاح أجنبي)
   store   Store  @relation(fields: [storeId], references: [id]) 
 
@@ -398,7 +404,6 @@ model Order {
 
   paymentTransactionId String?             @db.ObjectId // الرقم التعريفي لمعالجة الدفع (مفتاح أجنبي)
   paymentTransaction   PaymentTransaction? @relation(fields: [paymentTransactionId], references: [id])
-  
   deliveringTransactionsId String?                @db.ObjectId // الرقم التعريفي لمعاملات التسوق (يمكن أن تكون القيمة فارغة)
   deliveringTransactions   DeliveringTransaction? @relation(fields: [deliveringTransactionsId], references: [id]) // علاقة مع معاملات التسليم
   
@@ -478,6 +483,8 @@ model Sale {
     paymentProvidersId String          @db.ObjectId // الرقم التعريفي لمزود الخدمة المرتبط بالمعاملة (مفتاح أجنبي)
     paymentProvider    PaymentProvider @relation(fields: [paymentProvidersId], references: [id])
   
+    subscriptionId       String?            @db.ObjectId
+    subscription         Subscription?      @relation(fields: [subscriptionId], references: [id]) 
     createdAt DateTime  @default(now()) // تاريخ إنشاء المعاملة
     updatedAt DateTime? @updatedAt // تاريخ آخر تعديل للمعاملة
   }
@@ -645,4 +652,120 @@ enum NotificationType {
   SECURITY_LOGIN
 
   SUPPORT_MESSAGE
+}
+
+
+/// 1. Enums جديدة
+
+/// تصنيف المحافظ الثلاث للمتجر
+enum WalletType {
+  STORE_BALANCE        // رصيد المتجر العام
+  ELECTRONIC_PAYMENTS  // رصيد المدفوعات الإلكترونية
+  COD_PAYMENTS         // رصيد الدفع عند الاستلام
+}
+
+/// لأنواع معاملات المحفظة (شحن/دفع/استرجاع/سحب)
+enum WalletTxType {
+  TOPUP
+  PAYMENT
+  REFUND
+  WITHDRAW
+}
+
+/// لأنواع معاملات محفظة المنصة
+enum PlatformTxType {
+  COMMISSION   // عمولة المنصة
+  REFUND       // استرجاع للعملاء
+  PAYOUT       // سحب المنصة لرصيدها
+}
+
+/// 2. موديل Wallet (ثلاث محافظ لكل متجر)
+model Wallet {
+  id           String               @id @default(auto()) @map("_id") @db.ObjectId
+  store        Store                @relation(fields: [storeId], references: [id])
+  storeId      String               @db.ObjectId
+
+  type         WalletType           // نوع المحفظة
+  balance      Float                @default(0.0)
+  transactions WalletTransaction[]  // سجل الحركات
+
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime?            @updatedAt
+
+  @@unique([storeId, type])         // ضمان محفظة واحدة لكل نوع
+}
+
+/// 3. موديل سجل الحركات (WalletTransaction)
+model WalletTransaction {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  wallet      Wallet        @relation(fields: [walletId], references: [id])
+  walletId    String        @db.ObjectId
+
+  type        WalletTxType
+  amount      Float         // دائماً قيمة موجبة
+  description String?       // وصف اختياري
+  provider    String?       // مثل "YWallet" أو "MTN" (عند الدفع الإلكتروني)
+  currency    String?       // مثل "YER" أو "SAR"
+  metadata    Json?         // بيانات إضافية { orderId, txRef }
+  createdAt   DateTime      @default(now())
+}
+
+/// 4. موديل محفظة المنصة (PlatformWallet) وسجلها (PlatformTx)
+model PlatformWallet {
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  balance      Float          @default(0.0)
+  transactions PlatformTx[]
+  createdAt    DateTime       @default(now())
+}
+
+model PlatformTx {
+  id          String           @id @default(auto()) @map("_id") @db.ObjectId
+  wallet      PlatformWallet   @relation(fields: [walletId], references: [id])
+  walletId    String           @db.ObjectId
+
+  type        PlatformTxType
+  amount      Float
+  metadata    Json?            // { storeId, orderId, commissionPercent }
+  createdAt   DateTime         @default(now())
+}
+
+model SubscriptionPlan {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String                        // اسم الخطة (مثلاً: مجاني، أساسي...)
+  description     String                        // وصف موجز للخطة
+  monthlyPrice    Float                         // السعر الشهري للخطة
+  yearlyPrice     Float                         // السعر السنوي للخطة
+  features        Json?                         // قائمة المميزات بصيغة JSON (مثلاً: ["دعم فني", "إحصائيات"])
+  limitations     Json?        // قائمة العيوب/القيود بصيغة JSON (مثلاً: ["متجر واحد فقط", "لا تقارير متقدمة"])
+  createdAt       DateTime @default(now())      // تاريخ الإنشاء (يُضاف تلقائياً)
+  updatedAt       DateTime @updatedAt           // تاريخ التحديث (يُحدث تلقائياً عند التعديل)
+
+  subscriptions   Subscription[]                // علاقة عكسية: خطة واحدة يمكن أن تحتوي عدة اشتراكات
+}
+
+
+
+model Subscription {
+  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
+  // المعرف الفريد للاشتراك (المفتاح الأساسي) - يتم إنشاؤه تلقائياً في MongoDB كـ ObjectId
+
+  stores             Store[]   // علاقة واحد إلى متعدد مع جدول المتاجر (اشتراك واحد يمكن أن يشمل عدة متاجر)
+
+  subscriptionPlanId String    @db.ObjectId // معرف الخطة المرتبطة (مرجع إلى SubscriptionPlan)
+  subscriptionPlan   SubscriptionPlan @relation(fields: [subscriptionPlanId], references: [id])
+  // علاقة مع جدول الخطط (SubscriptionPlan)
+
+
+  planId             Int       // رقم الخطة: 1=مجاني، 2=أساسي، 3=متقدم
+  billingCycle       String    // نوع الدورة: 'monthly'=شهري، 'yearly'=سنوي
+  startDate          DateTime  // تاريخ بدء الاشتراك (مطلوب)
+  endDate            DateTime? // تاريخ انتهاء الاشتراك (اختياري - فارغ للاشتراكات النشطة)
+  status             String    // حالة الاشتراك: 'active'=نشط، 'canceled'=ملغى، 'expired'=منتهي
+  paymentMethod      String?   // طريقة الدفع (اختيارية): مثل 'creditCard' أو 'paypal'
+  transactionFeeRate Float?// نسبة رسوم المعاملات 
+
+  paymentTransactions  PaymentTransaction[] // معاملات الدفع المرتبطة بهذا الاشتراك
+  
+  createdAt          DateTime  @default(now()) // تاريخ الإنشاء (يضاف تلقائياً عند الإنشاء)
+  updatedAt          DateTime  @updatedAt      // تاريخ التحديث (يتغير تلقائياً عند أي تعديل)
 }

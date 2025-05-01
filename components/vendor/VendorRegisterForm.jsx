@@ -522,7 +522,7 @@ export default function VendorRegisterForm({ role = "VENDOR" }) {
       <div className="flex justify-center mt-4">
         <p className="text-[0.75rem] font-light text-gray-500 dark:text-gray-400">
           لديك حساب بالفعل؟{" "}
-          <Link href="/vendor/login" className="font-medium text-indigo-600 hover:underline dark:text-indigo-500">
+          <Link href="/login" className="font-medium text-indigo-600 hover:underline dark:text-indigo-500">
             تسجيل الدخول
           </Link>
         </p>

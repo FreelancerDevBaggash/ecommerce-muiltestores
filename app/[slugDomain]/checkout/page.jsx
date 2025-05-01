@@ -120,7 +120,7 @@ export default function CheckoutPage({ params: { slugDomain } }) {
     <div className="bg-slate-200 dark:bg-slate-950 min-h-screen">
       <div className="max-w-3xl my-6 mx-auto border border-slate-700 p-6 rounded-lg">
         {/* عرض خطوات الدفع */}
-        <Steps steps={steps}  customization={customizationData} />
+        <Steps steps={steps}  customization={customizationData} slugDomain={slugDomain} />
 
         <div className="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
           {/* عرض بانر السلة */}

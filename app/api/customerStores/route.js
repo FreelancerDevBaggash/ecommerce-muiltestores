@@ -65,18 +65,18 @@ export async function GET(req) {
   const storeId = searchParams.get('storeId');
   const customerId = searchParams.get('customerId');
 
-  if (!storeId || !customerId) {
-    return NextResponse.json(
-      { error: 'يرجى تمرير كل من storeId و customerId في query string' },
-      { status: 400 }
-    );
-  }
+  // if (!storeId || !customerId) {
+  //   return NextResponse.json(
+  //     { error: 'يرجى تمرير كل من storeId و customerId في query string' },
+  //     { status: 400 }
+  //   );
+  // }
 
   try {
-    const customerStore = await prisma.customerStore.findFirst({
+    const customerStore = await prisma.customerStore.findMany({
       where: {
         storeId,
-        customerId,
+        // customerId,
       },
       include: {
         customer: true,

@@ -52,7 +52,7 @@ export default function CartClient({ slugDomain }) {
   return (
     <div dir='rtl' className="min-h-screen bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-6 py-6">
-        <Breadcrumb customization={customizationData} />
+        <Breadcrumb slugDomain={slugDomain} customization={customizationData} />
         <div className="mt-8">
           {cartItems.length > 0 ? (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">

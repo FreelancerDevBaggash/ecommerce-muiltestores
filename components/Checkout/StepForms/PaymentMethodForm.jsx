@@ -141,7 +141,7 @@ export default function PaymentMethodForm8() {
                 type="radio"
                 id="hosting-small"
                 name="hosting"
-                value="الدفع عند الاستلام"
+                value="COD"
                 className="hidden peer"
                 required
                 onChange={(e) => setPaymentMethod(e.target.value)}
@@ -163,7 +163,7 @@ export default function PaymentMethodForm8() {
                 type="radio"
                 id="hosting-big"
                 name="hosting"
-                value="بطاقة ائتمانية"
+                value="ELECTRONIC"
                 className="hidden peer"
                 onChange={(e) => setPaymentMethod(e.target.value)}
               />
@@ -173,7 +173,7 @@ export default function PaymentMethodForm8() {
               >
                 <div className="flex gap-2 items-center">
                   <CreditCard className="w-8 h-8 ms-3 flex-shrink-0" />
-                  <p>بطاقة ائتمانية</p>
+                  <p>دفع الكتروني</p>
                 </div>
                 <Circle className="w-5 h-5 ms-3 flex-shrink-0" />
               </label>

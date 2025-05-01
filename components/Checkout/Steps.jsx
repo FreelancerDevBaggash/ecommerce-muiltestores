@@ -58,7 +58,7 @@ import Link from 'next/link';
 import React from 'react'
 import { useSelector } from 'react-redux';
 
-export default function Steps({steps}) {
+export default function Steps({steps, slugDomain}) {
   const currentStep = useSelector((store) => store.checkout.currentStep);
   const cartItems = useSelector((store) => store.cart)
   return (
@@ -70,7 +70,7 @@ export default function Steps({steps}) {
       <li>
         <div className="-m-1">
           <Link
-            href="/cart"
+            href={`/${slugDomain}`}
             title=""
             className="inline-flex items-center p-1 text-sm font-medium text-gray-500 rounded-md focus:outline-none focus:ring-2 focus:text-gray-900 focus:ring-gray-900 hover:text-gray-700 dark:hover:text-lime-500 md:text-ba"
           >

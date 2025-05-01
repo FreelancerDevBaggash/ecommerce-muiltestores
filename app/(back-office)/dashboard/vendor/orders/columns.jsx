@@ -285,10 +285,10 @@ export const columns = [
             return total + item.price * item.quantity;
           }, 0);
 
-          const { paymentMethod, id, orderNumber, orderItems, customersId, storeId } = row.original;
+          const { paymentMethod, id, orderNumber, orderItems, customerStoreId, storeId } = row.original;
 
           if (
-            (paymentMethod === "Cash On Delivery" && selectedStatus === "DELIVERED") ||
+            (paymentMethod === "الدفع عند الاستلام" && selectedStatus === "DELIVERED") ||
             (paymentMethod === "ONLINE" && selectedStatus === "PAID")
           ) {
             const productQty = orderItems.reduce((total, item) => total + item.quantity, 0);
@@ -298,11 +298,11 @@ export const columns = [
               productQty: productQty,
               username: `${row.original.firstName} ${row.original.lastName}`,
               invoiceTotal: totalAmount,
-              customersId,
+              customerStoreId,
               storeId,
               saleItems: orderItems.map(item => ({
                 productId: item.productId,
-                vendorId: item.vendorId,
+              //  vendorId: item.vendorId,
                 productTitle: item.title,
                 productImage: item.imageUrl,
                 productPrice: item.price,

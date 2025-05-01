@@ -1,15 +1,26 @@
 import db from "../../../../../lib/db"
 import { NextResponse } from "next/server";
 
-export async function GET(request, {params:{id}}){
+export async function GET(request, {params}){
+    const { id } = params;  // id هنا هو customerStoreId
+
+    console.log('aaaaaaaa', id)
+    if (!id) {
+        return NextResponse.json(
+          { error: 'Missing customerStoreId parameter' },
+          { status: 400 }
+        );
+      }
     try{
-        const order = await db.order.findUnique({
+        const order = await db.order.findMany({
             where:{
                 storeId: id
             },
             include:{
                 orderItems:true
-            }
+            },
+            orderBy: { createdAt: 'desc' },      // اختياري: لترتيب الطلبات من الأحدث للأقدم
+
         });
         return NextResponse.json(order)
     }catch(error){

@@ -104,22 +104,18 @@ export default async function page({ params: { slugDomain } }) {
       return <h1 className="bg-slate-50 text-slate-500">Store not found</h1>;
     }
     const storeId = store.id;
-  const orders = await getData("orders", { mode: 'real-time' });
-
+  // const orders = await getData("orders", { mode: 'real-time' });
   // Get the User Id
   const session = getCustomerSession();
   if (!session) return;
-
   const userId = session?.user?.id;
-  const customerStore = await getData(`customerStores?storeId=${storeId}&customerId=${userId}`)
-  const customerStoreId = customerStore.id;
-  if (!orders || orders.length === 0) {
-    return <p className="text-center text-gray-700 mt-6">لا توجد طلبات حتى الآن</p>
-  }
 
+  const customerStore = await getData(`customerStores/customer?storeId=${storeId}&customerId=${userId}`)
+  const customerStoreId = customerStore[0].id;
   // Filter By User Id
-  const userOrders = orders.filter((order) => order.CustomerStoreId === customerStoreId);
-  
+  const userOrders =  await getData(`orders/customer/${customerStoreId}`, { mode: 'real-time' });
+
+
   return (
     <section dir="rtl" className="py-16 bg-white sm:py-16 lg:py-20">
       <div className="px-4 m-auto sm:px-6 lg:px-6 max-w-7xl">
@@ -130,6 +126,7 @@ export default async function page({ params: { slugDomain } }) {
               تابع حالة طلباتك السابقة والجديدة، واستكشف المزيد من المنتجات
             </p>
           </div>
+          
 
           <ul className="mt-8 space-y-5 lg:mt-8 sm:space-y-6 lg:space-y-10">
             {

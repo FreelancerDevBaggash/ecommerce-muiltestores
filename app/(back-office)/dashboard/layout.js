@@ -28,31 +28,45 @@
 //     </div>
 //   );
 // }
-"use client";
+// "use client";
 
-import Navbar from "../../../components/backoffice/Navbar";
-import Sidebar from "@/components/backoffice/Sidebar";
-import React, { useState } from 'react';
+// import Navbar from "../../../components/backoffice/Navbar";
+// import Sidebar from "@/components/backoffice/Sidebar";
+// import React, { useState } from 'react';
 
-export default function Layout({ children }) {
-  const [showSidebar, setShowSidebar] = useState(false);
-  return (
-    <div dir="rtl" className="flex">
-      {/* الشريط الجانبي */}
-      <Sidebar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
-      {/* lg:ml-64 ml-0 flex-grow bg-slate-100 min-h-screen */}
+// export default function Layout({ children }) {
+//   const [showSidebar, setShowSidebar] = useState(false);
+//   return (
+//     <div dir="rtl" className="flex">
+//       {/* الشريط الجانبي */}
+//       <Sidebar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
+//       {/* lg:ml-64 ml-0 flex-grow bg-slate-100 min-h-screen */}
 
-      <div className="lg:mr-64 mr-0 flex-grow   bg-slate-100 min-h-screen">
-        {/* الرأس */}
-        <Navbar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
-        <main className="p-8 bg-[#dfd7f500] font-arabic dark:bg-slate-900 min-h-screen  rounded-3xl  text-slate-50 mt-16">
-          {children}
-        </main>
-        {/* المحتوى الرئيسي */}
-      </div>
+//       <div className="lg:mr-64 mr-0 flex-grow   bg-slate-100 min-h-screen">
+//         {/* الرأس */}
+//         <Navbar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
+//         <main className="p-8 bg-[#dfd7f500] font-arabic dark:bg-slate-900 min-h-screen  rounded-3xl  text-slate-50 mt-16">
+//           {children}
+//         </main>
+//         {/* المحتوى الرئيسي */}
+//       </div>
 
-      {/* الجسم الرئيسي */}
-    </div>
-  );
+//       {/* الجسم الرئيسي */}
+//     </div>
+//   );
+// }
+
+import { getServerSession } from "next-auth"
+import { redirect } from "next/navigation"
+import { authOptions } from "@/lib/authOptions"
+import DashboardLayout from "@/components/dashboard/DashboardLayout"
+
+export default async function Layout({ children }) {
+  const session = await getServerSession(authOptions)
+
+  if (!session) {
+    redirect("/login?callbackUrl=/dashboard")
+  }
+
+  return <DashboardLayout>{children}</DashboardLayout>
 }
-

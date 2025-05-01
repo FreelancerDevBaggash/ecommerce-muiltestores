@@ -10,7 +10,7 @@ export async function POST(request) {
       productQty,
       username,
       invoiceTotal,
-      customersId,
+      customerStoreId,
       storeId,
       saleItems, // تأكد من تمرير saleItems من الطلب
     } = await request.json();
@@ -37,7 +37,7 @@ export async function POST(request) {
           productQty,
           username,
           invoiceTotal,
-          customersId,
+          customerStoreId,
           storeId,
         //  orderNumber: generateOrderNumber(10), // إضافة رقم الطلب
         },
@@ -48,7 +48,7 @@ export async function POST(request) {
         data: saleItems.map((item) => ({
           productId: item.productId, // تأكد من أن لديك `productId` في العناصر
           saleId: newSale.id,        // استخدام `newSale.id` بدلاً من `newOrder.id`
-          vendorId: item.vendorId,   // تأكد من أن لديك `vendorId` في العناصر         
+       //   vendorId: item.vendorId,   // تأكد من أن لديك `vendorId` في العناصر         
           productTitle: item.productTitle,  // تأكد من أن لديك `productTitle` في العناصر
           productImage: item.productImage,
           productPrice: parseFloat(item.productPrice),

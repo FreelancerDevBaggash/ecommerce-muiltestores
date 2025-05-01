@@ -242,7 +242,7 @@ export default function NotificationDropdown({ onNavigate }) {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden z-50 animate-fadeIn">
+        <div className=" right-0 mt-22 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden z-50 animate-fadeIn">
           {/* رأس القائمة */}
           <div className="flex items-center justify-between px-4 py-2 border-b dark:border-gray-700">
             <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-200">الإشعارات</h3>

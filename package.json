@@ -46,6 +46,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "exceljs": "^4.4.0",
     "fabric": "^6.5.4",
     "faker": "^5.5.3",
     "flowbite": "^2.5.1",

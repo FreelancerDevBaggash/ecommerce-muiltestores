@@ -28,7 +28,7 @@ export default function ImageInput({
             className="flex space-x-2  bg-slate-900 rounded-md shadow text-slate-50  py-2 px-4"
           >
             <Pencil className="w-5 h-5" />
-            <span>Change Image</span>
+            <span>تغيير الصورة</span>
           </button>
         )}
       </div>
@@ -46,13 +46,13 @@ export default function ImageInput({
           onClientUploadComplete={(res) => {
             setImageUrl(res[0].url);
             // Do something with the response
-            toast.success("Image Upload Complete")
+            toast.success("تم تحميل الصورة")
             console.log("Files: ", res);
             console.log("Upload Completed");
           }}
           onUploadError={(error) => {
             // Do something with the error.
-            toast.error("Image Upload Failed, Try Again")
+            toast.error("فشل في رفع الصورة, حاول مرة اخرى")
             console.log(`ERROR! ${error.message}`, error);
          
           }}

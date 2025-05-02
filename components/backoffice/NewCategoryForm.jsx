@@ -62,12 +62,12 @@ export default async  function NewCategoryForm({mainCategoryId, storeId}){
         */}
     return(
         <div>
-            <FormHeader title="New Category" />
+            <FormHeader title="فئة جديدة" />
             <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-4xl p-4 bg-white border
              border-gray-200 rounded-lg shadow sm:p-6 md:p-8
             dark:bg-gray-800 dark:border-gray-700 mx-auto my-3">
             <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-                <TextInput lable="Category Title"
+                <TextInput lable="اسم الفئة"
                     name="title"
                     register={register}
                     errors={errors}
@@ -81,7 +81,7 @@ export default async  function NewCategoryForm({mainCategoryId, storeId}){
                     options={markets} 
                     multiple={true} /> */}
 
-<TextInput lable="Category Description"
+<TextInput lable="وصف الفئة"
                     name="description"
                     register={register}
                     errors={errors}
@@ -102,18 +102,18 @@ export default async  function NewCategoryForm({mainCategoryId, storeId}){
                     /> */}
  
                  
-          <ImageInput imageUrl={imageUrl} setImageUrl={setImageUrl} endpoint = "categoryImageUploader" label="Category Image"/>
+          <ImageInput imageUrl={imageUrl} setImageUrl={setImageUrl} endpoint = "categoryImageUploader" label="صورة الفئة"/>
 
           <ToggleInput
-    label="Publish your Category"
+    label="انشر فئتك"
      name="isActive"
      trueTitle="Active"
      falseTitle="Draft"
      register={register}
     />
             </div>
-                <SubmitButton isLoading={loading} buttonTitle="Create Category"
-                loadingButtonTitle="Create Category please wait..."/> 
+                <SubmitButton isLoading={loading} buttonTitle="انشاء الفئة"
+                loadingButtonTitle="...جاري انشاء الفئة يرجى الانتظار"/> 
             </form>
 
 

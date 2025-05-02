@@ -61,10 +61,10 @@ export async function GET(request) {
     const categoryId = searchParams.get('categoryId');
     const searchTerm = searchParams.get('search');
     const page = searchParams.get('page') || 1;
-    const pageSize = 3;
+    const pageSize = 100;
 
-    console.log("Received storeId:", storeId);
-    console.log("Received categoryId:", categoryId);
+    // console.log("Received storeId:", storeId);
+    // console.log("Received categoryId:", categoryId);
 
     let where = {};
 

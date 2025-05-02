@@ -24,7 +24,7 @@ export default async function page(){
     
             // تصفية المنتجات حسب معرف المتجر
             if (subcategory && subcategory.length > 0) {
-                console.log("subcategory of store:", subcategory);
+                // console.log("subcategory of store:", subcategory);
               } else {
                 console.log("No subcategory found for the store.");
               }

@@ -4,12 +4,14 @@ import db from '@/lib/db'
 
 export async function GET(request) {
   try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
     // 1) استخرج معلمات الاستعلام
     const params = request.nextUrl.searchParams
     const orderId = params.get('orderId')
     const amount = parseFloat(params.get('amount') || '0')
     const currency = params.get('currency') || 'YER'
-
+   const slugDomain = params.get('slugDomain') || '/'
     if (!orderId) {
       return NextResponse.json({ error: 'Missing orderId' }, { status: 400 })
     }
@@ -89,7 +91,7 @@ export async function GET(request) {
     })
 
     // 8) إعادة توجيه المستخدم إلى صفحة تتبع الطلب
-    return NextResponse.redirect(`/order/${orderId}`)
+    return NextResponse.redirect(`${baseUrl}/${slugDomain}/order-confirmation/${orderId}`)
   } catch (err) {
     console.error('خطأ في callback:', err)
     return NextResponse.json({ error: 'Internal error' }, { status: 500 })

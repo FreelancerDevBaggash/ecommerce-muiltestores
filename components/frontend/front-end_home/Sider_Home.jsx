@@ -8,7 +8,7 @@ const cards = [
   {
     id: 1,
     title: 'أكثر من ٢٥ تطبيق جديد في متجر التطبيقات',
-    description: 'التطبيقات واحدة من حلول سلة الذكية التي تسهل على التاجر إنجاز أعماله بسرعة وذكاء.',
+    description: 'التطبيقات واحدة من حلول اتجر الذكية التي تسهل على التاجر إنجاز أعماله بسرعة وذكاء.',
     image: 'https://cdn.salla.sa/AQ43OUZuD9Pfo8T6yuUb5nDfGKI4x1IZ857hB5wu.png',
   },
   {
@@ -32,7 +32,7 @@ const cards = [
   {
     id: 5,
     title: 'تحديثات جديدة',
-    description: 'تعرف على أحدث التحديثات في منصة سلة وكيفية الاستفادة منها.',
+    description: 'تعرف على أحدث التحديثات في منصة اتجر وكيفية الاستفادة منها.',
     image: 'https://cdn.salla.sa/AQ43OUZuD9Pfo8T6yuUb5nDfGKI4x1IZ857hB5wu.png',
   },
 ];
@@ -54,7 +54,7 @@ export default function SliderHome() {
     <div className="relative w-auto p-4">
       {/* عنوان السلايدر */}
       <h1 className="text-2xl font-bold text-center mb-6 text-primary dark:text-primary-light">
-        ألقي نظرة على آخر تحديثات سلة
+        ألقي نظرة على آخر تحديثات اتجر
       </h1>
 
       {/* عرض الكروت */}

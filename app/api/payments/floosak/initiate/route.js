@@ -4,7 +4,7 @@ import db from '@/lib/db';
 
 // هذا المسار يحاكي إنشاء دفعة في البوابة الوهمية ويعيد رابط الدفع
 export async function POST(request) {
-  const { id, amount, currency } = await request.json();
+  const { id, amount, currency ,slugDomain } = await request.json();
 
   // تجد الـ order وتتأكد منه
   const order = await db.order.findUnique({ where: { id: id } });
@@ -28,7 +28,7 @@ export async function POST(request) {
   });
 
   // إعادة رابط وهمي؛ في الحقيقة سيظهر زر “اكمل الدفع”
-  const paymentUrl = `/api/payments/floosak/callback?orderId=${id}&amount=${amount}&currency=${currency}`;
+  const paymentUrl = `/api/payments/floosak/callback?orderId=${id}&amount=${amount}&currency=${currency}&slugDomain=${slugDomain}`;
 
   return NextResponse.json({ paymentUrl, paymentRef });
 }

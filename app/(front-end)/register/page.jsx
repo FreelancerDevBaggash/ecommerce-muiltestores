@@ -94,14 +94,14 @@ export default function Page() {
           {/* الشعار */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900">
             <a href="/" className="flex items-center text-2xl font-semibold text-gray-900 dark:text-white">
-              <Image
+              {/* <Image
                 src={logo || "/placeholder.svg"}
                 alt="شعار المنصة"
                 width={180}
                 height={60}
                 className="h-12 w-auto"
                 priority
-              />
+              /> */}
             </a>
           </div>
 

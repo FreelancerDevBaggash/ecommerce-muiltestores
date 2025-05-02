@@ -4,7 +4,7 @@ const cards = [
   {
     id: 1,
     title: 'أكثر من ٢٥ تطبيق جديد في متجر التطبيقات',
-    description: 'التطبيقات واحدة من حلول سلة الذكية التي تسهل على التاجر إنجاز أعماله بسرعة وذكاء. حيث تعد مساعدًا ذكيًا للتاجر وتوفر عليه الوقت والجهد وتقلل من الأخطاء.',
+    description: 'التطبيقات واحدة من حلول اتجر الذكية التي تسهل على التاجر إنجاز أعماله بسرعة وذكاء. حيث تعد مساعدًا ذكيًا للتاجر وتوفر عليه الوقت والجهد وتقلل من الأخطاء.',
     image: 'https://storage.googleapis.com/a1aa/image/P1W8eLNAxPwLXymRp0yoLXjfw8O0Jfoj8lkmPgwWqSwedGGQB.jpg',
   },
   {
@@ -38,7 +38,7 @@ export default function Home() {
       <div className="container mx-auto p-4 flex flex-col md:flex-row items-center justify-center">
         <div className="w-full md:w-1/2 p-4 relative">
           <h1 className="text-2xl font-bold text-center mb-4">
-            ألقي نظرة على آخر تحديثات سلة
+            ألقي نظرة على آخر تحديثات اتجر
           </h1>
           <div className="relative h-96">
             {cards.map((card, index) => (

@@ -325,7 +325,7 @@ export async function POST(request) {
           shippingCost: parseFloat(shippingCost),
           orderNumber: generateOrderNumber(8),
           paymentMethod,                                      // 'COD' أو 'ELECTRONIC'
-          paymentStatuse: paymentMethod === 'COD' ? null : 'PENDING',
+          paymentStatuse: paymentMethod === 'COD' ? 'UNPAID' : 'PAID',
           orderStatus: 'PENDING',
           location,
           storeId,
@@ -337,7 +337,7 @@ export async function POST(request) {
               quantity: parseInt(item.qty, 10),
               price: parseFloat(item.salePrice),
               title: item.title,
-              imageUrl: item.imageUrl
+              imageUrl: item.imageUrl || ''
             }))
           }
         }

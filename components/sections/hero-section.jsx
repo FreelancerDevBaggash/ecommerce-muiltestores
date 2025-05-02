@@ -10,6 +10,7 @@ import { gsap } from "gsap"
 import { GlassMorphism } from "@/components/ui/glass-morphism"
 import { NeuMorphism } from "@/components/ui/neu-morphism"
 import { TextReveal } from "@/components/effects/text-reveal"
+import Link from "next/link";
 
 export default function HeroSection() {
   const ref = useRef(null)
@@ -76,9 +77,11 @@ export default function HeroSection() {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <NeuMorphism>
+              <Link href="/register">
                 <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white">
                   أنشئ متجرك الآن مجاناً
                 </Button>
+                </Link>
               </NeuMorphism>
               <GlassMorphism>
                 <Button

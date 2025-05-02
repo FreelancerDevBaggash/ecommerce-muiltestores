@@ -604,19 +604,21 @@ export default function OrderSummary({ slugDomain, customization = {} }) {
       if (!resOrder.ok) throw new Error('خطأ في إنشاء الطلب');
 
       // 2) التعامل حسب طريقة الدفع
-      if (checkoutFormData.paymentMethod === "ELECTRONIC") {
+      if (checkoutFormData.paymentMethod !== "COD") {
         // الدفع الإلكتروني (Mock)
         const resPay = await fetch(`${baseUrl}/api/payments/floosak/initiate`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id, amount: total, currency: 'YER' })
+          body: JSON.stringify({ id, amount: total, currency: 'YER' ,slugDomain })
         });
         if (!resPay.ok) throw new Error('خطأ في تهيئة الدفع');
         const { paymentUrl } = await resPay.json();
 
         toast.success('جارٍ تحويلك إلى صفحة الدفع…');
         // 3) إعادة التوجيه لصفحة الدفع
-        router.push(paymentUrl);
+        router.push(`${baseUrl}/${paymentUrl}`);
+        dispatch(clearCart());
+
       } else {
         // COD
         toast.success('تم تأكيد الطلب! الدفع عند الاستلام');
@@ -686,7 +688,7 @@ export default function OrderSummary({ slugDomain, customization = {} }) {
         >
           {loading
             ? 'جاري المعالجة…'
-            : checkoutFormData.paymentMethod === 'ELECTRONIC'
+            : checkoutFormData.paymentMethod !== 'COD'
               ? 'الدفع الآن'
               : 'تأكيد الطلب'}
           <ChevronRight />

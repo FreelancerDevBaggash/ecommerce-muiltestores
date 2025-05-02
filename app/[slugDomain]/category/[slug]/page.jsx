@@ -42,7 +42,7 @@
 
 
 import React from 'react';
-import FilterComponent from '../../../../components/frontend/Filter/FilterComponent';
+import FilterComponent from '../../../../components/frontend/template6/Filter/FilterComponent';
 import { getData } from '@/lib/getData';
 
 export default async function Page({ params: { slug }, searchParams }) {

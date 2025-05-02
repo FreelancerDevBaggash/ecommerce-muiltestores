@@ -75,8 +75,9 @@
 // }
 
 
-import Navbar from '../../components/frontend/templaet3/Navbar';
-import Footer from '../../components/frontend/templaet3/Footer';
+
+import Navbar from '../../components/frontend/template6/Navbar';
+import Footer from '../../components/frontend/template6/Footer';
 import { getData } from '../../lib/getData';
 
 export default async function Layout({ children, params:{slugDomain} }) {

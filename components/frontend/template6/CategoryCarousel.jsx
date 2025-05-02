@@ -198,14 +198,64 @@
 // // </Carousel>
 // //   );
 // // }
+
+// "use client"
+// import React, { useImperativeHandle, forwardRef } from 'react'
+// import Carousel from 'react-multi-carousel'
+// import "react-multi-carousel/lib/styles.css"
+// import Product from './Product'
+
+// const CategoryCarousel = forwardRef(({ products,   slugDomain, isMarketPage = false }, ref) => {
+//   let carouselRef = React.useRef()
+
+//   useImperativeHandle(ref, () => ({
+//     next: () => carouselRef.current?.next(),
+//     prev: () => carouselRef.current?.previous(),
+//   }))
+
+//   const responsive = {
+//     desktop: { breakpoint: { max: 3000, min: 1024 }, items: isMarketPage ? 3 : 4, slidesToSlide: 3 },
+//     tablet: { breakpoint: { max: 1024, min: 464 }, items: isMarketPage ? 2 : 3, slidesToSlide: 2 },
+//     mobile: { breakpoint: { max: 464, min: 0 }, items: 2, slidesToSlide: 1 },
+//   }
+
+//   return (
+//     <Carousel dir="rtl"
+//     rtl={true}
+//       ref={carouselRef}
+//       swipeable
+//       draggable
+//       showDots={false}
+//       responsive={responsive}
+//       ssr
+//       infinite
+//       autoPlay
+//       autoPlaySpeed={5000}
+//       keyBoardControl
+//       customTransition="all .5"
+//       transitionDuration={1000}
+//       containerClass="carousel-container"
+//       removeArrowOnDeviceType={["tablet", "mobile"]}
+//       itemClass="px-2"
+//     >
+//       {products.map((product, i) => (
+//         <Product   slugDomain={slugDomain} product={product} key={i} />
+//       ))}
+//     </Carousel>
+//   )
+// })
+
+// export default CategoryCarousel
+
+// components/frontend/template6/CategoryCarousel.jsx
 "use client"
-import React, { useImperativeHandle, forwardRef } from 'react'
+import React, { useImperativeHandle, forwardRef, useRef } from 'react'
 import Carousel from 'react-multi-carousel'
 import "react-multi-carousel/lib/styles.css"
 import Product from './Product'
 
-const CategoryCarousel = forwardRef(({ products,   slugDomain, isMarketPage = false }, ref) => {
-  let carouselRef = React.useRef()
+const CategoryCarousel = forwardRef(function CategoryCarousel({ products, slugDomain, isMarketPage = false }, ref) {
+  const carouselRef = useRef()
 
   useImperativeHandle(ref, () => ({
     next: () => carouselRef.current?.next(),
@@ -214,13 +264,14 @@ const CategoryCarousel = forwardRef(({ products,   slugDomain, isMarketPage = fa
 
   const responsive = {
     desktop: { breakpoint: { max: 3000, min: 1024 }, items: isMarketPage ? 3 : 4, slidesToSlide: 3 },
-    tablet: { breakpoint: { max: 1024, min: 464 }, items: isMarketPage ? 2 : 3, slidesToSlide: 2 },
-    mobile: { breakpoint: { max: 464, min: 0 }, items: 2, slidesToSlide: 1 },
+    tablet:  { breakpoint: { max: 1024, min: 464 }, items: isMarketPage ? 2 : 3, slidesToSlide: 2 },
+    mobile:  { breakpoint: { max: 464,  min: 0   }, items: 2,              slidesToSlide: 1 },
   }
 
   return (
-    <Carousel dir="rtl"
-    rtl={true}
+    <Carousel
+      dir="rtl"
+      rtl
       ref={carouselRef}
       swipeable
       draggable
@@ -238,7 +289,7 @@ const CategoryCarousel = forwardRef(({ products,   slugDomain, isMarketPage = fa
       itemClass="px-2"
     >
       {products.map((product, i) => (
-        <Product   slugDomain={slugDomain} product={product} key={i} />
+        <Product slugDomain={slugDomain} product={product} key={i} />
       ))}
     </Carousel>
   )

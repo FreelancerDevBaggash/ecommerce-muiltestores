@@ -148,13 +148,13 @@ console.log('mmmmmmm', session)
         )}
 
         {/* أقسام المتجر لسطح المكتب */}
-        <div className="hidden md:flex justify-center border-t border-gray-200 dark:border-gray-800 py-3">
+        {/* <div className="hidden md:flex justify-center border-t border-gray-200 dark:border-gray-800 py-3">
           <CategoriesNav
             categories={categoriesData}
             slugDomain={slugDomain}
             isMobile={false}
           />
-        </div>
+        </div> */}
       </div>
     </header>
   );

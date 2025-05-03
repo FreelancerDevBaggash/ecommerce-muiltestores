@@ -8,7 +8,7 @@
 // import { getData } from "../../../lib/getData";
 // import { useSession } from "next-auth/react";
 // import CartCount from "../CartCount";
-// import HelpModalstore from "../templaet4/HelpModal-store";
+// import HelpModalstore from "../template4/HelpModal-store";
 // import ThemeSwitcherBtn from "../../ThemeSwitcherBtn";
 // import UserAvatar from "./UserAvatar";
 // export default function Navbar({ slugDomain, customization = {} ,storeData ={}, categories={} }) {

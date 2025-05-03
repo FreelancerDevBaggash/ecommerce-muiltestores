@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Breadcrumb from '../../../components/frontend/templaet5/cart-templaet/Breadcrumb';
-import CartSubTotalCard from '../../../components/frontend/templaet5/cart-templaet/CartSubTotalCard';
-import EmptyCart from '../../../components/frontend/templaet5/cart-templaet/EmptyCart';
-import CartItems from '../../../components/frontend/templaet5/cart-templaet/CartItems';
+import Breadcrumb from '../../../components/frontend/template5/cart-template/Breadcrumb';
+import CartSubTotalCard from '../../../components/frontend/template5/cart-template/CartSubTotalCard';
+import EmptyCart from '../../../components/frontend/template5/cart-template/EmptyCart';
+import CartItems from '../../../components/frontend/template5/cart-template/CartItems';
 import { getData } from '../../../lib/getData';
 
 export default function CartClient({ slugDomain }) {

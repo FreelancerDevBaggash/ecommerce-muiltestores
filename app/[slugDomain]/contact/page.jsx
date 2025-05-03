@@ -81,7 +81,7 @@
 //   );
 // }
 import React from 'react'
-import ContactUs from '@/components/frontend/templaet5/ContactUs'
+import ContactUs from '@/components/frontend/template5/ContactUs'
 export default function Page({params:{slugDomain}}) {
   return (
     <div dir='rfc'>

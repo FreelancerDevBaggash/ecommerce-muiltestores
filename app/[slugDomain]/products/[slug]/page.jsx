@@ -1,7 +1,7 @@
 import React from 'react';
 import Breadcrumb from '../../../../components/frontend/Breadcrumb';
 import AddToCartButton from '../../../../components/frontend/AddToCartButton';
-import CategoryCarousel from '../../../../components/frontend/templaet2/CategoryCarousel-store';
+import CategoryCarousel from '../../../../components/frontend/template6/CategoryCarousel';
 import ProductShareButton from '../../../../components/frontend/ProductShareButton';
 import ProductimageCarousel from '../../../../components/frontend/ProductimageCarousel';
 import { Tag, Send, ShieldCheck, Truck, RefreshCw, CreditCard } from 'lucide-react';

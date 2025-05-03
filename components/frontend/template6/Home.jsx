@@ -10,12 +10,22 @@ const AutoPlay = dynamic(() => import('./AutoPlay').catch(() => () => null));
 const CategorySlider = dynamic(() => import('./CategorySlider'));
 const Testimonials = dynamic(() => import('./Testimonials'));
 // const AutoPlay = dynamic(() => import('./AutoPlay').catch(() => () => null));
-export default async function Hero({ storeId, customization ={}, slugDomain }) {
-  const banners = await getData(`/banners?storeId=${storeId}`);
+export default async function Home({ 
+  banners = [], 
+  coupons={},
+  storeId = {}, 
+  customization = {}, 
+  products = [],
+  slugDomain = {}, 
+  // subcategory={},
+  categories = [],
+  store = {} // Add storeData prop to access merchant phone number
+}) {
+  const banners1 = await getData(`/banners?storeId=${storeId}`);
   const categoriesData = await getData(`/categories?storeId=${storeId}`);
   const productsData = await getData(`/products?storeId=${storeId}`);
 
-  const categories = categoriesData.filter(
+  const categories1 = categoriesData.filter(
     (category) => category.products && category.products.length > 0
   );
 
@@ -27,12 +37,12 @@ export default async function Hero({ storeId, customization ={}, slugDomain }) {
   const isActive = customization.isActive ?? true;
 
   return (
-    <section className='mt-4'>
-      <HeroCarousel banners={banners} category={categoriesData} customization={customization} />
+    <section className=''>
+      <HeroCarousel banners={banners1} category={categoriesData} customization={customization} />
 
 
       {categories.length > 0 && (
-        <CategorySlider categories={categories} customization={customization} slugDomain={slugDomain} />
+        <CategorySlider categories={categories1} customization={customization} slugDomain={slugDomain} />
 
         
       )}

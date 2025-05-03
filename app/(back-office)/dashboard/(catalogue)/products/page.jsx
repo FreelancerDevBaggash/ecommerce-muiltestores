@@ -42,7 +42,7 @@ export default async function page(){
     
     <div>
 {/*Header*/}
-<PageHeader heading="Products"  href="/dashboard/products/new" linkTitle="Add Product"/>
+<PageHeader heading="المنتجات"  href="/dashboard/products/new" linkTitle="اضافة منتج"/>
 
 
 <div className="py-8">

@@ -1,17 +1,17 @@
 // "use client"
 
 // import React from 'react'
-// import Breadcrumb from '../../../components/frontend/templaet1/cart-templaet/Breadcrumb'
+// import Breadcrumb from '../../../components/frontend/template1/cart-template/Breadcrumb'
 
 // // import Breadcrumb from '../../../components/frontend/Breadcrumb'
 // import Image from 'next/image'
 // import { Minus, Plus, Trash2 } from 'lucide-react'
 // import Link from 'next/link'
 // import { useSelector } from 'react-redux';
-// import CartSubTotalCard from '../../../components/frontend/templaet1/cart-templaet/CartSubTotalCard'
-// import CartProduct from '../../../components/frontend/templaet1/cart-templaet/CartProduct'
-// import EmptyCart from '../../../components/frontend/templaet1/cart-templaet/EmptyCart'
-// import CartItems from '../../../components/frontend/templaet1/cart-templaet/CartItems'
+// import CartSubTotalCard from '../../../components/frontend/template1/cart-template/CartSubTotalCard'
+// import CartProduct from '../../../components/frontend/template1/cart-template/CartProduct'
+// import EmptyCart from '../../../components/frontend/template1/cart-template/EmptyCart'
+// import CartItems from '../../../components/frontend/template1/cart-template/CartItems'
 
 
 // export default async function Cart({ params:{slugDomain}}) {
@@ -47,11 +47,11 @@
 // "use client";
 // import React, { useEffect, useState } from 'react';
 // import { useSelector } from 'react-redux';
-// import Breadcrumb from '../../../components/frontend/templaet5/cart-templaet/Breadcrumb';
-// import CartSubTotalCard from '../../../components/frontend/templaet5/cart-templaet/CartSubTotalCard';
-// import CartProduct from '../../../components/frontend/templaet5/cart-templaet/CartProduct';
-// import EmptyCart from '../../../components/frontend/templaet5/cart-templaet/EmptyCart';
-// import CartItems from '../../../components/frontend/templaet5/cart-templaet/CartItems';
+// import Breadcrumb from '../../../components/frontend/template5/cart-template/Breadcrumb';
+// import CartSubTotalCard from '../../../components/frontend/template5/cart-template/CartSubTotalCard';
+// import CartProduct from '../../../components/frontend/template5/cart-template/CartProduct';
+// import EmptyCart from '../../../components/frontend/template5/cart-template/EmptyCart';
+// import CartItems from '../../../components/frontend/template5/cart-template/CartItems';
 // import { getData } from '../../../lib/getData';
 
 // export default function Cart({ params: { slugDomain } }) {
@@ -143,11 +143,11 @@
 
 // import React, { useEffect, useState } from 'react';
 // import { useSelector } from 'react-redux';
-// import Breadcrumb from '../../../components/frontend/templaet5/cart-templaet/Breadcrumb';
-// import CartSubTotalCard from '../../../components/frontend/templaet5/cart-templaet/CartSubTotalCard';
-// import CartProduct from '../../../components/frontend/templaet5/cart-templaet/CartProduct';
-// import EmptyCart from '../../../components/frontend/templaet5/cart-templaet/EmptyCart';
-// import CartItems from '../../../components/frontend/templaet5/cart-templaet/CartItems';
+// import Breadcrumb from '../../../components/frontend/template5/cart-template/Breadcrumb';
+// import CartSubTotalCard from '../../../components/frontend/template5/cart-template/CartSubTotalCard';
+// import CartProduct from '../../../components/frontend/template5/cart-template/CartProduct';
+// import EmptyCart from '../../../components/frontend/template5/cart-template/EmptyCart';
+// import CartItems from '../../../components/frontend/template5/cart-template/CartItems';
 // import { getData } from '../../../lib/getData';
 
 // export default function Page({ params: { slugDomain } }) {

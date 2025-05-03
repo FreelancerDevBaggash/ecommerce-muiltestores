@@ -24,7 +24,7 @@ export default async function page(){
     
     <div>
 {/*Header*/}
-<PageHeader heading="Banners"  href="/dashboard/banners/new" linkTitle="Add Banner"/>
+<PageHeader heading="الافتات (بانرات)"  href="/dashboard/banners/new" linkTitle="إضافة لافتة"/>
 
 
 

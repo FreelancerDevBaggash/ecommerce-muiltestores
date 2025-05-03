@@ -285,143 +285,26 @@
 //     </div>
 //   );
 // }
-"use client";
-
+'use client'
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { makePostRequest } from "@/lib/apiRequest";
-import { generateSlug } from "@/lib/generateSlug";
 
 // مكوّنات النموذج
 import TextInput from "@/components/Forminputs/TextInput";
 import SubmitButton from "@/components/Forminputs/SubmitButton";
 import ToggleInput from "@/components/Forminputs/ToggleInput";
 import ImageInput from "@/components/Forminputs/ImageInput";
-
+import { useForm } from "react-hook-form";
+import { makePostRequest } from "@/lib/apiRequest";
+import { generateSlug } from "@/lib/generateSlug";
 // ----------------------------------------------------------------------
 // 1) مكوّن عرض القوالب
 // ----------------------------------------------------------------------
-export default function SelectTemplate() {
-  const [templates, setTemplates] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
-
-  // جلب بيانات القوالب عند تحميل الصفحة
-  useEffect(() => {
-    async function fetchTemplates() {
-      try {
-        const res = await fetch("/api/templates"); // المسار API لجلب القوالب
-        if (!res.ok) {
-          throw new Error("فشل في جلب بيانات القوالب");
-        }
-        const data = await res.json();
-        setTemplates(data);
-      } catch (error) {
-        console.error("خطأ:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchTemplates();
-  }, []);
-
-  // عند اختيار القالب، يتم توجيه المستخدم مثلاً لصفحة التحديث أو التفعيل
-  const handleSelectTemplate = (templateId) => {
-    // يمكنك تغيير المسار حسب احتياجك
-    router.push(`/dashboard/templates/update/${templateId}`);
-  };
-
-  // حالة التحميل
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-800" dir="rtl">
-        <p className="text-gray-600 dark:text-gray-200">جاري التحميل...</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 px-4 py-8" dir="rtl">
-      <div className="max-w-7xl mx-auto">
-        {/* عنوان الصفحة */}
-        <header className="mb-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4">
-            اختر القالب المناسب لمتجرك
-          </h1>
-          <p className="text-gray-600 dark:text-gray-300 text-base md:text-lg">
-            يمكنك اختيار القالب المناسب وتخصيصه بما يناسب هويتك التجارية
-          </p>
-        </header>
-
-        {/* شبكة عرض القوالب */}
-        {templates.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {templates.map((template) => (
-              <div
-                key={template.id}
-                className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
-              >
-                <div className="relative w-full h-56">
-                  <Image
-                    src={template.thumbnail || "/placeholder.svg"}
-                    alt={template.title}
-                    fill
-                    className="object-cover"
-                  />
-                  {/* شريط أعلى الصورة (إن رغبت بإضافة عبارة "مجاني" أو "افتراضي") */}
-                  {template.isDefault && (
-                    <div className="absolute top-2 right-2 bg-green-600 text-white px-2 py-1 text-xs rounded shadow">
-                      افتراضي
-                    </div>
-                  )}
-                </div>
-                <div className="p-4 flex flex-col h-full">
-                  <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">
-                    {template.title}
-                  </h2>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 flex-1">
-                    {template.description || "لا يوجد وصف لهذا القالب"}
-                  </p>
-
-                  <div className="mt-4 flex justify-between items-center">
-                    <button
-                      onClick={() => handleSelectTemplate(template.id)}
-                      className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors"
-                    >
-                      اختر هذا القالب
-                    </button>
-                    <a
-                      href={`/templates/${template.id}`}
-                      className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                    >
-                      معاينة
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-center text-gray-600 dark:text-gray-300 mb-12">
-            لا توجد قوالب متاحة حاليًا
-          </p>
-        )}
-
-        {/* ---------------------------------------------------------------------- */}
-        {/* 2) نموذج إضافة قالب جديد (كما في كودك الأساسي مع بعض اللمسات التصميمية) */}
-        {/* ---------------------------------------------------------------------- */}
-        <NewTemplateForm />
-      </div>
-    </div>
-  );
-}
 
 // ----------------------------------------------------------------------
 // مكوّن نموذج إضافة قالب جديد
 // ----------------------------------------------------------------------
-function NewTemplateForm() {
+export default function NewTemplateForm() {
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -449,8 +332,8 @@ function NewTemplateForm() {
 
   // عند إرسال النموذج
   async function onSubmit(data) {
-    const slug = generateSlug(data.title);
-    data.slug = slug;
+    // const slug = generateSlug(data.title);
+    // data.slug = slug;
     data.thumbnail = imageUrl;
 
     makePostRequest(setLoading, "api/templates", data, "Template", reset, redirect);
@@ -464,6 +347,13 @@ function NewTemplateForm() {
         <TextInput
           lable="اسم القالب"
           name="title"
+          register={register}
+          errors={errors}
+          className="w-full"
+        />
+        <TextInput
+          lable="معرف القالب"
+          name="slug"
           register={register}
           errors={errors}
           className="w-full"

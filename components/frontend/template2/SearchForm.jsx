@@ -129,7 +129,7 @@ export default function SearchForm({ customization = {}, products = [], slugDoma
             fetchSuggestions(e.target.value);
           }}
           className="bg-transparent border text-gray-900 dark:text-white font-semibold shadow-md rounded-full text-sm focus:ring-2 focus:ring-lime-600 focus:border-lime-600 block w-full ps-12 py-2.5 placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 ease-in-out"
-          placeholder="Search for products, categories, or markets..."
+          placeholder="ابحث عن المنتجات والاقسام"
           required
           disabled={!isActive}
           aria-label="Search input"

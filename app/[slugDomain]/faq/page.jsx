@@ -1,4 +1,4 @@
-import FAQCenter from '../../../components/frontend/templaet2/faq/FAQCenter';
+import FAQCenter from '../../../components/frontend/template2/faq/FAQCenter';
 
 export default function FAQPage({ params }) {
     return (

@@ -3,7 +3,7 @@
 // import React, { useEffect, useState } from "react";
 // import SearchForm from "./SearchForm";
 // import HelpModalstore from "./HelpModal-store";
-// import CartCount from "../templaet1/cart-templaet/CartCount";
+// import CartCount from "../template1/cart-template/CartCount";
 // import Image from "next/image";
 // import Link from "next/link";
 // import ThemeSwitcherBtn from "../../ThemeSwitcherBtn";
@@ -237,7 +237,7 @@
 import React, { useEffect, useState } from "react";
 import SearchForm from "./SearchForm";
 import HelpModalstore from "./HelpModal-store";
-import CartCount from "../templaet1/cart-templaet/CartCount";
+import CartCount from "./cart-templaet/CartCount";
 import Image from "next/image";
 import Link from "next/link";
 import ThemeSwitcherBtn from "../../ThemeSwitcherBtn";
@@ -329,7 +329,7 @@ export default function Navbar({ slugDomain  , customization = {}}) {
 // import React, { useEffect, useState } from "react";
 // import SearchForm from "./SearchForm";
 // import HelpModalstore from "./HelpModal-store";
-// import CartCount from "../templaet1/cart-templaet/CartCount";
+// import CartCount from "../template1/cart-template/CartCount";
 // import Image from "next/image";
 // import Link from "next/link";
 // import ThemeSwitcherBtn from "../../ThemeSwitcherBtn";
@@ -544,7 +544,7 @@ export default function Navbar({ slugDomain  , customization = {}}) {
 // import React, { useEffect, useState } from "react";
 // import SearchForm from "./SearchForm";
 // import HelpModalstore from "./HelpModal-store";
-// import CartCount from "../templaet1/cart-templaet/CartCount";
+// import CartCount from "../template1/cart-template/CartCount";
 // import Image from "next/image";
 // import Link from "next/link";
 // import ThemeSwitcherBtn from "../../ThemeSwitcherBtn";
@@ -676,7 +676,7 @@ export default function Navbar({ slugDomain  , customization = {}}) {
 // import React, { useEffect, useState } from "react";
 // import SearchForm from "./SearchForm";
 // import HelpModalstore from "./HelpModal-store";
-// import CartCount from "../templaet1/cart-templaet/CartCount";
+// import CartCount from "../template1/cart-template/CartCount";
 // import Image from "next/image";
 // import Link from "next/link";
 // import ThemeSwitcherBtn from "../../ThemeSwitcherBtn";
@@ -774,7 +774,7 @@ export default function Navbar({ slugDomain  , customization = {}}) {
 // import React, { useEffect, useState, useCallback } from "react";
 // import SearchForm from "./SearchForm";
 // import HelpModalstore from "./HelpModal-store";
-// import CartCount from "../templaet1/cart-templaet/CartCount";
+// import CartCount from "../template1/cart-template/CartCount";
 // import Image from "next/image";
 // import Link from "next/link";
 // import ThemeSwitcherBtn from "../../ThemeSwitcherBtn";

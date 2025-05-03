@@ -3,7 +3,7 @@
 
 // import React, { useEffect, useState } from 'react';
 // import { useSelector } from 'react-redux';
-// import WishlistPage from '../../../components/frontend/templaet2/WishlistPage';
+// import WishlistPage from '../../../components/frontend/template2/WishlistPage';
 
 // import { getData } from '../../../lib/getData';
 
@@ -59,7 +59,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import WishlistPage from '@/components/frontend/templaet2/WishlistPage';
+import WishlistPage from '@/components/frontend/template2/WishlistPage';
 import { getData } from '@/lib/getData';
 
 export default function Page({ params: { slugDomain } }) {

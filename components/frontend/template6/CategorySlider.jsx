@@ -781,12 +781,12 @@ export default function CategorySlider({ slugDomain, categories = [] }) {
 
   return (
     <section 
-      className="py-8 mt-4 md:py-12 bg-white dark:bg-gray-900 relative"
+      className="py-8 mt-1 md:py-8 bg-white dark:bg-gray-900 relative"
       onMouseEnter={() => setShowControls(true)}
       onMouseLeave={() => setShowControls(false)}
     >
-      <div className="container mx-auto px-4 relative">
-        <h2 className="text-2xl md:text-3xl font-bold text-center mb-4 md:mb-10 text-gray-900 dark:text-white">
+      <div className="container px-4 relative">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-2  text-gray-900 dark:text-white">
           تسوق حسب الفئات
         </h2>
 

@@ -317,7 +317,8 @@ export default function HeroCarousel({ banners = [], customization = {} }) {
 
   if (banners.length === 0) {
     return (
-      <div className="flex items-center justify-center h-[500px] bg-gray-100 dark:bg-gray-800 text-gray-600">
+      <div className="flex items-center justify-center h-[450px] bg-gray-100 dark:bg-gray-800
+       text-gray-600">
         لا توجد بانرات متاحة
       </div>
     );
@@ -326,7 +327,7 @@ export default function HeroCarousel({ banners = [], customization = {} }) {
   return (
     <div
       {...swipeHandlers}
-      className="relative w-full h-[500px] md:h-[600px] overflow-hidden group rounded-xl"
+      className="relative w-full h-[400px] md:h-[450px] overflow-hidden group rounded-xl"
       style={{
         backgroundColor: theme === "dark" ? "#1e293b" : "#ffffff",
       }}
@@ -361,7 +362,7 @@ export default function HeroCarousel({ banners = [], customization = {} }) {
 
       {/* محتوى النصوص */}
       <div className="relative z-30 p-8 text-white max-w-4xl  mx-auto h-full flex flex-col justify-center items-center text-center font-arabic">
-        <h1 className="text-3xl md:text-5xl font-bold mb-4">
+        <h1 className="text-3xl md:text-5xl font-bold mb-2">
           {banners[currentSlide].title}
         </h1>
         <p className="text-xl md:text-2xl mb-6">

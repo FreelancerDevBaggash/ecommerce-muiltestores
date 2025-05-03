@@ -49,23 +49,23 @@ data.storeId = storeId;
         */}
     return(
         <div>
-            <FormHeader title="New Banner" />
+            <FormHeader title="لافتة جديدة" />
             <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-4xl p-4 bg-white border
              border-gray-200 rounded-lg shadow sm:p-6 md:p-8
             dark:bg-gray-800 dark:border-gray-700 mx-auto my-3">
             <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-                <TextInput lable="Banner Title"
+                <TextInput lable="عنوان الافتة"
                     name="title"
                     register={register}
                     errors={errors} 
                    />
-                       <TextInput lable="Banner Link"
+                       <TextInput lable="رابط الاعلان"
                     name="link"
                     type="url"
                     register={register}
                     errors={errors}
                       />
-                           <TextInput lable="Banner Expiry Date"
+                           <TextInput lable="تاربخ انتهاء عرض الاعلان "
                     name="expiryDate"
                     type="date"
                     register={register}
@@ -73,18 +73,18 @@ data.storeId = storeId;
                     className="w-full"
                       />
 {/* Configure this endpoint in the core js*/}
-<ImageInput imageUrl={imageUrl} setImageUrl={setImageUrl} endpoint = "bannerImageUploader" label="Banner Image"/>
+<ImageInput imageUrl={imageUrl} setImageUrl={setImageUrl} endpoint = "bannerImageUploader" label="صورة الاعلان/اللافته"/>
 
 <ToggleInput
-    label="Publish your Banner"
+    label="نشر لافتة متجرك"
      name="isActive"
      trueTitle="Active"
      falseTitle="Draft"
      register={register}
     />
             </div>
-                <SubmitButton isLoading={loading} buttonTitle="Create Banner"
-                loadingButtonTitle="Create Banner please wait..."/> 
+                <SubmitButton isLoading={loading} buttonTitle="انشاء اللافتة"
+                loadingButtonTitle="جاري انشاء لافتة متجرك يرجى الانتظار..."/> 
             </form>
 
 

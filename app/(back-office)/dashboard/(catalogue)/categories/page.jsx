@@ -42,7 +42,7 @@ export default async function page() {
   return (
     <div>
       {/*Header*/}
-      <PageHeader heading="Categories" href="/dashboard/categories/new" linkTitle="Add Category" />
+      <PageHeader heading="الفئات" href="/dashboard/categories/new" linkTitle="اضافة فئة" />
 
       <div className="py-8">
         <DataTable data={vendorCategories} columns={columns} />

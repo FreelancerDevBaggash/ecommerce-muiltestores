@@ -159,7 +159,7 @@
 //             required: "مطلوب",
 //             pattern: {
 //               value: /^\+9677\d{9}$/,
-//               message: "رقم هاتف سعودي غير صالح (يجب أن يبدأ بـ +9677)"
+//               message: "رقم هاتف يمني غير صالح (يجب أن يبدأ بـ +9677)"
 //             }
 //           }}
 //           errors={errors}
@@ -299,7 +299,7 @@ export default function PersonalDetailsForm({ storeId }) {
             required: "مطلوب",
             pattern: {
               value: /^\+9677\d{9}$/,
-              message: "رقم هاتف سعودي غير صالح (يجب أن يبدأ بـ +9677)"
+              message: "رقم هاتف يمني غير صالح (يجب أن يبدأ بـ +9677)"
             }
           }}
           errors={errors}

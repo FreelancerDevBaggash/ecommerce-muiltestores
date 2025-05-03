@@ -1,11 +1,11 @@
 
 // import React from 'react';
 // import { getData } from '../../lib/getData';
-// // import AutoPlay from '@/components/frontend/templaet3/AutoPlay';
+// // import AutoPlay from '@/components/frontend/template3/AutoPlay';
 
-// import Home from '../../components/frontend/templaet3/home';
+// import Home from '../../components/frontend/template3/home';
 
-// // import CategoriesBanner from '../../components/frontend/templaet3/Bannert';
+// // import CategoriesBanner from '../../components/frontend/template3/Bannert';
 
 // export default async function StorePage({ params: { slugDomain } }) {
 //   const store = await getData(`/stores/store/${slugDomain}`);
@@ -41,21 +41,21 @@
 
 // // import React from 'react';
 // // import { getData } from '../../lib/getData';
-// // import AutoPlay from '@/components/frontend/templaet5/AutoPlay';
-// // // import Bannert from '@/components/frontend/templaet1/Bannert';
-// // // import ShoppingForForm from '@/components/frontend/templaet1/ShoppingForForm';
-// // // import Metrics from '@/components/frontend/templaet4/Metrics';
-// // import FavaroteProducts from '@/components/frontend/templaet5/FavaroteProducts';
-// // // import Newsletter from '@/components/frontend/templaet5/Newsletter';
-// // import Testimonials from '@/components/frontend/templaet5/Testimonials';
-// // import SpecialOffers from '@/components/frontend/templaet5/SpecialOffers';
+// // import AutoPlay from '@/components/frontend/template5/AutoPlay';
+// // // import Bannert from '@/components/frontend/template1/Bannert';
+// // // import ShoppingForForm from '@/components/frontend/template1/ShoppingForForm';
+// // // import Metrics from '@/components/frontend/template4/Metrics';
+// // import FavaroteProducts from '@/components/frontend/template5/FavaroteProducts';
+// // // import Newsletter from '@/components/frontend/template5/Newsletter';
+// // import Testimonials from '@/components/frontend/template5/Testimonials';
+// // import SpecialOffers from '@/components/frontend/template5/SpecialOffers';
 
 
 // // // استيراد مكون الـ CategorySlider الذي يعمل على جانب العميل
-// // import CategorySlider from '../../components/frontend/templaet5/CategorySlider';
+// // import CategorySlider from '../../components/frontend/template5/CategorySlider';
 
-// // import Hero from '../../components/frontend/templaet5/Hero';
-// // // import CategoryList from '../../components/frontend/templaet4/CategoryList';
+// // import Hero from '../../components/frontend/template5/Hero';
+// // // import CategoryList from '../../components/frontend/template4/CategoryList';
 
 
 // // export default async function StorePage({ params: { slugDomain } }) {
@@ -123,16 +123,16 @@
 
 // // import React from 'react';
 // // import { getData } from '../../lib/getData';
-// // import Hero from '../../components/frontend/templaet3/Hero';
-// // // import AutoPlay from '@/components/frontend/templaet3/AutoPlay';
-// // import Bannert from '@/components/frontend/templaet3/Bannert';
+// // import Hero from '../../components/frontend/template3/Hero';
+// // // import AutoPlay from '@/components/frontend/template3/AutoPlay';
+// // import Bannert from '@/components/frontend/template3/Bannert';
 
-// // // import StoreStatistics from '@/components/frontend/templaet3/ShoppingForForm';
-// // import PremiumFeatureCard from '@/components/frontend/templaet3/FavaroteProducts';
-// // // import CategorySlider from '../../components/frontend/templaet4/CategorySlider';
-// // import CategoryList from '../../components/frontend/templaet3/CategoryList'; 
-// // import Testimonials from '../../components/frontend/templaet3/Testimonials';
-// // // import CategoriesBanner from '../../components/frontend/templaet3/Bannert';
+// // // import StoreStatistics from '@/components/frontend/template3/ShoppingForForm';
+// // import PremiumFeatureCard from '@/components/frontend/template3/FavaroteProducts';
+// // // import CategorySlider from '../../components/frontend/template4/CategorySlider';
+// // import CategoryList from '../../components/frontend/template3/CategoryList'; 
+// // import Testimonials from '../../components/frontend/template3/Testimonials';
+// // // import CategoriesBanner from '../../components/frontend/template3/Bannert';
 
 // // export default async function StorePage({ params: { slugDomain } }) {
 // //   const store = await getData(`/stores/store/${slugDomain}`, {mode: 'real-time'});
@@ -181,11 +181,11 @@
 
 // // import React from 'react';
 // // import { getData } from '../../lib/getData';
-// // // import AutoPlay from '@/components/frontend/templaet3/AutoPlay';
+// // // import AutoPlay from '@/components/frontend/template3/AutoPlay';
 
-// // // import Home from '../../components/frontend/templaet2/Home';
-// // import Home from '../../components/frontend/templaet2/Home';
-// // // import CategoriesBanner from '../../components/frontend/templaet3/Bannert';
+// // // import Home from '../../components/frontend/template2/Home';
+// // import Home from '../../components/frontend/template2/Home';
+// // // import CategoriesBanner from '../../components/frontend/template3/Bannert';
 
 // // export default async function StorePage({ params: { slugDomain } }) {
 // //   const store = await getData(`/stores/store/${slugDomain}`);
@@ -204,7 +204,7 @@
 // //   );
 // //   return (
 // //     <div dir='rtl'>
-// //       <Home store={store} banners={banners} storeId={storeId} products={productsData} customization={customizationData} slugDomain={slugDomain} categories={categories} />
+{/* <Home store={store} banners={banners} storeId={storeId} products={productsData} customization={customizationData} slugDomain={slugDomain} categories={categories} /> */}
 // //       {/* <Hero banners={banners} storeId={storeId} customization={customizationData} /> */}
 
 // //       {/* <Bannert customization={customizationData} storeId={storeId} slugDomain={slugDomain}  categories={categoriesData}/> */}
@@ -248,10 +248,11 @@
 
 import Link from "next/link";
 import React from 'react';
-import Hero from '../../components/frontend/template6/Hero';
+// import Home from `../../components/frontend/${slug}/Home`;
 import { getData } from "@/lib/getData";
 import { authOptions } from "../../lib/authOptions";
 import { getServerSession } from "next-auth";
+import dynamic from "next/dynamic";
 
 export default async function Page({ params: { slugDomain } }) {
   try {
@@ -263,23 +264,41 @@ export default async function Page({ params: { slugDomain } }) {
     const storeId = store.id;
     const customizationData = await getData(`/customizations/Customizationes/${storeId}`);
     const categoriesData = await getData(`categories?storeId=${storeId}`);
-    const templatesData = await getData(`/templates/${store.templateId}`);
-    const templateId = templatesData.title;
+    const templatesData = await getData(`/templates/${store.templateId}`, {mode:'real-time'});
+    const slug = templatesData.slug;
     const trainings = await getData('trainings');
-
-    const categories = categoriesData.filter(category => category.products.length > 2);
 
     const session = await getServerSession(authOptions);
     console.log(session?.user);
+ 
+  const productsData = await getData(`/products?storeId=${storeId}`);
+  const banners = await getData(`banners?storeId=${storeId}`)
 
+  const categories = categoriesData.filter(
+    (category) => category.products && category.products.length >= 1
+
+  );
+  const Home = dynamic(
+    () => import(`../../components/frontend/${slug}/Home`),
+    { ssr: true, loading: () => <p>جاري تحميل الواجهة...</p> }
+  );
     return (
       <div className="min-h-screen">
-        <Hero
+        {/* <Hero
           storeId={storeId}
           customization={customizationData}
           slugDomain={slugDomain}
           categories={categories} // تمرير الفئات إلى Hero
-        />
+        /> */}
+        <Home 
+        store={store} 
+        banners={banners} 
+        storeId={storeId} 
+        products={productsData} 
+        customization={customizationData} 
+        slugDomain={slugDomain} 
+        categories={categories} />
+
         {/* <CommunityTrainings title=" Featured Trainings" trainings={trainings.slice(0, 3)} /> */}
       </div>
     );
@@ -292,23 +311,23 @@ export default async function Page({ params: { slugDomain } }) {
 
 // import React from 'react';
 // import { getData } from '../../lib/getData';
-// import Hero from '../../components/frontend/templaet5/Hero';
+// import Hero from '../../components/frontend/template5/Hero';
 
 // export default async function StorePage({ params: { slugDomain } }) {
-  // try {
-  //   const store = await getData(`/stores/store/${slugDomain}`);
-  //   if (!store || !store.businessNameEn) {
-  //     return <h1 className='bg-slate-50 text-slate-500'>Store not found</h1>;
-  //   }
+// try {
+//   const store = await getData(`/stores/store/${slugDomain}`);
+//   if (!store || !store.businessNameEn) {
+//     return <h1 className='bg-slate-50 text-slate-500'>Store not found</h1>;
+//   }
 
-    // const storeId = store.id;
-    // const customizationData = await getData(`/customizations/Customizationes/${storeId}`);
-    // const templatesData = await getData(`/templates/${store.templateId}`);
-    // const templateId = templatesData.title;
+// const storeId = store.id;
+// const customizationData = await getData(`/customizations/Customizationes/${storeId}`);
+// const templatesData = await getData(`/templates/${store.templateId}`);
+// const templateId = templatesData.title;
 
 //     return (
 //       <div dir='rtl' className="container">
-        // <Hero storeId={storeId} customization={customizationData} slugDomain={slugDomain} />
+// <Hero storeId={storeId} customization={customizationData} slugDomain={slugDomain} />
 //       </div>
 //     );
 //   } catch (error) {
@@ -320,21 +339,21 @@ export default async function Page({ params: { slugDomain } }) {
 
 // import React from 'react';
 // import { getData } from '../../lib/getData';
-// import AutoPlay from '@/components/frontend/templaet5/AutoPlay';
-// // import Bannert from '@/components/frontend/templaet1/Bannert';
-// // import ShoppingForForm from '@/components/frontend/templaet1/ShoppingForForm';
-// // import Metrics from '@/components/frontend/templaet4/Metrics';
-// import FavaroteProducts from '@/components/frontend/templaet5/FavaroteProducts';
-// // import Newsletter from '@/components/frontend/templaet5/Newsletter';
-// import Testimonials from '@/components/frontend/templaet5/Testimonials';
-// import SpecialOffers from '@/components/frontend/templaet5/SpecialOffers';
+// import AutoPlay from '@/components/frontend/template5/AutoPlay';
+// // import Bannert from '@/components/frontend/template1/Bannert';
+// // import ShoppingForForm from '@/components/frontend/template1/ShoppingForForm';
+// // import Metrics from '@/components/frontend/template4/Metrics';
+// import FavaroteProducts from '@/components/frontend/template5/FavaroteProducts';
+// // import Newsletter from '@/components/frontend/template5/Newsletter';
+// import Testimonials from '@/components/frontend/template5/Testimonials';
+// import SpecialOffers from '@/components/frontend/template5/SpecialOffers';
 
 
 // // استيراد مكون الـ CategorySlider الذي يعمل على جانب العميل
-// import CategorySlider from '../../components/frontend/templaet5/CategorySlider';
+// import CategorySlider from '../../components/frontend/template5/CategorySlider';
 
-// import Hero from '../../components/frontend/templaet5/Hero';
-// // import CategoryList from '../../components/frontend/templaet4/CategoryList';
+// import Hero from '../../components/frontend/template5/Hero';
+// // import CategoryList from '../../components/frontend/template4/CategoryList';
 
 
 // export default async function StorePage({ params: { slugDomain } }) {
@@ -378,7 +397,7 @@ export default async function Page({ params: { slugDomain } }) {
 
 
 
-        {/* {categories.map((category, i) => (
+{/* {categories.map((category, i) => (
           <div className="py-8" key={i}>
             <CategoryList
               isMarketPage={false}
@@ -402,16 +421,16 @@ export default async function Page({ params: { slugDomain } }) {
 
 // import React from 'react';
 // import { getData } from '../../lib/getData';
-// import Hero from '../../components/frontend/templaet3/Hero';
-// // import AutoPlay from '@/components/frontend/templaet3/AutoPlay';
-// import Bannert from '@/components/frontend/templaet3/Bannert';
+// import Hero from '../../components/frontend/template3/Hero';
+// // import AutoPlay from '@/components/frontend/template3/AutoPlay';
+// import Bannert from '@/components/frontend/template3/Bannert';
 
-// // import StoreStatistics from '@/components/frontend/templaet3/ShoppingForForm';
-// import PremiumFeatureCard from '@/components/frontend/templaet3/FavaroteProducts';
-// // import CategorySlider from '../../components/frontend/templaet4/CategorySlider';
-// import CategoryList from '../../components/frontend/templaet3/CategoryList'; 
-// import Testimonials from '../../components/frontend/templaet3/Testimonials';
-// // import CategoriesBanner from '../../components/frontend/templaet3/Bannert';
+// // import StoreStatistics from '@/components/frontend/template3/ShoppingForForm';
+// import PremiumFeatureCard from '@/components/frontend/template3/FavaroteProducts';
+// // import CategorySlider from '../../components/frontend/template4/CategorySlider';
+// import CategoryList from '../../components/frontend/template3/CategoryList';
+// import Testimonials from '../../components/frontend/template3/Testimonials';
+// // import CategoriesBanner from '../../components/frontend/template3/Bannert';
 
 // export default async function StorePage({ params: { slugDomain } }) {
 //   const store = await getData(`/stores/store/${slugDomain}`, {mode: 'real-time'});
@@ -441,11 +460,11 @@ export default async function Page({ params: { slugDomain } }) {
 //       {/* ✅ تمرير storeId إلى CategoryList لضمان تصفية الفئات */}
 //       {categories.map((category, i) => (
 //         <div dir='rtl' className="py-8 " key={i}>
-//           <CategoryList 
-//             isMarketPage={false} 
-//             category={category} 
+//           <CategoryList
+//             isMarketPage={false}
+//             category={category}
 //             storeId={storeId}  // ✅ تمرير storeId لضمان عدم حدوث مشاكل في التصفية
-//             customization={customizationData} 
+//             customization={customizationData}
 //             slugDomain={slugDomain}
 //           />
 //         </div>
@@ -460,11 +479,11 @@ export default async function Page({ params: { slugDomain } }) {
 
 // import React from 'react';
 // import { getData } from '../../lib/getData';
-// // import AutoPlay from '@/components/frontend/templaet3/AutoPlay';
+// // import AutoPlay from '@/components/frontend/template3/AutoPlay';
 
-// // import Home from '../../components/frontend/templaet2/Home';
-// import Home from '../../components/frontend/templaet2/Home';
-// // import CategoriesBanner from '../../components/frontend/templaet3/Bannert';
+// // import Home from '../../components/frontend/template2/Home';
+// import Home from '../../components/frontend/template2/Home';
+// // import CategoriesBanner from '../../components/frontend/template3/Bannert';
 
 // export default async function StorePage({ params: { slugDomain } }) {
 //   const store = await getData(`/stores/store/${slugDomain}`);

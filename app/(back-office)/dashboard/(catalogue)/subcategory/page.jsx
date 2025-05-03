@@ -42,7 +42,7 @@ export default async function page(){
     
     <div>
 {/*Header*/}
-<PageHeader heading="subcategory"  href="/dashboard/subcategory/new" linkTitle="Add subcategory"/>
+<PageHeader heading="الفئات الفرعية"  href="/dashboard/subcategory/new" linkTitle="اضافة فئة فرعية"/>
 
 
 <div className="py-8">

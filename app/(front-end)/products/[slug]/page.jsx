@@ -251,7 +251,7 @@
 import React from 'react';
 import Breadcrumb from '../../../../components/frontend/Breadcrumb';
 import AddToCartButton from '../../../../components/frontend/AddToCartButton';
-import CategoryCarousel from '../../../../components/frontend/templaet1/CategoryCarousel-store';
+import CategoryCarousel from '../../../../components/frontend/template1/CategoryCarousel-store';
 import ProductShareButton from '../../../../components/frontend/ProductShareButton';
 import ProductimageCarousel from '../../../../components/frontend/ProductimageCarousel';
 import { Tag, Send } from 'lucide-react';
@@ -348,7 +348,7 @@ export default async function ProductDetailPage({ params: { slug } }) {
 // import React from 'react';
 // import Breadcrumb from '../../../../components/frontend/Breadcrumb';
 // import AddToCartButton from '../../../../components/frontend/AddToCartButton';
-// import CategoryCarousel from '../../../../components/frontend/templaet1/CategoryCarousel-store';
+// import CategoryCarousel from '../../../../components/frontend/template1/CategoryCarousel-store';
 // import ProductShareButton from '../../../../components/frontend/ProductShareButton';
 // import ProductimageCarousel from '../../../../components/frontend/ProductimageCarousel';
 // import Image from 'next/image';

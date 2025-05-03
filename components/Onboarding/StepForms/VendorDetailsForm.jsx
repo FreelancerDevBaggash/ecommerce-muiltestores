@@ -110,7 +110,7 @@ export default function VendorDetailsForm({templates}) {
           {/* Shipping companies toggle */}
           <div className="col-span-full">
             <h3 className="mb-5 text-lg font-medium text-gray-900 dark:text-white">Select Shipping Companies</h3>
-            {["البريد السعودي | سبل", "سمسا", "أرامكس", "DHL Express", "Fastlo", "ريدبوكس", "أي مكان"].map((company, index) => (
+            {["البريد اليمني | سبل", "سمسا", "أرامكس", "DHL Express", "Fastlo", "ريدبوكس", "أي مكان"].map((company, index) => (
               <div key={index} className="card p-4 mb-4 bg-white rounded-lg">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">

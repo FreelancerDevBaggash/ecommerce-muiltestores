@@ -98,7 +98,7 @@
 import React, { useEffect, useState } from "react";
 import SearchForm from "./SearchForm";
 import HelpModalstore from "./HelpModal-store";
-import CartCount from "./cart-templaet/CartCount";
+import CartCount from "./cart-template/CartCount";
 import Image from "next/image";
 import Link from "next/link";
 import ThemeSwitcherBtn from "../../ThemeSwitcherBtn";

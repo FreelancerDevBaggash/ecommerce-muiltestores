@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { User, Menu, X, ShoppingCart, HelpCircle, ChevronDown } from 'lucide-react';
 import SearchForm from './SearchForm';
 import HelpModalstore from './HelpModal-store';
-import CartCount from './cart-templaet/CartCount';
+import CartCount from './cart-template/CartCount';
 import ThemeSwitcherBtn from '../../ThemeSwitcherBtn';
 import UserAvatar from './UserAvatar';
 import { useTheme } from 'next-themes';

@@ -65,7 +65,7 @@ export default async function Page({ params: { slug }, searchParams }) {
 
   return (
     <div dir='rtl'>
-      <h2>قسم - {slug}</h2>
+      {/* <h2>قسم - {slug}</h2> */}
       <FilterComponent category={category} products={products} />
     </div>
   );

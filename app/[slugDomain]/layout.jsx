@@ -106,6 +106,49 @@ import React from "react";
 import dynamic from "next/dynamic";
 import { getData } from "@/lib/getData";
 
+//تحسين مجركات البحث 
+export async function generateMetadata({ params }) {
+  const store = await getData(`/stores/store/${params.slugDomain}`);
+
+  if (!store) {
+    return {
+      title: "المتجر غير موجود",
+      description: "عذرًا، لم نتمكن من العثور على هذا المتجر.",
+      robots: "noindex",
+    };
+  }
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const ogImage = store.profileImageUrl || `${baseUrl}/default-og-image.png`;
+
+  return {
+    title: store.businessName,
+    description: store.notes || `تسوق الآن من ${store.businessName}`,
+    generator: "صنع بحب بواسطة منصةاتجر",
+    keywords: [store.businessName, "متجر إلكتروني", "تسوق", "عروض", "منتجات"],
+    metadataBase: new URL(baseUrl),
+    openGraph: {
+      title: store.businessName,
+      description: store.notes || `تسوق الآن من ${store.businessName}`,
+      type: "website",
+      url: `${baseUrl}/${params.slugDomain}`,
+      images: [{ url: ogImage, width: 800, height: 600 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: store.businessName,
+      description: store.notes || `اكتشف منتجات ${store.businessName}`,
+      images: [ogImage],
+    },
+    alternates: {
+      canonical: `${baseUrl}/${params.slugDomain}`,
+    },
+    robots: "index, follow",
+    themeColor: "#ffffff",
+    viewport: "width=device-width, initial-scale=1.0",
+  };
+}
+
 export default async function Layout({ children, params: { slugDomain } }) {
   // جلب بيانات المتجر
   const store = await getData(`/stores/store/${slugDomain}`);

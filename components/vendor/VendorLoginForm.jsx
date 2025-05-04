@@ -428,35 +428,7 @@ export default function VendorLoginForm() {
             )}
           </motion.div>
 
-          <motion.div variants={itemVariants} className="relative flex items-center justify-center my-4">
-            <div className="border-t border-gray-300 absolute w-full"></div>
-            <span className="bg-white dark:bg-gray-800 px-4 text-sm text-gray-500 relative">أو الدخول عبر</span>
-          </motion.div>
-
-          <motion.div variants={itemVariants} className="grid grid-cols-2 gap-3">
-            <motion.button
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              type="button"
-              onClick={() => signIn('google')}
-              className="flex items-center justify-center gap-2 border border-gray-300 py-2 px-4 rounded-lg hover:bg-gray-50 transition-all dark:border-gray-600 dark:hover:bg-gray-700"
-            >
-              <FaGoogle className="text-red-500" />
-              <span className="text-sm">جوجل</span>
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              type="button"
-              onClick={() => signIn('github')}
-              className="flex items-center justify-center gap-2 border border-gray-300 py-2 px-4 rounded-lg hover:bg-gray-50 transition-all dark:border-gray-600 dark:hover:bg-gray-700"
-            >
-              <FaGithub className="text-gray-800 dark:text-white" />
-              <span className="text-sm">جيت هب</span>
-            </motion.button>
-          </motion.div>
-
+      
           <motion.p variants={itemVariants} className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">
             ليس لديك حساب؟{' '}
             <Link href="/register" className="font-medium text-indigo-600 hover:underline dark:text-blue-500">

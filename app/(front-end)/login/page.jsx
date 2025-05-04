@@ -60,7 +60,7 @@ export default function Page() {
         <div className="w-full max-w-6xl bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col md:flex-row">
           {/* الجانب الأيمن - نموذج تسجيل الدخول */}
           <div className="w-full md:w-1/2 p-8">
-            <div className="flex justify-center mb-6">
+            {/* <div className="flex justify-center mb-6">
               <Image
                 src={logo || "/placeholder.svg"}
                 alt="شعار المنصة"
@@ -69,7 +69,7 @@ export default function Page() {
                 className="h-12 w-auto"
                 priority
               />
-            </div>
+            </div> */}
 
             <div className="max-w-md mx-auto space-y-8">
               <div className="text-center">

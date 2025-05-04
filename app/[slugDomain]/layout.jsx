@@ -168,11 +168,11 @@ export default async function Layout({ children, params: { slugDomain } }) {
   // استيراد Navbar و Footer ديناميكياً بناءً على slug
   const Navbar = dynamic(
     () => import(`../../components/frontend/${slug}/Navbar`),
-    { ssr: true, loading: () => <p>جاري تحميل الشريط العلوي...</p> }
+    { ssr: true  }
   );
   const Footer = dynamic(
     () => import(`../../components/frontend/${slug}/Footer`),
-    { ssr: true, loading: () => <p>جاري تحميل الشريط السفلي...</p> }
+    { ssr: true }
   );
 
   return (

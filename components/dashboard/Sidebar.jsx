@@ -51,9 +51,6 @@ import {
     Facebook, Twitter, 
     X,
      Share2,
-
-
-
      Menu
 
 
@@ -110,6 +107,7 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
       { title: "المجتمع", icon: Users2, href: "/dashboard/community" },
       { title: "القوالب", icon: LayoutGrid, href: "/dashboard/templates" },
       { title: "المحفظة", icon: CreditCard, href: "/dashboard/wallet" },
+      { title: "محفظة المنصة", icon: CreditCard, href: "/dashboard/platformWallet" },
       { title: "مزودي الدفع", icon: CreditCard, href: "/dashboard/payments" },
       { title: "مزودي التوصيل", icon: Truck, href: "/dashboard/deliveringProviders" },
       { title: "إعدادات الدفع", icon: CreditCard, href: "/dashboard/payment" },
@@ -431,7 +429,7 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
         <div className="flex justify-center gap-4">
           
 
-          <a href={`https://wa.me/?text=${process.env.NEXT_PUBLIC_BASE_URL}${slugDomain}`} target="_blank" rel="noreferrer">
+          <a href={`https://wa.me/?text=${process.env.NEXT_PUBLIC_BASE_URL}/${slugDomain}`} target="_blank" rel="noreferrer">
 
             <FaWhatsapp className="h-6 w-6 text-green-500 hover:scale-110 transition-transform" />
           </a>

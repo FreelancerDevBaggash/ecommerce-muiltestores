@@ -379,6 +379,7 @@
 // }
 
 
+import { redirect } from "next/navigation"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/authOptions"
 import { getData } from "@/lib/getData"
@@ -418,6 +419,12 @@ export default async function DashboardPage() {
         }
       }
     }
+     // 3. إذا كان بائعاً بدون متجر، نعيد التوجيه لصفحة الإنشاء
+  if (userType === "VENDOR" && !store) {
+    // userId هو معرف البائع
+    redirect(`/onboarding/${userId}`)
+  }
+
   
     // جلب بيانات إضافية إذا لزم الأمر
     const sales = store ? await getData("sales") : []

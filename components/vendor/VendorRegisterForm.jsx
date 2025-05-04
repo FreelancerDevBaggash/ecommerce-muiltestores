@@ -85,6 +85,7 @@ export default function VendorRegisterForm({ role = "VENDOR" }) {
         if (response.status === 409) {
           setEmailErr("هذا البريد الإلكتروني مسجل بالفعل")
           toast.error("هذا البريد الإلكتروني مسجل بالفعل")
+          setFormStep(0)
         } else {
           console.error("خطأ في الخادم:", responseData.error)
           toast.error("حدث خطأ ما، يرجى المحاولة مرة أخرى")

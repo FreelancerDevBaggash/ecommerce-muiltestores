@@ -85,25 +85,14 @@ import logo from "@/public/logo33.png" // شع
 
 export default function Page() {
   return (
-    <section className="bg-gray-50 dark:bg-gray-900 min-h-screen flex flex-col rtl" dir="rtl">
+    <section className="bg-white mt-6  dark:bg-gray-900 min-h-screen flex flex-col rtl" dir="rtl">
       {/* شريط الإعلانات */}
-      <AdvertisementSlider />
+      {/* <AdvertisementSlider /> */}
 
       <div className="flex-1 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg  dark:border dark:bg-gray-800 dark:border-gray-700 w-full max-w-6xl">
           {/* الشعار */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900">
-            <a href="/" className="flex items-center text-2xl font-semibold text-gray-900 dark:text-white">
-              {/* <Image
-                src={logo || "/placeholder.svg"}
-                alt="شعار المنصة"
-                width={180}
-                height={60}
-                className="h-12 w-auto"
-                priority
-              /> */}
-            </a>
-          </div>
+
 
           {/* المحتوى الرئيسي */}
           <div className="flex flex-col md:flex-row items-stretch">

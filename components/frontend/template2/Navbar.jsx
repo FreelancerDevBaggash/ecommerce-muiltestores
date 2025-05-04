@@ -1195,7 +1195,7 @@ export default function Navbar({ slugDomain={}, storeData = {}, categories ,cust
                   />
                 </motion.div>
                 <motion.h1 
-                  className={`${logoTextSize} font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent`}
+                  className={`${logoTextSize} font-bold bg-gradient-to-r  from-primary to-secondary bg-clip-text text-transparent`}
                   initial={{ opacity: 1 }}
                   whileHover={{ 
                     opacity: 0.9,

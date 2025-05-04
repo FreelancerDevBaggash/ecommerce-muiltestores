@@ -337,10 +337,10 @@ model Store {
 
   customerStores        CustomerStore[]
   wallets Wallet[]
-  
-  subscription   Subscription?  @relation(fields: [subscriptionId], references: [id])
-  subscriptionId String?        @db.ObjectId
+  subscription   Subscription? @relation("StoreSubscription")
+  subscriptionId String?       @db.ObjectId
 
+  @@index([subscriptionId], name: "Store_subscriptionId_index") // بدل @unique
 }
 
 
@@ -495,9 +495,9 @@ model Sale {
     storeId  String  @db.ObjectId // الرقم التعريفي للمتجر المرتبط بإعدادات الدفع (مفتاح أجنبي)
     store    Store   @relation(fields: [storeId], references: [id])
   
-    paymentProvidersId String          @db.ObjectId // الرقم التعريفي لمزود خدمة الدفع (مفتاح أجنبي)
-    paymentProvider    PaymentProvider @relation(fields: [paymentProvidersId], references: [id])
-  
+    paymentProvidersId String?          @db.ObjectId
+    paymentProvider    PaymentProvider? @relation(fields: [paymentProvidersId], references: [id])
+
     createdAt DateTime  @default(now()) // تاريخ إنشاء السجل
     updatedAt DateTime? @updatedAt // تاريخ آخر تعديل للسجل
   }
@@ -748,9 +748,10 @@ model SubscriptionPlan {
 model Subscription {
   id                 String    @id @default(auto()) @map("_id") @db.ObjectId
   // المعرف الفريد للاشتراك (المفتاح الأساسي) - يتم إنشاؤه تلقائياً في MongoDB كـ ObjectId
-
-  stores             Store[]   // علاقة واحد إلى متعدد مع جدول المتاجر (اشتراك واحد يمكن أن يشمل عدة متاجر)
-
+ 
+  store     Store?  @relation("StoreSubscription", fields: [storeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  storeId   String? @unique @db.ObjectId // هذه الجهة فقط تضع @unique
+  
   subscriptionPlanId String    @db.ObjectId // معرف الخطة المرتبطة (مرجع إلى SubscriptionPlan)
   subscriptionPlan   SubscriptionPlan @relation(fields: [subscriptionPlanId], references: [id])
   // علاقة مع جدول الخطط (SubscriptionPlan)

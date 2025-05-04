@@ -159,7 +159,7 @@ const MerchantFooter = ({ slugDomain, storeId, customization = {}, categories = 
                         whileHover={{ y: -5 }}
                         className="space-y-6"
                     >
-                        <Link href="/" className="flex items-center space-x-4">
+                        <Link href={`/${slugDomain}`} className="flex items-center space-x-4">
                             <motion.div 
                                 whileHover={{ rotate: 5 }}
                                 className="relative w-16 h-16 rounded-lg overflow-hidden border-2 shadow-md"

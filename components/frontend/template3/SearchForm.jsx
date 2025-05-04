@@ -76,7 +76,7 @@ export default function SearchForm({ customization = {}, slugDomain }) {
     >
       <div className="relative w-full">
         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-          <Search className="w-5 h-5 text-gray-500" />
+          {/* <Search className="w-5 h-5 text-gray-500" /> */}
           <label htmlFor="search" className="sr-only">
             ابحث عن منتجات او أقسام
           </label>
@@ -96,7 +96,7 @@ export default function SearchForm({ customization = {}, slugDomain }) {
             '--tw-ring-color': colors.focus,
             '--tw-focus-ring-offset-shadow': `0 0 0 2px ${colors.focus}33`
           }}
-          placeholder="ابحث عن منتجات، أقسام أو متاجر..."
+          placeholder="ابحث عن منتجات، أقسام..."
           aria-required="true"
           aria-label="حقل البحث"
         />

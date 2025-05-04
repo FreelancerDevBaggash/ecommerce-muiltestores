@@ -54,7 +54,7 @@ export default function Page() {
   return (
     <section className="bg-gray-50 dark:bg-gray-900 min-h-screen flex flex-col rtl" dir="rtl">
       {/* شريط الإعلانات */}
-      <AdvertisementSlider />
+      {/* <AdvertisementSlider /> */}
 
       <div className="flex-1 flex items-center justify-center p-4">
         <div className="w-full max-w-6xl bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col md:flex-row">

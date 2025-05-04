@@ -832,175 +832,474 @@
 //     </div>
 //   );
 // }
-// قفمظظ
+
+
+// // قفمظظ
+// "use client";
+// import { useSession } from "next-auth/react";
+// import React, { useState, useEffect } from "react";
+// import Image from 'next/image';
+
+// export default function Page() {
+//   const { data: session } = useSession();
+//   const userId = session?.user?.id;
+
+//   const [providers, setProviders] = useState([]);
+//   const [selectedProviders, setSelectedProviders] = useState([]);
+//   const [savedProviders, setSavedProviders] = useState([]);
+//   const [storeId, setStoreId] = useState(null);
+
+//   useEffect(() => {
+//     async function fetchStoreId() {
+//       if (userId) {
+//         try {
+//           const response = await fetch(`/api/stores?vendorId=${userId}`);
+//           const data = await response.json();
+//           setStoreId(data[0]?.id);
+//         } catch (error) {
+//           console.error("Error fetching storeId:", error);
+//         }
+//       }
+//     }
+//     fetchStoreId();
+//   }, [userId]);
+
+//   useEffect(() => {
+//     async function fetchPaymentProviders() {
+//       try {
+//         const response = await fetch("/api/PaymentProvider");
+//         const data = await response.json();
+//         setProviders(data);
+//       } catch (error) {
+//         console.error("Error fetching payment providers:", error);
+//       }
+//     }
+//     fetchPaymentProviders();
+//   }, []);
+
+//   useEffect(() => {
+//     if (storeId) {
+//       async function fetchSavedProviders() {
+//         try {
+//           const response = await fetch(`/api/storePaymentSetting?storeId=${storeId}`);
+//           const data = await response.json();
+//           setSavedProviders(data);
+//         } catch (error) {
+//           console.error("Error fetching saved providers:", error);
+//         }
+//       }
+//       fetchSavedProviders();
+//     }
+//   }, [storeId]);
+
+//   const handleProviderToggle = (providerId) => {
+//     setSelectedProviders((prevSelected) =>
+//       prevSelected.includes(providerId)
+//         ? prevSelected.filter((id) => id !== providerId)
+//         : [...prevSelected, providerId]
+//     );
+//   };
+
+//   const handleSaveProviders = async () => {
+//     if (!storeId) return;
+
+//     try {
+//       for (const providerId of selectedProviders) {
+//         const response = await fetch("/api/storePaymentSetting", {
+//           method: "POST",
+//           headers: { "Content-Type": "application/json" },
+//           body: JSON.stringify({
+//             storeId,
+//             paymentProvidersId: providerId,
+//             isActive: true,
+//           }),
+//         });
+
+//         if (!response.ok) {
+//           throw new Error("Failed to add provider");
+//         }
+//       }
+
+//       const response = await fetch(`/api/storePaymentSetting?storeId=${storeId}`);
+//       const data = await response.json();
+//       setSavedProviders(data);
+//       setSelectedProviders([]);
+//     } catch (error) {
+//       console.error("Error saving providers:", error);
+//     }
+//   };
+
+//   return (
+//     <div dir="rtl" className="max-w-5xl mx-auto px-4 py-8">
+//       <h2 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-white">مزودي الدفع</h2>
+
+//       <div className="mb-8">
+//         <h3 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-200">اختر مزود الدفع</h3>
+//         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//           {providers.map((provider) => (
+//             <div
+//               key={provider.id}
+//               className={`flex items-center justify-between bg-white dark:bg-slate-800 border rounded-xl p-4 shadow hover:shadow-lg transition-all ${selectedProviders.includes(provider.id) ? "ring-2 ring-purple-500" : ""
+//                 }`}
+//             >
+//               <div className="flex items-center gap-4">
+//                 <Image
+//                   src={provider.imageUrl || "https://via.placeholder.com/150"}
+//                   alt={`Logo of ${provider.name}`}
+//                   width={48}               // 12 * 4px = 48px
+//                   height={48}              // 12 * 4px = 48px
+//                   className="rounded-md object-contain"
+//                   unoptimized              // يتجاوز تحسين Next.js الافتراضي (مفيد إذا كان المصدر خارجي)
+//                   priority                 // تحميل الصورة بأولوية لتحسين تجربة المستخدم
+//                 />
+//                 <div>
+//                   <h4 className="text-lg font-bold text-gray-800 dark:text-white">{provider.name}</h4>
+//                   <p className="text-sm text-gray-500 dark:text-gray-300">{provider.description || "لا يوجد وصف"}</p>
+//                 </div>
+//               </div>
+//               <input
+//                 type="checkbox"
+//                 checked={selectedProviders.includes(provider.id)}
+//                 onChange={() => handleProviderToggle(provider.id)}
+//                 className="w-5 h-5 accent-purple-500"
+//               />
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+
+//       <div className="flex justify-center">
+//         <button
+//           onClick={handleSaveProviders}
+//           className="bg-purple-600 text-white px-6 py-2 rounded-xl hover:bg-purple-700 transition-all"
+//         >
+//           حفظ المزودين المحددين
+//         </button>
+//       </div>
+
+//       <div className="mt-12">
+//         <h3 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-200">المزودين المحفوظين</h3>
+//         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//           {savedProviders.map((provider) => (
+//             <div
+//               key={provider.id}
+//               className="flex items-center bg-gray-100 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-xl p-4 shadow"
+//             >
+//               <Image
+//                 src={provider?.paymentProvider?.imageUrl || "https://via.placeholder.com/150"}
+//                 alt={`Logo of ${provider?.paymentProvider?.name}`}
+//                 width={48}               // 12 * 4px = 48px
+//                 height={48}              // 12 * 4px = 48px
+//                 className="rounded-md object-contain ml-4"
+//                 unoptimized              // يتجاوز تحسين Next.js الافتراضي (مفيد للمصادر الخارجية)
+//                 priority                 // تحميل الصورة بأولوية لتحسين الـ LCP
+//               />
+//               <div>
+//                 <h4 className="text-lg font-bold text-gray-800 dark:text-white">{provider?.paymentProvider?.name}</h4>
+//                 <p className="text-sm text-gray-500 dark:text-gray-300">
+//                   {provider?.paymentProvider?.description || "لا يوجد وصف"}
+//                 </p>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// app/payment-settings/page.jsx
 "use client";
+
 import { useSession } from "next-auth/react";
 import React, { useState, useEffect } from "react";
-import Image from 'next/image';
+import Image from "next/image";
 
 export default function Page() {
   const { data: session } = useSession();
   const userId = session?.user?.id;
 
   const [providers, setProviders] = useState([]);
-  const [selectedProviders, setSelectedProviders] = useState([]);
   const [savedProviders, setSavedProviders] = useState([]);
+  const [selectedProviders, setSelectedProviders] = useState([]);
   const [storeId, setStoreId] = useState(null);
 
+  const [loadingProviders, setLoadingProviders] = useState(false);
+  const [loadingSaved, setLoadingSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const [message, setMessage] = useState(null); // { type, text }
+
+  // جلب storeId
   useEffect(() => {
-    async function fetchStoreId() {
-      if (userId) {
-        try {
-          const response = await fetch(`/api/stores?vendorId=${userId}`);
-          const data = await response.json();
-          setStoreId(data[0]?.id);
-        } catch (error) {
-          console.error("Error fetching storeId:", error);
+    if (!userId) return;
+    const controller = new AbortController();
+    fetch(`/api/stores?vendorId=${userId}`, { signal: controller.signal })
+      .then((res) => res.json())
+      .then((data) => setStoreId(data[0]?.id || null))
+      .catch((err) => {
+        if (err.name !== "AbortError") {
+          console.error(err);
+          setMessage({ type: "error", text: "فشل في جلب المعرّف." });
         }
-      }
-    }
-    fetchStoreId();
+      });
+    return () => controller.abort();
   }, [userId]);
 
+  // جلب قائمة مزودات الدفع
   useEffect(() => {
-    async function fetchPaymentProviders() {
-      try {
-        const response = await fetch("/api/PaymentProvider");
-        const data = await response.json();
-        setProviders(data);
-      } catch (error) {
-        console.error("Error fetching payment providers:", error);
-      }
-    }
-    fetchPaymentProviders();
+    const controller = new AbortController();
+    setLoadingProviders(true);
+    fetch("/api/PaymentProvider", { signal: controller.signal })
+      .then((r) => r.json())
+      .then((data) => setProviders(data))
+      .catch((err) => {
+        if (err.name !== "AbortError") {
+          console.error(err);
+          setMessage({ type: "error", text: "فشل في جلب المزودين." });
+        }
+      })
+      .finally(() => setLoadingProviders(false));
+    return () => controller.abort();
   }, []);
 
-  useEffect(() => {
-    if (storeId) {
-      async function fetchSavedProviders() {
-        try {
-          const response = await fetch(`/api/storePaymentSetting?storeId=${storeId}`);
-          const data = await response.json();
-          setSavedProviders(data);
-        } catch (error) {
-          console.error("Error fetching saved providers:", error);
-        }
-      }
-      fetchSavedProviders();
-    }
-  }, [storeId]);
+  // جلب المزودين المحفوظين
+  const loadSaved = () => {
+    if (!storeId) return;
+    setLoadingSaved(true);
+    fetch(`/api/storePaymentSetting?storeId=${storeId}`)
+      .then((r) => r.json())
+      .then((data) => {
+        // تصفية السجلات التي فيها مزود صالح فقط
+        setSavedProviders(data.filter((item) => item.paymentProvider));
+      })
+      .catch((err) => {
+        console.error(err);
+        setMessage({ type: "error", text: "فشل في جلب المحفوظين." });
+      })
+      .finally(() => setLoadingSaved(false));
+  };
+  useEffect(loadSaved, [storeId]);
 
   const handleProviderToggle = (providerId) => {
-    setSelectedProviders((prevSelected) =>
-      prevSelected.includes(providerId)
-        ? prevSelected.filter((id) => id !== providerId)
-        : [...prevSelected, providerId]
+    setSelectedProviders((prev) =>
+      prev.includes(providerId)
+        ? prev.filter((id) => id !== providerId)
+        : [...prev, providerId]
     );
   };
 
   const handleSaveProviders = async () => {
-    if (!storeId) return;
+    if (!storeId || selectedProviders.length === 0) return;
+    setSaving(true);
+    setMessage(null);
 
     try {
-      for (const providerId of selectedProviders) {
-        const response = await fetch("/api/storePaymentSetting", {
+      for (const pid of selectedProviders) {
+        // تخطٍّ إذا موجود مسبقاً
+        if (savedProviders.some((s) => s.paymentProvidersId === pid)) continue;
+
+        const res = await fetch("/api/storePaymentSetting", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            storeId,
-            paymentProvidersId: providerId,
-            isActive: true,
-          }),
+          body: JSON.stringify({ storeId, paymentProvidersId: pid, isActive: true }),
         });
-
-        if (!response.ok) {
-          throw new Error("Failed to add provider");
-        }
+        if (!res.ok) throw new Error();
       }
-
-      const response = await fetch(`/api/storePaymentSetting?storeId=${storeId}`);
-      const data = await response.json();
-      setSavedProviders(data);
       setSelectedProviders([]);
-    } catch (error) {
-      console.error("Error saving providers:", error);
+      loadSaved();
+      setMessage({ type: "success", text: "تم الحفظ بنجاح!" });
+    } catch {
+      setMessage({ type: "error", text: "فشل في الحفظ." });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async (settingId) => {
+    if (!storeId) return;
+    setMessage(null);
+    try {
+      const res = await fetch("/api/storePaymentSetting", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ providerId: settingId, storeId }),
+      });
+      if (!res.ok) throw new Error();
+      loadSaved();
+      setMessage({ type: "success", text: "تم الحذف." });
+    } catch {
+      setMessage({ type: "error", text: "فشل في الحذف." });
+    }
+  };
+
+  // (اختياري) تحديث حالة isActive
+  const handleToggleActive = async (setting) => {
+    try {
+      await fetch("/api/storePaymentSetting", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          settingId: setting.id,
+          isActive: !setting.isActive,
+        }),
+      });
+      loadSaved();
+    } catch {
+      setMessage({ type: "error", text: "فشل في تحديث الحالة." });
     }
   };
 
   return (
     <div dir="rtl" className="max-w-5xl mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-white">مزودي الدفع</h2>
+      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-white">
+        مزودي الدفع
+      </h2>
+
+      {message && (
+        <div
+          className={`mb-6 p-3 rounded text-center ${
+            message.type === "success"
+              ? "bg-green-100 text-green-700"
+              : "bg-red-100 text-red-700"
+          }`}
+        >
+          {message.text}
+        </div>
+      )}
 
       <div className="mb-8">
-        <h3 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-200">اختر مزود الدفع</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {providers.map((provider) => (
-            <div
-              key={provider.id}
-              className={`flex items-center justify-between bg-white dark:bg-slate-800 border rounded-xl p-4 shadow hover:shadow-lg transition-all ${selectedProviders.includes(provider.id) ? "ring-2 ring-purple-500" : ""
-                }`}
-            >
-              <div className="flex items-center gap-4">
-                <Image
-                  src={provider.imageUrl || "https://via.placeholder.com/150"}
-                  alt={`Logo of ${provider.name}`}
-                  width={48}               // 12 * 4px = 48px
-                  height={48}              // 12 * 4px = 48px
-                  className="rounded-md object-contain"
-                  unoptimized              // يتجاوز تحسين Next.js الافتراضي (مفيد إذا كان المصدر خارجي)
-                  priority                 // تحميل الصورة بأولوية لتحسين تجربة المستخدم
-                />
-                <div>
-                  <h4 className="text-lg font-bold text-gray-800 dark:text-white">{provider.name}</h4>
-                  <p className="text-sm text-gray-500 dark:text-gray-300">{provider.description || "لا يوجد وصف"}</p>
-                </div>
-              </div>
-              <input
-                type="checkbox"
-                checked={selectedProviders.includes(provider.id)}
-                onChange={() => handleProviderToggle(provider.id)}
-                className="w-5 h-5 accent-purple-500"
-              />
-            </div>
-          ))}
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200">
+            اختر مزودًا للدفع لتفعيله في متجرك
+          </h3>
+          <p className="text-sm text-gray-600 dark:text-gray-300">
+            تم اختيار {selectedProviders.length} مزود
+          </p>
         </div>
+
+        {loadingProviders ? (
+          <p className="text-center">جاري جلب المزودين...</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {providers.map((prov) => (
+              <div
+                key={prov.id}
+                onClick={() => handleProviderToggle(prov.id)}
+                className={`flex items-center justify-between bg-white dark:bg-slate-800 border rounded-xl p-4 shadow hover:shadow-lg transition cursor-pointer ${
+                  selectedProviders.includes(prov.id)
+                    ? "ring-2 ring-purple-500 scale-[1.01]"
+                    : ""
+                }`}
+              >
+                <div className="flex items-center gap-4">
+                  <Image
+                    src={prov.imageUrl || "https://via.placeholder.com/150"}
+                    alt={`Logo of ${prov.name}`}
+                    width={48}
+                    height={48}
+                    className="rounded-md object-contain"
+                    unoptimized
+                    priority
+                  />
+                  <div>
+                    <h4 className="text-lg font-bold text-gray-800 dark:text-white">
+                      {prov.name}
+                    </h4>
+                    <p className="text-sm text-gray-500 dark:text-gray-300">
+                      {prov.description || "لا يوجد وصف"}
+                    </p>
+                  </div>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={selectedProviders.includes(prov.id)}
+                  readOnly
+                  className="hidden"
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex justify-center mb-12">
         <button
           onClick={handleSaveProviders}
-          className="bg-purple-600 text-white px-6 py-2 rounded-xl hover:bg-purple-700 transition-all"
+          disabled={saving || selectedProviders.length === 0}
+          className={`bg-purple-600 text-white px-6 py-2 rounded-xl hover:bg-purple-700 transition ${
+            saving || selectedProviders.length === 0
+              ? "opacity-50 cursor-not-allowed"
+              : ""
+          }`}
         >
-          حفظ المزودين المحددين
+          {saving ? "جاري الحفظ..." : "حفظ مزودي الدفع المحددين"}
         </button>
       </div>
 
-      <div className="mt-12">
-        <h3 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-200">المزودين المحفوظين</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {savedProviders.map((provider) => (
-            <div
-              key={provider.id}
-              className="flex items-center bg-gray-100 dark:bg-slate-700 border border-gray-200 dark:border-slate-600 rounded-xl p-4 shadow"
-            >
-              <Image
-                src={provider.paymentProvider.imageUrl || "https://via.placeholder.com/150"}
-                alt={`Logo of ${provider.paymentProvider.name}`}
-                width={48}               // 12 * 4px = 48px
-                height={48}              // 12 * 4px = 48px
-                className="rounded-md object-contain ml-4"
-                unoptimized              // يتجاوز تحسين Next.js الافتراضي (مفيد للمصادر الخارجية)
-                priority                 // تحميل الصورة بأولوية لتحسين الـ LCP
-              />
-              <div>
-                <h4 className="text-lg font-bold text-gray-800 dark:text-white">{provider.paymentProvider.name}</h4>
-                <p className="text-sm text-gray-500 dark:text-gray-300">
-                  {provider.paymentProvider.description || "لا يوجد وصف"}
-                </p>
+      <div>
+        <h3 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-200">
+          المزودين المحفوظين
+        </h3>
+
+        {loadingSaved ? (
+          <p className="text-center">جاري جلب المحفوظين...</p>
+        ) : savedProviders.length === 0 ? (
+          <p className="text-center text-gray-500 dark:text-gray-400">
+            لا يوجد مزودين محفوظين.
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {savedProviders.map((item) => (
+              <div
+                key={item.id}
+                className="flex items-center justify-between bg-gray-100 dark:bg-slate-700 border dark:border-slate-600 rounded-xl p-4 shadow"
+              >
+                <div className="flex items-center gap-4">
+                  <Image
+                    src={
+                      item.paymentProvider.imageUrl ||
+                      "https://via.placeholder.com/150"
+                    }
+                    alt={`Logo of ${item.paymentProvider.name}`}
+                    width={48}
+                    height={48}
+                    className="rounded-md object-contain"
+                    unoptimized
+                    priority
+                  />
+                  <div>
+                    <h4 className="text-lg font-bold text-gray-800 dark:text-white">
+                      {item.paymentProvider.name}
+                    </h4>
+                    <p className="text-sm text-gray-500 dark:text-gray-300">
+                      {item.paymentProvider.description ||
+                        "لا يوجد وصف متاح"}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  {/* مفتاح التفعيل */}
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={item.isActive}
+                      onChange={() => handleToggleActive(item)}
+                    />
+                    <span className="text-sm">مفعل</span>
+                  </label>
+                  {/* زر حذف */}
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                  >
+                    حذف
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

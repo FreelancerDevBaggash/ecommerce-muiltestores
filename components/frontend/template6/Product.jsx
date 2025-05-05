@@ -286,6 +286,106 @@
 //   )
 // }
 
+// // export default Product
+// "use client"
+// import { ShoppingCart, Heart } from "lucide-react"
+// import React from "react"
+// import { useDispatch } from "react-redux"
+// import toast from "react-hot-toast"
+// import Image from "next/image"
+// import Link from "next/link"
+// import { motion } from "framer-motion"
+// import { addToCart as addToCartToCartSlice } from '@/redux/slices/cartSlice'
+// import { addToWishlist } from '@/redux/slices/wishlistSlice'
+
+// const Product = ({ product, customization = {}, categories = [], slugDomain }) => {
+//   const dispatch = useDispatch()
+
+//   const handleAddToCart = (e) => {
+//     e.preventDefault()
+//     dispatch(addToCartToCartSlice(product))  // استخدام الأكشن المعدل
+//     toast.success("تمت الإضافة إلى السلة بنجاح!")
+//   }
+
+//   const discountPercentage = product.productPrice
+//     ? Math.round(((product.productPrice - product.salePrice) / product.productPrice) * 100)
+//     : 0
+
+//   const primaryColor = customization?.primaryColor || '#4CAF50'; // اللون الأساسي
+//   const secondaryColor = customization?.secondaryColor || '#2C3E50'; // اللون الثانوي
+//   const accentColor = customization?.accentColor || '#FFC107'; // اللون المميز
+//   const darkModeColor = customization?.darkModeColor || '#FACC15'; // لون أيقونة الدارك مود
+//   const lightModeColor = customization?.lightModeColor || '#F97316'; // لون أيقونة الوضع الفاتح
+//   const fontFamily = customization?.fontFamily || 'sans-serif'; // نوع الخط
+//   const isActive = customization?.isActive ?? true;
+
+//   return (
+//     <motion.div 
+//       className="h-full perspective"
+//       whileHover={{ rotateY: 10, scale: 1.05 }} 
+//       transition={{ duration: 0.3 }}
+//     >
+//       <motion.div className="group block  h-full bg-slate-50 rounded-md border border-slate-400/40 shadow-lg transform-style-3d">
+//         <Link href={`/${slugDomain}/products/${product.slug}`} className="h-full flex flex-col">
+//           <div className="relative aspect-[4/4] overflow-hidden">
+//             <Image
+//               src={product.imageUrl || '/product-placeholder.jpg'}
+//               alt={product.title}
+//               fill
+//               className="object-cover p-2 rounded-3xl transition-transform duration-500"
+//               quality={85}
+//               priority={false}
+//             />
+
+//             <button 
+//               className="absolute top-3 left-3 p-1.5 hover:bg-red-600/60 bg-white/55 rounded-full shadow"
+//               onClick={(e) => {
+//                 e.preventDefault()
+//                 dispatch(addToWishlist(product))
+//                 toast.success("تمت الإضافة إلى المفضلة")
+//               }}
+//             >
+//               <Heart className="w-4 h-4 text-gray-700" />
+//             </button>
+
+//             {discountPercentage > 0 && (
+//               <div className="absolute top-4 right-3 bg-lime-700/60 text-white text-[12px] p-1 rounded-full">
+//                 -{discountPercentage}%
+//               </div>
+//             )}
+//           </div>
+
+//           <div className="p-2 text-center font-arabic space-y-2">
+//             <h3 className="text-base font-semibold text-gray-800">{product.title}</h3>
+
+//             <div className="flex items-center justify-center gap-2 text-sm">
+//               <span className="text-red-600 font-bold">
+//                 {product.salePrice?.toLocaleString()} ريال
+//               </span>
+//               {product.productPrice && (
+//                 <del className="text-gray-400">{product.productPrice} ريال</del>
+//               )}
+//             </div>
+
+//             <motion.button
+//               onClick={handleAddToCart}
+//               whileTap={{ scale: 0.95 }}
+//               className="w-full flex items-center hover:bg-lime-800 justify-center gap-3 px-1 font-arabic rounded-md font-medium text-white"
+//               style={{ backgroundColor: secondaryColor }}
+         
+//             >
+//               <ShoppingCart className="w-5 h-5" />
+//               <span>أضف للسلة</span>
+//             </motion.button>
+//           </div>
+//         </Link>
+//       </motion.div>
+//     </motion.div>
+//   )
+// }
+
+// export default Product
+
 // export default Product
 "use client"
 import { ShoppingCart, Heart } from "lucide-react"
@@ -349,7 +449,8 @@ const Product = ({ product, customization = {}, categories = [], slugDomain }) =
             </button>
 
             {discountPercentage > 0 && (
-              <div className="absolute top-4 right-3 bg-lime-700/60 text-white text-[12px] p-1 rounded-full">
+              <div className="absolute top-4 right-3 bg-lime-700/60 text-white text-[12px] p-1 rounded-full"
+              style={{ backgroundColor: secondaryColor }}>
                 -{discountPercentage}%
               </div>
             )}
@@ -372,6 +473,7 @@ const Product = ({ product, customization = {}, categories = [], slugDomain }) =
               whileTap={{ scale: 0.95 }}
               className="w-full flex items-center hover:bg-lime-800 justify-center gap-3 px-1 font-arabic rounded-md font-medium text-white"
               style={{ backgroundColor: secondaryColor }}
+              
          
             >
               <ShoppingCart className="w-5 h-5" />

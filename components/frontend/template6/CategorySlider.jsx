@@ -713,6 +713,140 @@
 // }
 // "use client";
 
+// import React, { useRef, useState } from "react";
+// import Link from "next/link";
+// import Image from "next/image";
+// import { motion } from "framer-motion";
+// import { ChevronLeft, ChevronRight } from "lucide-react";
+
+// // توليد ألوان ثابتة بناء على نص الفئة
+// const generateCategoryColor = (title) => {
+//   const colorMap = {
+//     blue: "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400",
+//     red: "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400",
+//     yellow: "bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400",
+//     purple: "bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400",
+//     green: "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400",
+//     pink: "bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400",
+//     indigo: "bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400",
+//   };
+
+//   const colorKeys = Object.keys(colorMap);
+//   const hash = title.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+//   return colorMap[colorKeys[hash % colorKeys.length]];
+// };
+
+// const CategoryItem = ({ category, slugDomain, colorClass }) => (
+//   <motion.div
+//     className="min-w-[160px] sm:min-w-[180px] md:min-w-[200px] transition-all duration-300 hover:shadow-lg"
+//     whileHover={{ scale: 1.05 }}
+//   >
+//     <Link
+//       href={`${slugDomain}/category/${category.slug}`}
+//       className="flex flex-col items-center justify-center p-4 md:p-6 rounded-xl"
+//       aria-label={`تصفح فئة ${category.title}`}
+//     >
+//       <div className={`p-3 md:p-4 rounded-full mb-2 md:mb-3 ${colorClass}`}>
+//         <div className="relative h-14 w-14 md:h-16 md:w-16">
+//           <Image
+//             src={category.imageUrl}
+//             alt={category.title}
+//             fill
+//             sizes="(max-width: 768px) 64px, 80px"
+//             className="object-contain rounded-full"
+//             loading="lazy"
+//           />
+//         </div>
+//       </div>
+//       <span className="text-sm md:text-base text-gray-800 dark:text-gray-200 font-medium text-center">
+//         {category.title}
+//       </span>
+//     </Link>
+//   </motion.div>
+// );
+
+// export default function CategorySlider({ slugDomain, categories = [] }) {
+//   const containerRef = useRef(null);
+//   const [showControls, setShowControls] = useState(false);
+
+//   const scroll = (direction) => {
+//     if (containerRef.current) {
+//       const scrollAmount = direction === 'right' ? 300 : -300;
+//       containerRef.current.scrollBy({
+//         left: scrollAmount * (document.dir === 'rtl' ? -1 : 1),
+//         behavior: 'smooth'
+//       });
+//     }
+//   };
+
+//   return (
+//     <section 
+//       className="py-8 mt-1 md:py-8 bg-white dark:bg-gray-900 relative"
+//       onMouseEnter={() => setShowControls(true)}
+//       onMouseLeave={() => setShowControls(false)}
+//     >
+//       <div className="container px-4 relative">
+//         <h2 className="text-2xl md:text-3xl font-bold text-center mb-2  text-gray-900 dark:text-white">
+//           تسوق حسب الفئات
+//         </h2>
+
+//         {categories.length > 0 ? (
+//           <div className="relative">
+//             {/* زر التنقل الأيمن */}
+//             <button 
+//               onClick={() => scroll('right')}
+//               className={`hidden lg:flex absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white dark:bg-gray-800 p-2 rounded-full shadow-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-opacity duration-200 ${showControls ? 'opacity-100' : 'opacity-0'}`}
+//               aria-label="التنقل إلى اليمين"
+//             >
+//               <ChevronRight className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+//             </button>
+
+//             {/* زر التنقل الأيسر */}
+//             <button 
+//               onClick={() => scroll('left')}
+//               className={`hidden lg:flex absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white dark:bg-gray-800 p-2 rounded-full shadow-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-opacity duration-200 ${showControls ? 'opacity-100' : 'opacity-0'}`}
+//               aria-label="التنقل إلى اليسار"
+//             >
+//               <ChevronLeft className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+//             </button>
+
+//             <div 
+//               ref={containerRef}
+//               className="overflow-x-auto whitespace-nowrap flex gap-4 px-2 pb-2 scroll-container"
+//               dir="rtl"
+//             >
+//               {categories.map((category) => (
+//                 <CategoryItem
+//                   key={category.id}
+//                   category={category}
+//                   slugDomain={slugDomain}
+//                   colorClass={generateCategoryColor(category.title)}
+//                 />
+//               ))}
+//             </div>
+//           </div>
+//         ) : (
+//           <p className="text-center text-gray-500 dark:text-gray-400">
+//             لا توجد فئات متاحة حالياً
+//           </p>
+//         )}
+
+//         <style jsx>{`
+//           .scroll-container {
+//             -ms-overflow-style: none;
+//             scrollbar-width: none;
+//           }
+//           .scroll-container::-webkit-scrollbar {
+//             display: none;
+//           }
+//         `}</style>
+//       </div>
+//     </section>
+//   );
+// }
+
+
+
 import React, { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -731,12 +865,16 @@ const generateCategoryColor = (title) => {
     indigo: "bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400",
   };
 
+
   const colorKeys = Object.keys(colorMap);
   const hash = title.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   return colorMap[colorKeys[hash % colorKeys.length]];
 };
 
-const CategoryItem = ({ category, slugDomain, colorClass }) => (
+
+
+const CategoryItem = ({ category, slugDomain, colorClass , }) => (
+
   <motion.div
     className="min-w-[160px] sm:min-w-[180px] md:min-w-[200px] transition-all duration-300 hover:shadow-lg"
     whileHover={{ scale: 1.05 }}
@@ -765,10 +903,15 @@ const CategoryItem = ({ category, slugDomain, colorClass }) => (
   </motion.div>
 );
 
-export default function CategorySlider({ slugDomain, categories = [] }) {
+export default function CategorySlider({ slugDomain, categories = [], customization={} }) {
   const containerRef = useRef(null);
   const [showControls, setShowControls] = useState(false);
-
+const primaryColor = customization?.primaryColor || '#4CAF50'; // اللون الأساسي
+const secondaryColor = customization?.secondaryColor || '#2C3E50'; // اللون الثانوي
+const accentColor = customization?.accentColor || '#FFC107'; // اللون المميز
+const backgroundColor = customization?.backgroundColor || '#FFFFFF'; // لون الخلفية
+const fontFamily = customization?.fontFamily || 'sans-serif'; // نوع الخط
+const isActive = customization?.isActive ?? true;
   const scroll = (direction) => {
     if (containerRef.current) {
       const scrollAmount = direction === 'right' ? 300 : -300;
@@ -781,12 +924,12 @@ export default function CategorySlider({ slugDomain, categories = [] }) {
 
   return (
     <section 
-      className="py-8 mt-1 md:py-8 bg-white dark:bg-gray-900 relative"
+      className="py-8 mt-4 md:py-12 bg-white dark:bg-gray-900 relative"
       onMouseEnter={() => setShowControls(true)}
       onMouseLeave={() => setShowControls(false)}
     >
-      <div className="container px-4 relative">
-        <h2 className="text-2xl md:text-3xl font-bold text-center mb-2  text-gray-900 dark:text-white">
+      <div className="container mx-auto px-4 relative">
+        <h2 className="text-2xl md:text-3xl font-bold font-arabic text-center mb-4 md:mb-10 text-gray-900 dark:text-white" style={{ color: secondaryColor }}>
           تسوق حسب الفئات
         </h2>
 
@@ -798,7 +941,7 @@ export default function CategorySlider({ slugDomain, categories = [] }) {
               className={`hidden lg:flex absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white dark:bg-gray-800 p-2 rounded-full shadow-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-opacity duration-200 ${showControls ? 'opacity-100' : 'opacity-0'}`}
               aria-label="التنقل إلى اليمين"
             >
-              <ChevronRight className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+              <ChevronLeft className="h-5 w-5 text-gray-700 dark:text-gray-300" />
             </button>
 
             {/* زر التنقل الأيسر */}
@@ -807,7 +950,7 @@ export default function CategorySlider({ slugDomain, categories = [] }) {
               className={`hidden lg:flex absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white dark:bg-gray-800 p-2 rounded-full shadow-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-opacity duration-200 ${showControls ? 'opacity-100' : 'opacity-0'}`}
               aria-label="التنقل إلى اليسار"
             >
-              <ChevronLeft className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+              <ChevronRight className="h-5 w-5 text-gray-700 dark:text-gray-300" />
             </button>
 
             <div 

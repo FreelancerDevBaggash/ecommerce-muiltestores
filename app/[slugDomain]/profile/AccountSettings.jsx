@@ -6,8 +6,8 @@ import { FiUser, FiMail, FiPhone, FiLock, FiRefreshCw, FiCheckCircle } from "rea
 import { toast } from "react-hot-toast";
 import { makePutRequest } from "@/lib/apiRequest";
 import { useRouter } from "next/navigation";
-
-export default function AccountSettings({ user={} }) {
+import { UploadDropzone } from "@/lib/uploadthingClient";
+export default function AccountSettings({ user = {} }) {
   const [imageUrl, setImageUrl] = useState(user?.profileImage || "");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -72,9 +72,8 @@ export default function AccountSettings({ user={} }) {
         <input
           type={type}
           {...register(name, { required: `${label} مطلوب` })}
-          className={`block w-full pr-10 border rounded-lg p-3 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-lime-500 focus:border-transparent ${
-            errors[name] ? "border-red-500" : "border-gray-300"
-          }`}
+          className={`block w-full pr-10 border rounded-lg p-3 bg-white dark:bg-gray-700 focus:ring-2 focus:ring-lime-500 focus:border-transparent ${errors[name] ? "border-red-500" : "border-gray-300"
+            }`}
           {...rest}
         />
       </div>
@@ -128,7 +127,7 @@ export default function AccountSettings({ user={} }) {
             إعدادات الحساب
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300">
-            إدارة معلوماتك الشخصية 
+            إدارة معلوماتك الشخصية
           </p>
         </div>
 
@@ -137,7 +136,7 @@ export default function AccountSettings({ user={} }) {
           <div className="lg:col-span-1 space-y-6">
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 sticky top-6">
               <div className="flex flex-col items-center">
-                <div className="relative mb-4">
+                {/* <div className="relative mb-4">
                   <img
                     src={imageUrl || "/default-avatar.png"}
                     alt="Profile"
@@ -159,7 +158,31 @@ export default function AccountSettings({ user={} }) {
                   <span className="absolute bottom-0 right-0 bg-lime-500 text-white p-2 rounded-full shadow-md hover:bg-lime-600 transition">
                     <FiUser className="w-4 h-4" />
                   </span>
-                </div>
+                </div> */}
+                 <div className="relative w-32 h-32 rounded-full overflow-hidden">
+      {imageUrl && (
+        <img
+          src={imageUrl}
+          alt="Preview"
+          className="w-full h-full object-cover"
+        />
+      )}
+      <UploadDropzone
+        endpoint="customerProfileUploader"
+        onClientUploadComplete={(res) => {
+          setImageUrl(res[0].url);
+          toast.success("تم رفع الصورة!");
+        }}
+        onUploadError={(err) => {
+          console.error(err);
+          toast.error("فشل في الرفع");
+        }}
+        className="absolute inset-0 opacity-0 cursor-pointer"
+      />
+      <span className="absolute bottom-0 right-0 bg-lime-500 p-2 rounded-full text-white">
+        <FiUser className="w-4 h-4" />
+      </span>
+    </div>
                 <h3 className="text-xl font-semibold text-center text-gray-800 dark:text-white">
                   {user?.firstName} {user?.lastName}
                 </h3>

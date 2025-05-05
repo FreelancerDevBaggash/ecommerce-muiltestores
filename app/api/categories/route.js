@@ -68,6 +68,7 @@ export async function GET(request) {
             storeId: storeId,
           },  include: {
             products: true,
+            subCategories: true,
          
           },
         });

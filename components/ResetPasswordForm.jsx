@@ -35,10 +35,10 @@ export default function ResetPasswordForm() {
         // await signOut();
         setLoading(false);
         router.push("/login");
-        toast.success("Password Updated Successfully");
+        toast.success("تم تحديث كلمة السر بنجاح");
       } else {
         setLoading(false);
-        toast.error("Something Went wrong");
+        toast.error("حدث خطأ ما ");
       }
     } catch (error) {
       setLoading(false);
@@ -54,7 +54,7 @@ export default function ResetPasswordForm() {
           htmlFor="email"
           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
         >
-          New Password
+          كلمة السر الجديدة
         </label>
         <input
           {...register("password", { required: true })}
@@ -62,12 +62,12 @@ export default function ResetPasswordForm() {
           name="password"
           id="password"
           className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="New Password"
+          placeholder="كلمة السر الجديدة"
           required=""
         />
         {errors.password && (
           <small className="text-red-600 text-sm ">
-            This field is required
+            هذا الحقل مطلوب
           </small>
         )}
       </div>
@@ -94,14 +94,14 @@ export default function ResetPasswordForm() {
               fill="currentColor"
             />
           </svg>
-          Updating please wait...
+          ...جاري تحديث كلمة السر يرجى الانتظار
         </button>
       ) : (
         <button
           type="submit"
           className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
-          Reset Password
+          تغيير كلمة السر
         </button>
       )}
     </form>

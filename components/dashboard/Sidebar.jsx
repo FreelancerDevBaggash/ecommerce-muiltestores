@@ -129,6 +129,8 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
       { title: "التقارير", icon: BarChart3, href: "/dashboard/reports" },
       { title: "التسويق", icon: Target, href: "/dashboard/marketing" },
       { title: "فريقنا", icon: User, href: "/dashboard/staff" },
+      { title: "القوالب", icon: LayoutGrid, href: "/dashboard/templates" },
+
       { title: "التخصيصات", icon: Package, href: "/dashboard/customizations" },
       { title: "المحفظة", icon: CreditCard, href: "/dashboard/wallet" },
       // { title: "مزودي الدفع", icon: CreditCard, href: "/dashboard/payments" },

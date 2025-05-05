@@ -16,10 +16,10 @@ export default function CategoryList({ category, isMarketPage,        customizat
   const fontFamily = customization?.fontFamily || 'sans-serif'; // نوع الخط
   const isActive = customization?.isActive ?? true;
   return (
-    <div dir="rtl" className="font-arabic rounded-lg dark:bg-gray-200 dark:border-gray-700/20 text-slate-800">
+    <div dir="rtl" className="font-arabic rounded-lg  dark:bg-slate-800 dark:border-gray-700/20 text-slate-800">
 
       {/* العنوان العلوي + أسهم التحكم */}
-      <div className="py-4 px-6 font-semibold text-slate-800 dark:border-gray-600 dark:text-slate-100 flex justify-between items-center">
+      <div className="py-4 px-6 font-semibold text-slate-800  dark:bg-slate-800 dark:text-slate-100 flex justify-between items-center">
 
         {/* عنوان القسم */}
         <div className="text-lg dark:text-gray-300" style={{ color: primaryColor }}>
@@ -51,7 +51,7 @@ export default function CategoryList({ category, isMarketPage,        customizat
       </div>
 
       {/* الكاروسيل */}
-      <div  dir="rtl" className="bg-white dark:bg-slate-700 p-4">
+      <div  dir="rtl" className="bg-white dark:bg-slate-900 p-4">
         <CategoryCarousel
           ref={carouselRef}
           isMarketPage={isMarketPage}

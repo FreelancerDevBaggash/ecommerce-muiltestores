@@ -280,7 +280,7 @@ export default async function Page({ params: { slugDomain } }) {
   );
   const Home = dynamic(
     () => import(`../../components/frontend/${slug}/Home`),
-    { ssr: true, loading: () => <p>جاري تحميل الواجهة...</p> }
+    { ssr: true, }
   );
     return (
       <div className="min-h-screen">

@@ -105,6 +105,7 @@
 import React from "react";
 import dynamic from "next/dynamic";
 import { getData } from "@/lib/getData";
+import { getCustomerSession } from "@/lib/getCustomerSession";
 
 //تحسين مجركات البحث 
 export async function generateMetadata({ params }) {
@@ -152,13 +153,16 @@ export async function generateMetadata({ params }) {
 export default async function Layout({ children, params: { slugDomain } }) {
   // جلب بيانات المتجر
   const store = await getData(`/stores/store/${slugDomain}`);
+  const session = getCustomerSession(); // سيتم استخدام الجلسة في الخادم
+  const status = session ? "authenticated" : "unauthenticated";
+ 
   if (!store?.businessNameEn) {
     return <h1 className="bg-slate-50 text-slate-500">Store not found</h1>;
   }
   const storeId = store.id;
 
   // جلب القالب المستخدم
-  const templatesData = await getData(`/templates/${store.templateId}`);
+  const templatesData = await getData(`/templates/${store.templateId}`, {mode:'real-time'});
   const slug = templatesData.slug;
 
   // جلب البيانات المشتركة
@@ -178,12 +182,14 @@ export default async function Layout({ children, params: { slugDomain } }) {
   return (
     <div dir="rtl">
       <Navbar
+        session={session}
+        status={status}
         slugDomain={slugDomain}
         customization={customizationData}
         storeData={store}
         categories={categories}
       />
-      <main>{children}</main>
+      <main className="flex-grow container mx-auto px-4 py-4">{children}</main>
       <Footer
         slugDomain={slugDomain}
         categories={categories}

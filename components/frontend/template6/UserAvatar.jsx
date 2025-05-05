@@ -302,10 +302,171 @@
 //   );
 // }
 
-"use client";
+// "use client";
 
-import React from "react";
-import Link from "next/link";
+// import React from "react";
+// import Link from "next/link";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuLabel,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
+// import { LayoutDashboard, LogOut, Settings, ShoppingBag, User2 } from "lucide-react";
+// import Image from "next/image";
+// import { useRouter } from "next/navigation";
+// import { signOut } from "next-auth/react";
+// import { useTheme } from "next-themes";
+// import { motion } from "framer-motion";
+
+// export default function UserAvatar({ user = {}, customization = {}, slugDomain }) {
+//   const { firstName, profileImage, email } = user;
+//   const role = user?.role;
+//   const router = useRouter();
+//   const { theme } = useTheme();
+
+//   // نظام الألوان مع دعم التخصيص والوضع المظلم
+//   const colors = {
+//     primary: customization?.primaryColor || '#3b82f6',
+//     secondary: customization?.secondaryColor || '#10b981',
+//     accent: customization?.accentColor || '#f59e0b',
+//     text: theme === 'dark' ? customization?.darkTextColor || '#f8fafc' : customization?.textColor || '#1e293b',
+//     background: theme === 'dark' ? customization?.darkBackgroundColor || '#1e293b' : customization?.backgroundColor || '#ffffff',
+//     border: theme === 'dark' ? customization?.darkBorderColor || '#475569' : customization?.borderColor || '#e2e8f0',
+//     hover: theme === 'dark' ? customization?.darkHoverColor || '#334155' : customization?.hoverColor || '#f1f5f9'
+//   };
+
+//   async function handleLogout() {
+//     // await signOut();
+//     // router.push(`/${slugDomain}`);
+//     await fetch("/api/customerAuth/logout", { method: "POST" });
+
+//     // 2) إذا كنت تستخدم next-auth أيضاً:
+//     await signOut({ redirect: false });
+//       router.push(`/${slugDomain}`);
+//   }
+
+//   return (
+//     <motion.div
+//       initial={{ opacity: 0 }}
+//       animate={{ opacity: 1 }}
+//       className="w-max mx-auto"
+//       style={{ fontFamily: customization?.fontFamily || 'sans-serif' }}
+//     >
+//       <DropdownMenu>
+//         <DropdownMenuTrigger asChild>
+//           <motion.button
+//             whileHover={{ scale: 1.05 }}
+//             whileTap={{ scale: 0.95 }}
+//             className="px-4 py-2 flex items-center rounded-full text-sm border outline-none transition-all"
+//             style={{
+//               color: colors.text,
+//               borderColor: colors.border,
+//               backgroundColor: 'transparent',
+//               '&:hover': {
+//                 backgroundColor: colors.hover
+//               }
+//             }}
+//             aria-label="قائمة المستخدم"
+//           >
+//             {profileImage ? (
+//               <Image
+//                 src={profileImage}
+//                 alt={`صورة ${firstName || 'المستخدم'}`}
+//                 width={32}
+//                 height={32}
+//                 className="w-8 h-8 mr-3 rounded-full shrink-0 object-cover"
+//               />
+//             ) : (
+//               <div 
+//                 className="w-8 h-8 mr-3 rounded-full shrink-0 flex items-center justify-center"
+//                 style={{ backgroundColor: colors.primary, color: '#fff' }}
+//               >
+//                 <User2 className="w-4 h-4" />
+//               </div>
+//             )}
+//             <span className="truncate max-w-[120px]">{firstName || "مستخدم"}</span>
+//             <svg
+//               xmlns="http://www.w3.org/2000/svg"
+//               className="w-3 ml-3 transition-transform"
+//               viewBox="0 0 24 24"
+//               style={{ fill: colors.text }}
+//             >
+//               <path
+//                 fillRule="evenodd"
+//                 d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z"
+//                 clipRule="evenodd"
+//               />
+//             </svg>
+//           </motion.button>
+//         </DropdownMenuTrigger>
+
+//         <DropdownMenuContent 
+//           className="shadow-lg py-2 z-[1000] w-56 rounded-lg overflow-hidden"
+//           style={{
+//             backgroundColor: colors.background,
+//             borderColor: colors.border
+//           }}
+//           align="end"
+//         >
+//           <DropdownMenuLabel className="px-4 py-2">
+//             <div className="flex flex-col space-y-1">
+//               <p className="text-sm font-medium truncate">{firstName || "مستخدم"}</p>
+//               {email && (
+//                 <p className="text-xs truncate text-gray-500 dark:text-gray-400">
+//                   {email}
+//                 </p>
+//               )}
+//             </div>
+//           </DropdownMenuLabel>
+//           <DropdownMenuSeparator style={{ backgroundColor: colors.border }} />
+
+//           <DropdownMenuItem className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+//             <Link href="/dashboard" className="flex items-center w-full">
+//               <LayoutDashboard className="w-4 h-4 mr-3" style={{ color: colors.primary }} />
+//               <span>لوحة التحكم</span>
+//             </Link>
+//           </DropdownMenuItem>
+
+//           <DropdownMenuItem className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+//             <Link href={`/${slugDomain}/profile`} className="flex items-center w-full">
+//               <Settings className="w-4 h-4 mr-3" style={{ color: colors.primary }} />
+//               <span>تعديل الملف الشخصي</span>
+//             </Link>
+//           </DropdownMenuItem>
+
+//           {role === "CUSTOMER" && (
+//             <DropdownMenuItem className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+//               <Link href={`/${slugDomain}/orders`} className="flex items-center w-full">
+//                 <ShoppingBag className="w-4 h-4 mr-3" style={{ color: colors.primary }} />
+//                 <span>طلباتي</span>
+//               </Link>
+//             </DropdownMenuItem>
+//           )}
+
+//           <DropdownMenuSeparator style={{ backgroundColor: colors.border }} />
+
+//           <DropdownMenuItem className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+//             <span type='button'
+//               onClick={handleLogout}
+//               className="flex items-center w-full text-left"
+//             >
+//               <LogOut className="w-4 h-4 mr-3" style={{ color: colors.accent }} />
+//               <span>تسجيل الخروج</span>
+//             </span>
+//           </DropdownMenuItem>
+//         </DropdownMenuContent>
+//       </DropdownMenu>
+//     </motion.div>
+//   );
+// }
+
+
+
+"use client"
+import Link from "next/link"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -313,152 +474,109 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { LayoutDashboard, LogOut, Settings, ShoppingBag, User2 } from "lucide-react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { signOut } from "next-auth/react";
-import { useTheme } from "next-themes";
-import { motion } from "framer-motion";
+} from "@/components/ui/dropdown-menu"
+import { LogOut, Settings, ShoppingBag, User, Heart } from "lucide-react"
+import { FiMapPin } from "react-icons/fi"
+import Image from "next/image"
+import { useRouter } from "next/navigation"
+import { signOut } from "next-auth/react"
 
-export default function UserAvatar({ user = {}, customization = {}, slugDomain }) {
+export default function UserAvatar({ user = {},status, customization = {}, slugDomain }) {
   const { firstName, profileImage, email } = user;
-  const role = user?.role;
-  const router = useRouter();
-  const { theme } = useTheme();
+const role = user?.role
+  const router = useRouter()
 
-  // نظام الألوان مع دعم التخصيص والوضع المظلم
-  const colors = {
-    primary: customization?.primaryColor || '#3b82f6',
-    secondary: customization?.secondaryColor || '#10b981',
-    accent: customization?.accentColor || '#f59e0b',
-    text: theme === 'dark' ? customization?.darkTextColor || '#f8fafc' : customization?.textColor || '#1e293b',
-    background: theme === 'dark' ? customization?.darkBackgroundColor || '#1e293b' : customization?.backgroundColor || '#ffffff',
-    border: theme === 'dark' ? customization?.darkBorderColor || '#475569' : customization?.borderColor || '#e2e8f0',
-    hover: theme === 'dark' ? customization?.darkHoverColor || '#334155' : customization?.hoverColor || '#f1f5f9'
-  };
+  const primaryColor = customization?.primaryColor || "#4CAF50"
+  const secondaryColor = customization?.secondaryColor || "#2C3E50"
+  const accentColor = customization?.accentColor || "#FFC107"
 
   async function handleLogout() {
-    // await signOut();
-    // router.push(`/${slugDomain}`);
-    await fetch("/api/customerAuth/logout", { method: "POST" });
-
-    // 2) إذا كنت تستخدم next-auth أيضاً:
-    await signOut({ redirect: false });
-      router.push(`/${slugDomain}`);
+    await fetch("/api/customerAuth/logout", { method: "POST" })
+    await signOut({ redirect: false })
+    router.push(`/${slugDomain}`)
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="w-max mx-auto"
-      style={{ fontFamily: customization?.fontFamily || 'sans-serif' }}
-    >
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-4 py-2 flex items-center rounded-full text-sm border outline-none transition-all"
-            style={{
-              color: colors.text,
-              borderColor: colors.border,
-              backgroundColor: 'transparent',
-              '&:hover': {
-                backgroundColor: colors.hover
-              }
-            }}
-            aria-label="قائمة المستخدم"
-          >
-            {profileImage ? (
-              <Image
-                src={profileImage}
-                alt={`صورة ${firstName || 'المستخدم'}`}
-                width={32}
-                height={32}
-                className="w-8 h-8 mr-3 rounded-full shrink-0 object-cover"
-              />
-            ) : (
-              <div 
-                className="w-8 h-8 mr-3 rounded-full shrink-0 flex items-center justify-center"
-                style={{ backgroundColor: colors.primary, color: '#fff' }}
-              >
-                <User2 className="w-4 h-4" />
-              </div>
-            )}
-            <span className="truncate max-w-[120px]">{firstName || "مستخدم"}</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-3 ml-3 transition-transform"
-              viewBox="0 0 24 24"
-              style={{ fill: colors.text }}
-            >
-              <path
-                fillRule="evenodd"
-                d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </motion.button>
-        </DropdownMenuTrigger>
-
-        <DropdownMenuContent 
-          className="shadow-lg py-2 z-[1000] w-56 rounded-lg overflow-hidden"
-          style={{
-            backgroundColor: colors.background,
-            borderColor: colors.border
-          }}
-          align="end"
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          type="button"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200"
         >
-          <DropdownMenuLabel className="px-4 py-2">
-            <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium truncate">{firstName || "مستخدم"}</p>
-              {email && (
-                <p className="text-xs truncate text-gray-500 dark:text-gray-400">
-                  {email}
-                </p>
-              )}
-            </div>
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator style={{ backgroundColor: colors.border }} />
-
-          <DropdownMenuItem className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-            <Link href="/dashboard" className="flex items-center w-full">
-              <LayoutDashboard className="w-4 h-4 mr-3" style={{ color: colors.primary }} />
-              <span>لوحة التحكم</span>
-            </Link>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-            <Link href={`/${slugDomain}/profile`} className="flex items-center w-full">
-              <Settings className="w-4 h-4 mr-3" style={{ color: colors.primary }} />
-              <span>تعديل الملف الشخصي</span>
-            </Link>
-          </DropdownMenuItem>
-
-          {role === "CUSTOMER" && (
-            <DropdownMenuItem className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-              <Link href={`/${slugDomain}/orders`} className="flex items-center w-full">
-                <ShoppingBag className="w-4 h-4 mr-3" style={{ color: colors.primary }} />
-                <span>طلباتي</span>
-              </Link>
-            </DropdownMenuItem>
+          {profileImage ? (
+            <Image
+              src={profileImage || "/placeholder.svg"}
+              alt={firstName || "المستخدم"}
+              width={28}
+              height={28}
+              className="rounded-full"
+            />
+          ) : (
+            <User className="w-5 h-5 text-gray-700 dark:text-gray-300" />
           )}
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{firstName || "المستخدم"}</span>
+        </button>
+      </DropdownMenuTrigger>
 
-          <DropdownMenuSeparator style={{ backgroundColor: colors.border }} />
+      <DropdownMenuContent
+        align="end"
+        className="w-56 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700"
+      >
+        <DropdownMenuLabel className="px-4 py-2 text-gray-700 dark:text-gray-300 font-medium">
+          {firstName || "المستخدم"}
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator className="bg-gray-200 dark:bg-gray-700" />
 
-          <DropdownMenuItem className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-            <span type='button'
-              onClick={handleLogout}
-              className="flex items-center w-full text-left"
-            >
-              <LogOut className="w-4 h-4 mr-3" style={{ color: colors.accent }} />
-              <span>تسجيل الخروج</span>
-            </span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </motion.div>
-  );
+        <DropdownMenuItem asChild>
+          <Link
+            href={`/${slugDomain}/orders`}
+            className="flex items-center gap-2 px-4 py-2.5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+          >
+            <ShoppingBag className="w-4 h-4" />
+            <span>الطلبات</span>
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem asChild>
+          <Link
+            href={`/${slugDomain}/Addresse`}
+            className="flex items-center gap-2 px-4 py-2.5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+          >
+            <FiMapPin className="w-4 h-4" />
+            <span>العنوان</span>
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem asChild>
+          <Link
+            href={`/${slugDomain}/wishlist`}
+            className="flex items-center gap-2 px-4 py-2.5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+          >
+            <Heart className="w-4 h-4" />
+            <span>المفضلة</span>
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem asChild>
+          <Link
+            href={`/${slugDomain}/profile`}
+            className="flex items-center gap-2 px-4 py-2.5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+          >
+            <Settings className="w-4 h-4" />
+            <span>حسابي</span>
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator className="bg-gray-200 dark:bg-gray-700" />
+
+        <DropdownMenuItem
+          onClick={handleLogout}
+          className="flex items-center gap-2 px-4 py-2.5 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+        >
+          <LogOut className="w-4 h-4" />
+          <span>تسجيل الخروج</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
 }

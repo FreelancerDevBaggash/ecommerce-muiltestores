@@ -36,7 +36,6 @@ export async function generateMetadata() {
       languages: {
         "ar-YE": baseUrl,       // الإصدار اليمني
         "ar": baseUrl,          // العربية العامة
-        "en": `${baseUrl}/en`,  // نسخة إنجليزية (اختياري)
       },
     },
     openGraph: {

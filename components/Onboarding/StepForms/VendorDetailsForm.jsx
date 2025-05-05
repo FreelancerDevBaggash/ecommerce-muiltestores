@@ -1,149 +1,371 @@
 
-import React, { useState } from 'react';
-import TextInput from "../../Forminputs/TextInput";
-import ArrayItemsInput from "../../Forminputs/ArrayItemsInput";
-import NavButtons from '../NavButtons';
-import { Circle, Truck } from 'lucide-react';
-import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentStep, updateOnboardingFormData } from '../../../redux/slices/onboardingSlice';
-import RadioButtonCardsImage from "../../Forminputs/RadioButtonCardsImage"
-export default function VendorDetailsForm({templates}) {
-  const [products, setProducts] = useState([]);
-  const [shippingCost, setShippingCost] = useState(null);
-  const [selectedCompanies, setSelectedCompanies] = useState([]);
-  const [selectedTemplate, setSelectedTemplate] = useState(null);
-  const dispatch = useDispatch();
-  const currentStep = useSelector((store) => store.onboarding.currentStep);
-  const existingFormData = useSelector((store) => store.onboarding.onboardingFormData);
+// import React, { useState } from 'react';
+// import TextInput from "../../Forminputs/TextInput";
+// import ArrayItemsInput from "../../Forminputs/ArrayItemsInput";
+// import NavButtons from '../NavButtons';
+// import { Circle, Truck } from 'lucide-react';
+// import { useForm } from "react-hook-form";
+// import { useDispatch, useSelector } from 'react-redux';
+// import { setCurrentStep, updateOnboardingFormData } from '../../../redux/slices/onboardingSlice';
+// import RadioButtonCardsImage from "../../Forminputs/RadioButtonCardsImage"
+// export default function VendorDetailsForm({templates}) {
+//   const [products, setProducts] = useState([]);
+//   const [shippingCost, setShippingCost] = useState(null);
+//   const [selectedCompanies, setSelectedCompanies] = useState([]);
+//   const [selectedTemplate, setSelectedTemplate] = useState(null);
+//   const dispatch = useDispatch();
+//   const currentStep = useSelector((store) => store.onboarding.currentStep);
+//   const existingFormData = useSelector((store) => store.onboarding.onboardingFormData);
 
-  const { register, reset, watch, handleSubmit, formState: { errors } } = useForm({
-    defaultValues: { ...existingFormData }
-  });
+//   const { register, reset, watch, handleSubmit, formState: { errors } } = useForm({
+//     defaultValues: { ...existingFormData }
+//   });
+
+//   const processData = async (data) => {
+//     data.templateId = selectedTemplate;
+//     data.products = products;
+//     data.shippingCost = shippingCost;
+//     data.selectedCompanies = selectedCompanies; // Send selected companies
+//     dispatch(updateOnboardingFormData(data));
+//     dispatch(setCurrentStep(currentStep + 1));
+//   };
+
+//   const handleCompanyToggle = (company) => {
+//     setSelectedCompanies(prevState => 
+//       prevState.includes(company) 
+//         ? prevState.filter(c => c !== company) 
+//         : [...prevState, company]
+//     );
+//   };
+
+//   return (
+//     <div>
+//       <form onSubmit={handleSubmit(processData)}>
+//         <h2 className="text-x1 font-semibold mb-4 dark:text-lime-400">Vendor Details</h2>
+//           <RadioButtonCardsImage templates={templates} 
+//          register={register}
+//          onSelectTemplate={(template) => setSelectedTemplate(template)}
+//          />
+//         <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
+// {/* 
+//           <ArrayItemsInput
+//             setItems={setProducts}
+//             items={products}
+//             itemTitle="product"
+//           /> */}
+
+//           <div className="col-span-full">
+//             <h3 className="mb-5 text-lg font-medium text-gray-900 dark:text-white">Shipping Cost</h3>
+//             <ul className="grid w-full gap-6 md:grid-cols-2">
+//               <li>
+//                 <input
+//                   type="radio"
+//                   id="shipping-8"
+//                   name="shipping"
+//                   value="8"
+//                   className="hidden peer"
+//                   required
+//                   onChange={(e) => setShippingCost(e.target.value)} 
+//                 />
+//                 <label 
+//                   htmlFor="shipping-8" 
+//                   className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+//                 >
+//                   <div className="flex gap-2 items-center">
+//                     <Truck className='w-8 h-8 ms-3 flex-shrink-0' />
+//                     <div>
+//                       <p>UPS</p>
+//                       <p>Delivery Cost: $8</p>
+//                     </div>
+//                   </div>
+//                   <Circle className='w-5 h-5 ms-3 flex-shrink-0' />
+//                 </label>
+//               </li>
+//               <li>
+//                 <input
+//                   type="radio"
+//                   id="shipping-20"
+//                   name="shipping"
+//                   value="20"
+//                   className="hidden peer"
+//                   onChange={(e) => setShippingCost(e.target.value)} 
+//                 />
+//                 <label 
+//                   htmlFor="shipping-20" 
+//                   className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-indigo-500 peer-checked:border-indigo-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+//                 >
+//                   <div className="flex gap-2 items-center">
+//                     <Truck className='w-8 h-8 ms-3 flex-shrink-0' />
+//                     <div>
+//                       <p>DHL Express</p>
+//                       <p>Delivery Cost: $20</p>
+//                     </div>
+//                   </div>
+//                   <Circle className='w-5 h-5 ms-3 flex-shrink-0' />
+//                 </label>
+//               </li>
+//             </ul>
+//           </div>
+
+//           {/* Shipping companies toggle */}
+//           <div className="col-span-full">
+//             <h3 className="mb-5 text-lg font-medium text-gray-900 dark:text-white">Select Shipping Companies</h3>
+//             {["البريد اليمني | سبل", "سمسا", "أرامكس", "DHL Express", "Fastlo", "ريدبوكس", "أي مكان"].map((company, index) => (
+//               <div key={index} className="card p-4 mb-4 bg-white rounded-lg">
+//                 <div className="flex items-center justify-between">
+//                   <div className="flex items-center">
+//                     <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+//                       <imgae alt={`Logo of ${company}`} className="w-10 h-10" src={`https://storage.googleapis.com/a1aa/image/logo${index + 1}.jpg`} />
+//                     </div>
+//                     <div className="mr-4">
+//                       <h2 className="font-bold">{company}</h2>
+//                       <p className="text-gray-600">Description of {company}</p>
+//                     </div>
+//                   </div>
+//                   <div>
+//                     <label className="relative inline-block w-10 align-middle select-none">
+//                       <input
+//                         type="checkbox"
+//                         className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
+//                         onChange={() => handleCompanyToggle(company)}
+//                       />
+//                       <span className="block overflow-hidden h-6 rounded-full bg-gray-300"></span>
+//                     </label>
+//                   </div>
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+//         </div>
+
+//         <NavButtons />
+//       </form>
+//     </div>
+//   );
+// }
+
+
+
+
+
+"use client"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { useDispatch, useSelector } from "react-redux"
+import { Truck, Check, Package } from "lucide-react"
+
+import NavButtons from "../NavButtons"
+import { setCurrentStep, updateOnboardingFormData } from "@/redux/slices/onboardingSlice"
+
+export default function VendorDetailsForm({ templates }) {
+  const [products, setProducts] = useState([])
+  const [shippingCost, setShippingCost] = useState(null)
+  const [selectedCompanies, setSelectedCompanies] = useState([])
+  const [selectedTemplate, setSelectedTemplate] = useState(null)
+
+  const dispatch = useDispatch()
+  const currentStep = useSelector((store) => store.onboarding.currentStep)
+  const existingFormData = useSelector((store) => store.onboarding.onboardingFormData)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: { ...existingFormData },
+  })
 
   const processData = async (data) => {
-    data.templateId = selectedTemplate;
-    data.products = products;
-    data.shippingCost = shippingCost;
-    data.selectedCompanies = selectedCompanies; // Send selected companies
-    dispatch(updateOnboardingFormData(data));
-    dispatch(setCurrentStep(currentStep + 1));
-  };
+    data.templateId = selectedTemplate
+    data.products = products
+    data.shippingCost = shippingCost
+    data.selectedCompanies = selectedCompanies
+    dispatch(updateOnboardingFormData(data))
+    dispatch(setCurrentStep(currentStep + 1))
+  }
 
   const handleCompanyToggle = (company) => {
-    setSelectedCompanies(prevState => 
-      prevState.includes(company) 
-        ? prevState.filter(c => c !== company) 
-        : [...prevState, company]
-    );
-  };
+    setSelectedCompanies((prevState) =>
+      prevState.includes(company) ? prevState.filter((c) => c !== company) : [...prevState, company],
+    )
+  }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(processData)}>
-        <h2 className="text-x1 font-semibold mb-4 dark:text-lime-400">Vendor Details</h2>
-          <RadioButtonCardsImage templates={templates} 
-         register={register}
-         onSelectTemplate={(template) => setSelectedTemplate(template)}
-         />
-        <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-{/* 
-          <ArrayItemsInput
-            setItems={setProducts}
-            items={products}
-            itemTitle="product"
-          /> */}
+    <div className="p-1">
+      <form onSubmit={handleSubmit(processData)} dir="rtl">
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-lime-400 mb-2">تفاصيل البائع</h2>
+          <p className="text-gray-600 dark:text-gray-300">اختر قالب المتجر وخيارات الشحن</p>
+        </div>
 
-          <div className="col-span-full">
-            <h3 className="mb-5 text-lg font-medium text-gray-900 dark:text-white">Shipping Cost</h3>
-            <ul className="grid w-full gap-6 md:grid-cols-2">
-              <li>
+        <div className="space-y-8">
+          {/* Template Selection */}
+          {templates && templates.length > 0 && (
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white">اختر قالب المتجر</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {templates.map((template) => (
+                  <div
+                    key={template.id}
+                    className={`relative rounded-lg border-2 overflow-hidden cursor-pointer transition-all ${
+                      selectedTemplate === template.id
+                        ? "border-lime-500 ring-2 ring-lime-500 ring-opacity-50"
+                        : "border-gray-200 hover:border-gray-300 dark:border-gray-700 dark:hover:border-gray-600"
+                    }`}
+                    onClick={() => setSelectedTemplate(template.id)}
+                  >
+                    {selectedTemplate === template.id && (
+                      <div className="absolute top-2 right-2 bg-lime-500 text-white p-1 rounded-full">
+                        <Check className="h-4 w-4" />
+                      </div>
+                    )}
+                    <div className="aspect-video w-full bg-gray-100 dark:bg-gray-800">
+                      {template.imageUrl ? (
+                        <img
+                          src={template.imageUrl || "/placeholder.svg"}
+                          alt={template.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <Package className="h-12 w-12 text-gray-400" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-3">
+                      <h4 className="font-medium text-right">{template.name}</h4>
+                      <p className="text-sm text-gray-500 text-right">{template.description || "قالب متجر احترافي"}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Shipping Cost */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white">تكلفة الشحن</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <label
+                htmlFor="shipping-8"
+                className={`flex items-center justify-between p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                  shippingCost === "8"
+                    ? "border-lime-500 bg-lime-50 dark:bg-lime-900/20"
+                    : "border-gray-200 hover:border-gray-300 dark:border-gray-700"
+                }`}
+              >
                 <input
                   type="radio"
                   id="shipping-8"
                   name="shipping"
                   value="8"
-                  className="hidden peer"
-                  required
-                  onChange={(e) => setShippingCost(e.target.value)} 
+                  className="sr-only"
+                  checked={shippingCost === "8"}
+                  onChange={(e) => setShippingCost(e.target.value)}
                 />
-                <label 
-                  htmlFor="shipping-8" 
-                  className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-                >
-                  <div className="flex gap-2 items-center">
-                    <Truck className='w-8 h-8 ms-3 flex-shrink-0' />
-                    <div>
-                      <p>UPS</p>
-                      <p>Delivery Cost: $8</p>
-                    </div>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-lime-100 dark:bg-lime-900/30 rounded-full">
+                    <Truck className="w-6 h-6 text-lime-600 dark:text-lime-400" />
                   </div>
-                  <Circle className='w-5 h-5 ms-3 flex-shrink-0' />
-                </label>
-              </li>
-              <li>
+                  <div className="text-right">
+                    <p className="font-medium">UPS</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">تكلفة التوصيل: $8</p>
+                  </div>
+                </div>
+                <div
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                    shippingCost === "8" ? "border-lime-500 bg-lime-500" : "border-gray-300 dark:border-gray-600"
+                  }`}
+                >
+                  {shippingCost === "8" && <Check className="w-3 h-3 text-white" />}
+                </div>
+              </label>
+
+              <label
+                htmlFor="shipping-20"
+                className={`flex items-center justify-between p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                  shippingCost === "20"
+                    ? "border-lime-500 bg-lime-50 dark:bg-lime-900/20"
+                    : "border-gray-200 hover:border-gray-300 dark:border-gray-700"
+                }`}
+              >
                 <input
                   type="radio"
                   id="shipping-20"
                   name="shipping"
                   value="20"
-                  className="hidden peer"
-                  onChange={(e) => setShippingCost(e.target.value)} 
+                  className="sr-only"
+                  checked={shippingCost === "20"}
+                  onChange={(e) => setShippingCost(e.target.value)}
                 />
-                <label 
-                  htmlFor="shipping-20" 
-                  className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-indigo-500 peer-checked:border-indigo-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-                >
-                  <div className="flex gap-2 items-center">
-                    <Truck className='w-8 h-8 ms-3 flex-shrink-0' />
-                    <div>
-                      <p>DHL Express</p>
-                      <p>Delivery Cost: $20</p>
-                    </div>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-lime-100 dark:bg-lime-900/30 rounded-full">
+                    <Truck className="w-6 h-6 text-lime-600 dark:text-indigo-400" />
                   </div>
-                  <Circle className='w-5 h-5 ms-3 flex-shrink-0' />
-                </label>
-              </li>
-            </ul>
-          </div>
-
-          {/* Shipping companies toggle */}
-          <div className="col-span-full">
-            <h3 className="mb-5 text-lg font-medium text-gray-900 dark:text-white">Select Shipping Companies</h3>
-            {["البريد اليمني | سبل", "سمسا", "أرامكس", "DHL Express", "Fastlo", "ريدبوكس", "أي مكان"].map((company, index) => (
-              <div key={index} className="card p-4 mb-4 bg-white rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
-                      <imgae alt={`Logo of ${company}`} className="w-10 h-10" src={`https://storage.googleapis.com/a1aa/image/logo${index + 1}.jpg`} />
-                    </div>
-                    <div className="mr-4">
-                      <h2 className="font-bold">{company}</h2>
-                      <p className="text-gray-600">Description of {company}</p>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="relative inline-block w-10 align-middle select-none">
-                      <input
-                        type="checkbox"
-                        className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
-                        onChange={() => handleCompanyToggle(company)}
-                      />
-                      <span className="block overflow-hidden h-6 rounded-full bg-gray-300"></span>
-                    </label>
+                  <div className="text-right">
+                    <p className="font-medium">DHL Express</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">تكلفة التوصيل: $20</p>
                   </div>
                 </div>
-              </div>
-            ))}
+                <div
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                    shippingCost === "20" ? "border-lime-500 bg-lime-500" : "border-gray-300 dark:border-gray-600"
+                  }`}
+                >
+                  {shippingCost === "20" && <Check className="w-3 h-3 text-white" />}
+                </div>
+              </label>
+            </div>
+          </div>
+
+          {/* Shipping Companies */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white">اختر شركات الشحن</h3>
+            <div className="space-y-3">
+              {["البريد السعودي | سبل", "سمسا", "أرامكس", "DHL Express", "Fastlo", "ريدبوكس", "أي مكان"].map(
+                (company, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-4 rounded-lg border dark:border-gray-700 bg-white dark:bg-gray-800"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center overflow-hidden">
+                        <img
+                          src={`https://storage.googleapis.com/a1aa/image/logo${index + 1}.jpg`}
+                          alt={`شعار ${company}`}
+                          className="w-8 h-8 object-contain"
+                          onError={(e) => {
+                            e.target.onerror = null
+                            e.target.src = "/placeholder.svg?height=32&width=32"
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <h4 className="font-medium">{company}</h4>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">خدمة شحن موثوقة</p>
+                      </div>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        className="sr-only peer"
+                        checked={selectedCompanies.includes(company)}
+                        onChange={() => handleCompanyToggle(company)}
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-lime-300 dark:peer-focus:ring-lime-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-lime-600"></div>
+                    </label>
+                  </div>
+                ),
+              )}
+            </div>
           </div>
         </div>
 
         <NavButtons />
       </form>
     </div>
-  );
+  )
 }
-
 
 
 

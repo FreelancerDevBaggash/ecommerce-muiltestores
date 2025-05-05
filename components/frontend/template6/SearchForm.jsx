@@ -1,123 +1,240 @@
-// "use client"
-// import { DoorOpen, Search } from 'lucide-react'
-// import { useRouter } from 'next/navigation';
-// import React from 'react'
+
+// "use client";
+
+// import { DoorOpen, Search, Mic } from "lucide-react";
+// import { useRouter } from "next/navigation";
+// import React, { useState, useEffect } from "react";
 // import { useForm } from "react-hook-form";
-// export default function SearchForm() {
-//   const {register, handleSubmit, reset} = useForm();
+// import Fuse from "fuse.js"; // مكتبة التصحيح التلقائي
+
+// export default function SearchForm({ customization = {}, products = [], slugDomain = "" }) {
+//   const primaryColor = customization.primaryColor || '#4CAF50'; // اللون الأساسي
+//   const secondaryColor = customization.secondaryColor || '#2C3E50'; // اللون الثانوي
+//   const accentColor = customization.accentColor || '#FFC107'; // اللون المميز
+//   const backgroundColor = customization.backgroundColor || '#FFFFFF'; // لون الخلفية
+//   const fontFamily = customization.fontFamily || 'sans-serif'; // نوع الخط
+//   const isActive = customization.isActive ?? true;
+
+//   const { register, handleSubmit, reset } = useForm();
 //   const router = useRouter();
 
-//   function handleSearch(data){
+//   const [query, setQuery] = useState("");
+//   const [suggestions, setSuggestions] = useState([]);
+//   const [isListening, setIsListening] = useState(false);
+
+//   // إعداد Fuse.js للبحث التلقائي
+//   const fuse = new Fuse(products, {
+//     keys: ['name'], // يمكن تخصيص هذه المفتاح حسب البيانات (مثل 'name' أو 'title')
+//     includeScore: true,
+//     threshold: 0.3, // تخصيص مستوى التصحيح التلقائي
+//   });
+
+//   const handleSearch = (data) => {
 //     const { searchTerm } = data;
-//     console.log(searchTerm)
-//     reset()
-//     router.push(`/search?search=${searchTerm}`)
-//   }
+//     if (!searchTerm.trim()) return; // منع البحث إذا كان الحقل فارغًا
+//     reset();
+//     router.push(`/search?search=${searchTerm}&slug=${slugDomain}`);
+//   };
+
+//   // إضافة تصحيح تلقائي أو اقتراحات أثناء الكتابة
+//   const fetchSuggestions = (query) => {
+//     if (query.trim() === "") {
+//       setSuggestions([]);
+//       return;
+//     }
+//     const results = fuse.search(query);
+//     setSuggestions(results.map(result => result.item.name)); // افترض أن المنتجات تحتوي على مفتاح 'name'
+//   };
+
+//   // وظيفة البحث الصوتي
+//   const handleVoiceSearch = () => {
+//     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+//     recognition.lang = 'en-US';
+
+//     recognition.onstart = () => {
+//       setIsListening(true);
+//     };
+
+//     recognition.onend = () => {
+//       setIsListening(false);
+//     };
+
+//     recognition.onresult = (event) => {
+//       const spokenText = event.results[0][0].transcript;
+//       setQuery(spokenText);
+//       fetchSuggestions(spokenText);
+//     };
+
+//     recognition.start();
+//   };
+
+//   useEffect(() => {
+//     if (query.trim()) {
+//       fetchSuggestions(query);
+//     }
+//   }, [query]);
+
 //   return (
- 
-// <form  onSubmit={handleSubmit(handleSearch)} className="flex items-center max-w-lg mx-auto">   
-//     <label htmlFor="voice-search" className="sr-only">
-//          Search
-//          </label>
-//     <div className="relative w-full">
+//     <form onSubmit={handleSubmit(handleSearch)} className="relative w-full max-w-3xl mx-auto lg:max-w-5xl px-4" role="search">
+//       {/* أيقونة البحث */}
+//       <div className="relative w-full">
 //         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-//           <DoorOpen className='w-4 h-4 text-gray-500 dark:text-gray-400'/>
+//           <DoorOpen className="w-5 h-5" style={{ color: secondaryColor }} />
+//           <label htmlFor="search" className="sr-only">Search</label>
 //         </div>
 //         <input
-//         {...register("searchTerm")}
-//         type="text" id="voice-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Prodects, Categories, Markets..." required />
- 
-//     </div>  
-//     <button type="submit" className="inline-flex items-center py-2.5 px-3 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-//         <Search className='w-4 h-4 me-2'/>
-//      Search
-//     </button>     
-// </form>
+//           {...register("searchTerm", { required: true })}
+//           type="text"
+//           id="search"
+//           value={query}
+//           onChange={(e) => {
+//             setQuery(e.target.value);
+//             fetchSuggestions(e.target.value);
+//           }}
+//           className="bg-transparent border text-gray-900 dark:text-white font-semibold shadow-md rounded-full text-sm focus:ring-2 focus:ring-lime-600 focus:border-lime-600 block w-full ps-12 py-2.5 placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 ease-in-out"
+//           placeholder="Search for products, categories, or markets..."
+//           required
+//           disabled={!isActive}
+//           aria-label="Search input"
+//           aria-describedby="search-error"
+//           style={{
+//             color: backgroundColor,
+//             fontFamily,
+//             borderColor: backgroundColor,
+//             borderWidth: "1px",
+//             borderStyle: "solid",
+//           }}
+//         />
+//       </div>
 
-//   )
+//       {/* زر البحث */}
+//       <button
+//         type="submit"
+//         className="absolute inset-y-0 end-0 flex items-center pe-6"
+//         aria-label="Submit search"
+//         style={{
+//           color: primaryColor,
+//           transition: "all 0.2s ease-in-out",
+//         }}
+//       >
+//         <Search className="w-6 h-6" style={{ color: secondaryColor }} />
+//       </button>
+
+//       {/* زر البحث الصوتي */}
+//       <button
+//         type="button"
+//         className="absolute inset-y-0 end-0 flex items-center pe-12"
+//         aria-label="Voice search"
+//         onClick={handleVoiceSearch}
+//         disabled={!isActive}
+//       >
+//         <Mic className="w-6 h-6" style={{ color: isListening ? accentColor : primaryColor }} />
+//       </button>
+
+//       {/* عرض الاقتراحات */}
+//       {suggestions.length > 0 && (
+//         <div className="absolute w-full bg-white border border-gray-300 rounded-b-lg mt-2 z-10">
+//           {suggestions.map((suggestion, index) => (
+//             <div key={index} className="px-4 py-2 cursor-pointer hover:bg-gray-100">
+//               {suggestion}
+//             </div>
+//           ))}
+//         </div>
+//       )}
+
+//       {/* رسالة الخطأ */}
+//       <span id="search-error" className="sr-only" aria-live="polite">
+//         Please enter a search term.
+//       </span>
+//     </form>
+//   );
 // }
-"use client";
 
-import { DoorOpen, Search, Mic } from "lucide-react";
-import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import Fuse from "fuse.js"; // مكتبة التصحيح التلقائي
+"use client"
+
+import { Search, Mic } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useState, useEffect } from "react"
+import { useForm } from "react-hook-form"
+import Fuse from "fuse.js"
 
 export default function SearchForm({ customization = {}, products = [], slugDomain = "" }) {
-  const primaryColor = customization.primaryColor || '#4CAF50'; // اللون الأساسي
-  const secondaryColor = customization.secondaryColor || '#2C3E50'; // اللون الثانوي
-  const accentColor = customization.accentColor || '#FFC107'; // اللون المميز
-  const backgroundColor = customization.backgroundColor || '#FFFFFF'; // لون الخلفية
-  const fontFamily = customization.fontFamily || 'sans-serif'; // نوع الخط
-  const isActive = customization.isActive ?? true;
+  const primaryColor = customization.primaryColor || "#4CAF50"
+  const secondaryColor = customization.secondaryColor || "#2C3E50"
+  const accentColor = customization.accentColor || "#FFC107"
+  const backgroundColor = customization.backgroundColor || "#FFFFFF"
+  const fontFamily = customization.fontFamily || "sans-serif"
+  const isActive = customization.isActive ?? true
 
-  const { register, handleSubmit, reset } = useForm();
-  const router = useRouter();
+  const { register, handleSubmit, reset } = useForm()
+  const router = useRouter()
 
-  const [query, setQuery] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
-  const [isListening, setIsListening] = useState(false);
+  const [query, setQuery] = useState("")
+  const [suggestions, setSuggestions] = useState([])
+  const [isListening, setIsListening] = useState(false)
 
   // إعداد Fuse.js للبحث التلقائي
-  const fuse = new Fuse(products, {
-    keys: ['name'], // يمكن تخصيص هذه المفتاح حسب البيانات (مثل 'name' أو 'title')
+  const fuse = new Fuse(products || [], {
+    keys: ["name"],
     includeScore: true,
-    threshold: 0.3, // تخصيص مستوى التصحيح التلقائي
-  });
+    threshold: 0.3,
+  })
 
   const handleSearch = (data) => {
-    const { searchTerm } = data;
-    if (!searchTerm.trim()) return; // منع البحث إذا كان الحقل فارغًا
-    reset();
-    router.push(`/search?search=${searchTerm}&slug=${slugDomain}`);
-  };
+    const { searchTerm } = data
+    if (!searchTerm.trim()) return
+    reset()
+    router.push(`/${slugDomain}/search?search=${searchTerm}`)
+  }
 
   // إضافة تصحيح تلقائي أو اقتراحات أثناء الكتابة
   const fetchSuggestions = (query) => {
-    if (query.trim() === "") {
-      setSuggestions([]);
-      return;
+    if (!query.trim() || !products || products.length === 0) {
+      setSuggestions([])
+      return
     }
-    const results = fuse.search(query);
-    setSuggestions(results.map(result => result.item.name)); // افترض أن المنتجات تحتوي على مفتاح 'name'
-  };
+    const results = fuse.search(query)
+    setSuggestions(results.slice(0, 5).map((result) => result.item.name))
+  }
 
   // وظيفة البحث الصوتي
   const handleVoiceSearch = () => {
-    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    recognition.lang = 'en-US';
+    if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
+      alert("البحث الصوتي غير مدعوم في متصفحك")
+      return
+    }
+
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)()
+    recognition.lang = "ar-SA"
 
     recognition.onstart = () => {
-      setIsListening(true);
-    };
+      setIsListening(true)
+    }
 
     recognition.onend = () => {
-      setIsListening(false);
-    };
+      setIsListening(false)
+    }
 
     recognition.onresult = (event) => {
-      const spokenText = event.results[0][0].transcript;
-      setQuery(spokenText);
-      fetchSuggestions(spokenText);
-    };
+      const spokenText = event.results[0][0].transcript
+      setQuery(spokenText)
+      fetchSuggestions(spokenText)
+    }
 
-    recognition.start();
-  };
+    recognition.start()
+  }
 
   useEffect(() => {
     if (query.trim()) {
-      fetchSuggestions(query);
+      fetchSuggestions(query)
     }
-  }, [query]);
+  }, [query])
 
   return (
-    <form onSubmit={handleSubmit(handleSearch)} className="relative w-full max-w-3xl mx-auto lg:max-w-5xl px-4" role="search">
-      {/* أيقونة البحث */}
+    <form onSubmit={handleSubmit(handleSearch)} className="relative w-full max-w-2xl mx-auto" role="search">
       <div className="relative w-full">
-        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-          <DoorOpen className="w-5 h-5" style={{ color: secondaryColor }} />
-          <label htmlFor="search" className="sr-only">Search</label>
+        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+          <Search className="w-5 h-5 text-gray-400" />
         </div>
         <input
           {...register("searchTerm", { required: true })}
@@ -125,68 +242,54 @@ export default function SearchForm({ customization = {}, products = [], slugDoma
           id="search"
           value={query}
           onChange={(e) => {
-            setQuery(e.target.value);
-            fetchSuggestions(e.target.value);
+            setQuery(e.target.value)
+            fetchSuggestions(e.target.value)
           }}
-          className="bg-transparent border text-gray-900 dark:text-white font-semibold shadow-md rounded-full text-sm focus:ring-2 focus:ring-lime-600 focus:border-lime-600 block w-full ps-12 py-2.5 placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200 ease-in-out"
-          placeholder="Search for products, categories, or markets..."
+          className="w-full py-2 pr-10 pl-12 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-full focus:ring-2 focus:outline-none transition-all duration-200"
+          style={{
+            borderColor: primaryColor,
+            fontFamily,
+          }}
+          placeholder="ابحث عن المنتجات أو الفئات..."
           required
           disabled={!isActive}
-          aria-label="Search input"
-          aria-describedby="search-error"
-          style={{
-            color: backgroundColor,
-            fontFamily,
-            borderColor: backgroundColor,
-            borderWidth: "1px",
-            borderStyle: "solid",
-          }}
         />
+
+        {/* زر البحث الصوتي */}
+        <button
+          type="button"
+          className="absolute inset-y-0 left-0 flex items-center pl-3"
+          onClick={handleVoiceSearch}
+          disabled={!isActive}
+        >
+          <Mic
+            className={`w-5 h-5 transition-colors ${isListening ? "text-red-500 animate-pulse" : "text-gray-400"}`}
+          />
+        </button>
       </div>
-
-      {/* زر البحث */}
-      <button
-        type="submit"
-        className="absolute inset-y-0 end-0 flex items-center pe-6"
-        aria-label="Submit search"
-        style={{
-          color: primaryColor,
-          transition: "all 0.2s ease-in-out",
-        }}
-      >
-        <Search className="w-6 h-6" style={{ color: secondaryColor }} />
-      </button>
-
-      {/* زر البحث الصوتي */}
-      <button
-        type="button"
-        className="absolute inset-y-0 end-0 flex items-center pe-12"
-        aria-label="Voice search"
-        onClick={handleVoiceSearch}
-        disabled={!isActive}
-      >
-        <Mic className="w-6 h-6" style={{ color: isListening ? accentColor : primaryColor }} />
-      </button>
 
       {/* عرض الاقتراحات */}
       {suggestions.length > 0 && (
-        <div className="absolute w-full bg-white border border-gray-300 rounded-b-lg mt-2 z-10">
+        <div className="absolute w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg mt-1 shadow-lg z-10">
           {suggestions.map((suggestion, index) => (
-            <div key={index} className="px-4 py-2 cursor-pointer hover:bg-gray-100">
+            <button
+              key={index}
+              type="button"
+              onClick={() => {
+                setQuery(suggestion)
+                setSuggestions([])
+                router.push(`/${slugDomain}/search?search=${suggestion}`)
+              }}
+              className="w-full text-right px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            >
               {suggestion}
-            </div>
+            </button>
           ))}
         </div>
       )}
-
-      {/* رسالة الخطأ */}
-      <span id="search-error" className="sr-only" aria-live="polite">
-        Please enter a search term.
-      </span>
     </form>
-  );
+  )
 }
-
 
 
 // "use client";

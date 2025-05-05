@@ -150,8 +150,11 @@ export async function GET(request) {
       where,
       include: {
         store: true, // تضمين معلومات المتجر
-        customerStore: true, // تضمين معلومات العميل إذا لزم الأمر
-      },
+        customerStore: {
+          include: {
+            customer: true // معلومات العميل المرتبط بالمتجر
+          }
+        }},
       orderBy: {
         createdAt: "desc", // ترتيب التقييمات من الأحدث إلى الأقدم
       },

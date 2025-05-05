@@ -57,7 +57,7 @@ export default function Page() {
       {/* <AdvertisementSlider /> */}
 
       <div className="flex-1 flex items-center justify-center p-4">
-        <div className="w-full max-w-6xl bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col md:flex-row">
+        <div className="w-full max-w-6xl bg-white dark:bg-gray-800 rounded-lg shadow-2xl overflow-hidden flex flex-col md:flex-row">
           {/* الجانب الأيمن - نموذج تسجيل الدخول */}
           <div className="w-full md:w-1/2 p-8">
             {/* <div className="flex justify-center mb-6">
@@ -71,7 +71,7 @@ export default function Page() {
               />
             </div> */}
 
-            <div className="max-w-md mx-auto space-y-8">
+            <div className="max-w-md mx-auto  space-y-8">
               <div className="text-center">
                 <h1 className="text-2xl font-bold tracking-tight text-blue-700">تسجيل دخول التاجر</h1>
                 <p className="text-gray-500 mt-2">أدخل بيانات حسابك للوصول إلى لوحة التحكم</p>

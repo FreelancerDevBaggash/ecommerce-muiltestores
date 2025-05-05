@@ -656,7 +656,7 @@ export default function Testimonials({ storeId }) {
                           </div>
                         </div>
                         <p className="text-gray-600 dark:text-gray-300 flex-grow leading-relaxed">
-                          "{t.comment || "لا يوجد تعليق."}"
+                          {t.comment || "لا يوجد تعليق."}
                         </p>
                       </div>
                     ))}

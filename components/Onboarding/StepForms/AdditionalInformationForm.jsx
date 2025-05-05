@@ -234,7 +234,7 @@
 
 
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { Upload } from "lucide-react"
@@ -258,6 +258,23 @@ export default function AdditionalInformationForm() {
       ...existingFormData,
     },
   })
+
+  const [mainCategories, setMainCategories] = useState([])
+
+useEffect(() => {
+  async function fetchMainCategories() {
+    try {
+      const res = await fetch("/api/mainCategories")
+      const data = await res.json()
+      setMainCategories(data)
+    } catch (error) {
+      console.error("حدث خطأ أثناء جلب الفئات:", error)
+    }
+  }
+
+  fetchMainCategories()
+}, [])
+
 
   async function processData(data) {
     const mainCategories = await fetch("/api/mainCategories").then((res) => res.json())
@@ -289,42 +306,27 @@ export default function AdditionalInformationForm() {
   {...register("mainCategoryId", { required: "يرجى اختيار فئة التجارة" })}
 >
   <option value="">اختر الفئة</option>
-  <option value="1">ملابس</option>
-  <option value="2">إلكترونيات</option>
-  <option value="3">أغذية</option>
-  <option value="4">أثاث</option>
-  <option value="5">صناعات يدوية</option>
-  <option value="6">خدمات</option>
-  <option value="7">مستحضرات تجميل</option>
-  <option value="8">رياضة</option>
-  <option value="9">مكتبات وكتب</option>
-  <option value="10">ألعاب ووسائط ترفيهية</option>
-  <option value="11">جواهر وإكسسوارات</option>
-  <option value="12">سيارات وقطع غيار</option>
-  <option value="13">أجهزة منزلية</option>
-  <option value="14">أدوات مكتبية</option>
-  <option value="15">مستلزمات الحيوانات الأليفة</option>
-  <option value="16">مستلزمات الأطفال</option>
-  <option value="17">حدائق ونباتات</option>
-  <option value="18">أدوات الصيانة والديكور</option>
-  <option value="19">هدايا وتذكارات</option>
-  <option value="20">سفر وسياحة</option>
-  <option value="20">اخر</option>
+  {mainCategories.map((category) => (
+    <option key={category.id} value={category.id}>
+      {category.title}
+    </option>
+  ))}
 </select>
+
 
             {errors.mainCategoryId && <p className="mt-2 text-sm text-red-600">{errors.mainCategoryId.message}</p>}
           </div>
 
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-              صورة الملف الشخصي للبائع
+              شعار المتجر
             </label>
             <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-6 transition-all hover:border-lime-400 dark:border-gray-600 dark:hover:border-lime-500">
               {imageUrl ? (
                 <div className="relative w-full h-40">
                   <img
                     src={imageUrl || "/placeholder.svg"}
-                    alt="صورة الملف الشخصي"
+                    alt="شعار المتجر"
                     className="w-full h-full object-cover rounded-md"
                   />
                   <button

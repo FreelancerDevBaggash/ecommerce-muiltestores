@@ -61,7 +61,7 @@ export default async function OnboardingPage({ params: { id } }) {
     },
     {
       number: 3,
-      title: "تفاصيل البائع",
+      title: "ثيمات المتجر",
     },
     {
       number: 4,

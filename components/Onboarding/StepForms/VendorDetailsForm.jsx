@@ -194,15 +194,15 @@ export default function VendorDetailsForm({ templates }) {
     <div className="p-1">
       <form onSubmit={handleSubmit(processData)} dir="rtl">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-lime-400 mb-2">تفاصيل البائع</h2>
-          <p className="text-gray-600 dark:text-gray-300">اختر قالب المتجر وخيارات الشحن</p>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-lime-400 mb-2">ثيمات المتجر</h2>
+          <p className="text-gray-600 dark:text-gray-300">اختر قالب المتجر الذي يناسبك يمكنك تغييره من لوحة التحكم وتخصيص الالوان </p>
         </div>
 
         <div className="space-y-8">
           {/* Template Selection */}
           {templates && templates.length > 0 && (
             <div className="space-y-4">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white">اختر قالب المتجر</h3>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white">اختر قالب المتجر  </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {templates.map((template) => (
                   <div
@@ -220,10 +220,10 @@ export default function VendorDetailsForm({ templates }) {
                       </div>
                     )}
                     <div className="aspect-video w-full bg-gray-100 dark:bg-gray-800">
-                      {template.imageUrl ? (
+                      {template.thumbnail ? (
                         <img
-                          src={template.imageUrl || "/placeholder.svg"}
-                          alt={template.name}
+                          src={template.thumbnail || "/placeholder.svg"}
+                          alt={template.slug}
                           className="w-full h-full object-cover"
                         />
                       ) : (
@@ -233,7 +233,7 @@ export default function VendorDetailsForm({ templates }) {
                       )}
                     </div>
                     <div className="p-3">
-                      <h4 className="font-medium text-right">{template.name}</h4>
+                      <h4 className="font-medium text-right">{template.title}</h4>
                       <p className="text-sm text-gray-500 text-right">{template.description || "قالب متجر احترافي"}</p>
                     </div>
                   </div>
@@ -242,123 +242,7 @@ export default function VendorDetailsForm({ templates }) {
             </div>
           )}
 
-          {/* Shipping Cost */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white">تكلفة الشحن</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <label
-                htmlFor="shipping-8"
-                className={`flex items-center justify-between p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                  shippingCost === "8"
-                    ? "border-lime-500 bg-lime-50 dark:bg-lime-900/20"
-                    : "border-gray-200 hover:border-gray-300 dark:border-gray-700"
-                }`}
-              >
-                <input
-                  type="radio"
-                  id="shipping-8"
-                  name="shipping"
-                  value="8"
-                  className="sr-only"
-                  checked={shippingCost === "8"}
-                  onChange={(e) => setShippingCost(e.target.value)}
-                />
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-lime-100 dark:bg-lime-900/30 rounded-full">
-                    <Truck className="w-6 h-6 text-lime-600 dark:text-lime-400" />
-                  </div>
-                  <div className="text-right">
-                    <p className="font-medium">UPS</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">تكلفة التوصيل: $8</p>
-                  </div>
-                </div>
-                <div
-                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                    shippingCost === "8" ? "border-lime-500 bg-lime-500" : "border-gray-300 dark:border-gray-600"
-                  }`}
-                >
-                  {shippingCost === "8" && <Check className="w-3 h-3 text-white" />}
-                </div>
-              </label>
-
-              <label
-                htmlFor="shipping-20"
-                className={`flex items-center justify-between p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                  shippingCost === "20"
-                    ? "border-lime-500 bg-lime-50 dark:bg-lime-900/20"
-                    : "border-gray-200 hover:border-gray-300 dark:border-gray-700"
-                }`}
-              >
-                <input
-                  type="radio"
-                  id="shipping-20"
-                  name="shipping"
-                  value="20"
-                  className="sr-only"
-                  checked={shippingCost === "20"}
-                  onChange={(e) => setShippingCost(e.target.value)}
-                />
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-lime-100 dark:bg-lime-900/30 rounded-full">
-                    <Truck className="w-6 h-6 text-lime-600 dark:text-indigo-400" />
-                  </div>
-                  <div className="text-right">
-                    <p className="font-medium">DHL Express</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">تكلفة التوصيل: $20</p>
-                  </div>
-                </div>
-                <div
-                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                    shippingCost === "20" ? "border-lime-500 bg-lime-500" : "border-gray-300 dark:border-gray-600"
-                  }`}
-                >
-                  {shippingCost === "20" && <Check className="w-3 h-3 text-white" />}
-                </div>
-              </label>
-            </div>
-          </div>
-
-          {/* Shipping Companies */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white">اختر شركات الشحن</h3>
-            <div className="space-y-3">
-              {["البريد السعودي | سبل", "سمسا", "أرامكس", "DHL Express", "Fastlo", "ريدبوكس", "أي مكان"].map(
-                (company, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between p-4 rounded-lg border dark:border-gray-700 bg-white dark:bg-gray-800"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center overflow-hidden">
-                        <img
-                          src={`https://storage.googleapis.com/a1aa/image/logo${index + 1}.jpg`}
-                          alt={`شعار ${company}`}
-                          className="w-8 h-8 object-contain"
-                          onError={(e) => {
-                            e.target.onerror = null
-                            e.target.src = "/placeholder.svg?height=32&width=32"
-                          }}
-                        />
-                      </div>
-                      <div>
-                        <h4 className="font-medium">{company}</h4>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">خدمة شحن موثوقة</p>
-                      </div>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="sr-only peer"
-                        checked={selectedCompanies.includes(company)}
-                        onChange={() => handleCompanyToggle(company)}
-                      />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-lime-300 dark:peer-focus:ring-lime-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-lime-600"></div>
-                    </label>
-                  </div>
-                ),
-              )}
-            </div>
-          </div>
+     
         </div>
 
         <NavButtons />

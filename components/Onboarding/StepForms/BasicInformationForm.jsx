@@ -167,7 +167,7 @@ export default function BasicInformationForm() {
 
             <div>
               <label htmlFor="whatsappPhone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                رقم هاتف الشخص المسؤول
+                رقم هاتف / واتساب الشخص المسؤول
               </label>
               <div className="relative">
                 <Phone className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />

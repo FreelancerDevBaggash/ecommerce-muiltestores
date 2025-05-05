@@ -295,7 +295,6 @@ model Store {
   socialLinks     Json?    // حفظ روابط التواصل داخل JSON
   location   Json?     // lat/lng
 
-
   subCategories  SubCategory[]   
   products           Product[]
   orders             Order[]
@@ -311,14 +310,8 @@ model Store {
   storeDeliveringSettings StoreDeliveringSetting[]
   
   deliveringTransactions DeliveringTransaction[]
-  
-  //customersId     String[]          @db.ObjectId
-  //customer Customer[] @relation(fields: [customersId], references: [id]) 
 
   categories Category[] @relation("StoreCategories")
-
-  //user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  //userId String @unique @db.ObjectId
 
   mainCategory   MainCategory @relation(fields: [mainCategoryId], references: [id]) // علاقة مع الفئة الرئيسية
   mainCategoryId String       @db.ObjectId

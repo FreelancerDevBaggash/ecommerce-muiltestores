@@ -79,19 +79,16 @@ export async function POST(request){
       {
         storeId: newStore.id,
         type: "ELECTRONIC_PAYMENTS",
-        currency: "YER",
         balance: 0,
       },
       {
         storeId: newStore.id,
         type: "COD_PAYMENTS",
-        currency: "YER",
         balance: 0,
       },
       {
         storeId: newStore.id,
         type: "STORE_BALANCE",
-        currency: "YER",
         balance: 0,
       },
     ],

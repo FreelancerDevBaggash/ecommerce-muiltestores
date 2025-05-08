@@ -9,47 +9,88 @@ import { authOptions } from "../../../../../lib/authOptions";
 export default async function page() {
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
- 
+  const userRole = session?.user?.role;
 
-  let vendorCategories = [];
+  let categories = [];
+  let allowAddCategory = false;
+  let alertMessage = "";
 
-  if (userId) {
-    // استرداد المتجر المرتبط بالمستخدم
-    // const storeData = await getData(`stores?vendorId=${userId}`);
-    const storeData = await getData(`stores?vendorId=${userId}`, { mode: 'real-time' });
-
-    
-
-    if (storeData && storeData.length > 0) {
-      const storeId = storeData[0].id;
-
-      // استرداد جميع الفئات المرتبطة بالمتجر مباشرة
-      vendorCategories = await getData(`categories?storeId=${storeId}`, { mode: 'real-time' });
-      
-
-      if (vendorCategories && vendorCategories.length >= 0) {
-        console.log("Categories of store:", vendorCategories);
-      } else {
-        console.log("No categories found for the store.");
-      }
-    } else {
-      console.log("No store found for the user.");
-    }
-  } else {
+  if (!userId) {
     console.log("User session not found.");
+    return null;
+  }
+
+  if (userRole === "ADMIN") {
+    // جلب كل الفئات والمتاجر
+    categories = await getData("categories", { mode: "real-time" });
+    const stores = await getData("stores", { mode: "real-time" });
+    const storeMap = Object.fromEntries(stores.map((s) => [s.id, s.businessName]));
+
+    categories = categories.map((c) => ({
+      ...c,
+      storeName: storeMap[c.storeId] || "—",
+    }));
+
+    allowAddCategory = true; // الأدمن يمكنه دائمًا الإضافة
+  } else {
+    // VENDOR
+    const storeData = await getData(`stores?vendorId=${userId}`, { mode: "real-time" });
+
+    if (!storeData || storeData.length === 0) {
+      console.log("No store found for the user.");
+      return null;
+    }
+
+    const store = storeData[0];
+    const storeId = store.id;
+
+
+    const subscription = store.subscription;
+    const planId = subscription?.planId;
+console.log("planIdplanIdplanId",planId)
+    // جلب فئات المتجر
+    categories = await getData(`categories?storeId=${storeId}`, { mode: "real-time" });
+   
+    categories = categories.map((c) => ({
+      ...c,
+      storeName: store.businessName,
+    }));
+
+    const categoryCount = categories.length;
+
+
+    let categoryLimit = 0;
+    if (planId === 1) categoryLimit = 3;
+    else if (planId === 2) categoryLimit = 6;
+    else if (planId === 3) categoryLimit = 10;
+
+
+    allowAddCategory = categoryCount < categoryLimit;
+
+    if (!allowAddCategory) {
+      alertMessage = `لقد وصلت للحد الأقصى للفئات (${categoryLimit}) حسب باقتك.`;
+    }
   }
 
   return (
     <div>
-      {/*Header*/}
-      <PageHeader heading="الفئات" href="/dashboard/categories/new" linkTitle="اضافة فئة" />
+      <PageHeader
+        heading="الفئات"
+        href="/dashboard/categories/new"
+        linkTitle="إضافة فئة"
+        disabled={!allowAddCategory}
+        alertMessage={alertMessage}
+      />
 
       <div className="py-8">
-        <DataTable data={vendorCategories} columns={columns} />
+        <DataTable data={categories} columns={columns} />
       </div>
     </div>
   );
 }
+
+
+
 
 
 // import PageHeader from "@/components/backoffice/PageHeader"

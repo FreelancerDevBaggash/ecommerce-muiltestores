@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../styles/main.scss";
 import Providers from "@/context/Providers"
+// import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,8 +17,10 @@ export default function RootLadyout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="ar" >
       <body className={inter.className}>
+      {/* <Toaster position="top-right" reverseOrder={false} /> */}
+
         <Providers >{children}</Providers>
         </body>
     </html>

@@ -93,7 +93,7 @@ export default function Setting() {
             <section>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 <SettingCard
-                  href="/dashboard/wallet-invoices"
+                  href="/dashboard/wallet"
                   icon={<Wallet className="text-green-500" />}
                   title="المحفظة والفواتير"
                   description="إدارة رصيد المحفظة والفواتير والاشتراكات."
@@ -105,10 +105,10 @@ export default function Setting() {
                   description="تفعيل بوابات الدفع الإلكتروني."
                 />
                 <SettingCard
-                  href="/dashboard/shipping-options"
+                  href="/dashboard/setting/delivering"
                   icon={<Truck className="text-purple-500" />}
-                  title="خيارات الشحن"
-                  description="الاتصال بمزودي الشحن."
+                  title="خيارات الشحن والتوصيل"
+                  description="الاتصال بمزودي الشحن والتوصيل."
                 />
                 <SettingCard
                   href="/dashboard/setting/storesetting"
@@ -128,6 +128,7 @@ export default function Setting() {
                 icon={<BadgeDollarSignIcon className="text-yellow-500" />}
                 title=" ادارة العملات "
                 description="العملات المتاحه متجرك"
+                soon={true}
               />
                 <SettingCard
                   href="/domain-settings"

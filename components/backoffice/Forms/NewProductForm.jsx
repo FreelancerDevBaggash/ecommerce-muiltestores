@@ -446,7 +446,7 @@ export default function NewProductForm({ updateData = {}, categoryId, subCategor
             errors={errors}
           />
           <TextInput
-            lable="السعر"
+            lable="سعر التكلفة"
             name="productPrice"
             type="number"
             register={register}
@@ -508,7 +508,7 @@ export default function NewProductForm({ updateData = {}, categoryId, subCategor
                 {/* الصف الأول */}
                 <div className="space-y-2">
                   <TextInput
-                    lable="السعر بعد الخصم"
+                    lable="سعر البيع"
                     name="salePrice"
                     type="number"
                     register={register}
@@ -532,23 +532,7 @@ export default function NewProductForm({ updateData = {}, categoryId, subCategor
                     errors={errors}
                     className="text-sm"
                   />
-                  <TextInput
-                    lable="نسبة الخصم"
-                    name="discount"
-                    register={register}
-                    errors={errors}
-                    className="text-sm"
-                  />
-                </div>
-                {/* الصف الثالث */}
-                <div className="space-y-2">
-                  <TextInput
-                    lable="التقييم"
-                    name="rating"
-                    register={register}
-                    errors={errors}
-                    className="text-sm"
-                  />
+                
                   <TextInput
                     lable="الكمية المتوفرة"
                     name="productStock"

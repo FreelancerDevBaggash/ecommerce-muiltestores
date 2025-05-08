@@ -1,9 +1,40 @@
 import db from "../../../../lib/db"
 import { NextResponse } from "next/server";
 
+// export async function GET(request, { params: { userId } }) {
+//   try {
+//     const store = await db.store.findUnique({
+//       where: {
+//         vendorId: userId,
+//       },
+//       include: {
+//         categories: true,
+//         products: true,
+//         orders: true,
+//         sales: true,
+//         coupons: true,
+//         banners: true,
+//         storeCurrencies: true,
+//         subscription: true,
+//       },
+//     });
+//     return NextResponse.json(store);
+//   } catch (error) {
+//     console.log(error);
+//     return NextResponse.json(
+//       {
+//         message: "Failed to Fetch Vendor",
+//         error,
+//       },
+//       { status: 500 }
+//     );
+//   }
+// }
+
+// Fetch a store by vendorId
 export async function GET(request, { params: { userId } }) {
   try {
-    const store = await db.store.findUnique({
+    const store = await db.store.findFirst({
       where: {
         vendorId: userId,
       },
@@ -14,17 +45,22 @@ export async function GET(request, { params: { userId } }) {
         sales: true,
         coupons: true,
         banners: true,
-        storeCurrencies: true,
+        currencies: true,
+        subscription: true,
       },
     });
+    if (!store) {
+      return NextResponse.json(
+        { message: "Store Not Found" },
+        { status: 404 }
+      );
+    }
+
     return NextResponse.json(store);
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching store:", error);
     return NextResponse.json(
-      {
-        message: "Failed to Fetch Vendor",
-        error,
-      },
+      { message: "Failed to Fetch Vendor", error },
       { status: 500 }
     );
   }

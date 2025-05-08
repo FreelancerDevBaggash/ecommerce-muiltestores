@@ -153,6 +153,7 @@
 //     </header>
 //   )
 // }
+
 "use client"
 
 import { useState, useEffect } from "react"
@@ -195,9 +196,8 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
-        isScrolled ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-lg" : "bg-transparent"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${isScrolled ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-lg" : "bg-transparent"
+        }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
@@ -225,11 +225,10 @@ export default function Navbar() {
               <Link
                 key={index}
                 href={item.href}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  pathname === item.href
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${pathname === item.href
                     ? "text-indigo-600 dark:text-indigo-400 bg-amber-50 dark:bg-amber-900/20"
                     : "text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-gray-800"
-                }`}
+                  }`}
               >
                 {item.label}
               </Link>
@@ -240,16 +239,24 @@ export default function Navbar() {
             <ThemeToggle />
 
             <div className="hidden md:block">
-            <Link href="/register">
-              <Button className="rounded-full bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300">
-                ابدأ الآن مجاناً
-              </Button>
+              <Link href="/register">
+                <Button className="rounded-full bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300">
+                  ابدأ الآن مجاناً
+                </Button>
               </Link>
-
               <Link href="/login">
-              <Button className="rounded-full mr-1 bg-gradient-to-r from-white to-indigo-50 hover:from-indigo-50 hover:to-white text-indigo shadow-lg hover:shadow-xl transition-all duration-300">
-              تسجيل الدخول
-              </Button>
+                <Button
+                  className="rounded-full mr-1 px-6 py-2 
+    bg-gradient-to-r from-white to-indigo-50 
+    text-indigo-700 shadow-md hover:shadow-lg 
+    transition-all duration-300 ease-in-out
+     dark:from-gray-800 dark:to-gray-800
+
+    dark:bg-gray-800 dark:text-white dark:shadow 
+    dark:hover:bg-gray-700 dark:hover:text-indigo-200"
+                >
+                  تسجيل الدخول
+                </Button>
               </Link>
 
             </div>
@@ -286,11 +293,10 @@ export default function Navbar() {
                   >
                     <Link
                       href={item.href}
-                      className={`px-4 py-3 rounded-lg text-sm font-medium block transition-colors ${
-                        pathname === item.href
+                      className={`px-4 py-3 rounded-lg text-sm font-medium block transition-colors ${pathname === item.href
                           ? "text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-amber-900/20"
                           : "text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-gray-800"
-                      }`}
+                        }`}
                       onClick={closeMenu}
                     >
                       {item.label}
@@ -303,16 +309,16 @@ export default function Navbar() {
                   transition={{ duration: 0.2, delay: navItems.length * 0.05 }}
                   className="pt-2"
                 >
-<Link href="/login">
-  <Button className="w-full rounded-lg bg-gradient-to-r from-slate-100 to-slate-600 hover:from-indigo-600 hover:to-indigo-700 text-indigo-600">
-    تسجيل الدخول 
-  </Button>
-</Link>
-<Link href="/register">
-  <Button className="w-full rounded-lg bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white">
-    ابدأ الآن مجاناً
-  </Button>
-</Link>
+                  <Link href="/login">
+                    <Button className="w-full rounded-lg bg-gradient-to-r from-slate-100 to-slate-600 hover:from-indigo-600 hover:to-indigo-700 text-indigo-600">
+                      تسجيل الدخول
+                    </Button>
+                  </Link>
+                  <Link href="/register">
+                    <Button className="w-full rounded-lg bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white">
+                      ابدأ الآن مجاناً
+                    </Button>
+                  </Link>
 
                 </motion.div>
               </nav>

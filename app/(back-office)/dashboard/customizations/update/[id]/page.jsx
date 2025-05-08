@@ -42,8 +42,8 @@ export default async function UpdateCustomization({ params: { id } }) {
 
     return (
       <div>
-        {/* <FormHeader title="Update Customization" /> */}
-        {/* <NewCustomizationForm updateData={customization} storeId={storeId} /> */}
+        {/* <FormHeader title="تحديث تخصيص الالوان" />
+        <NewCustomizationForm updateData={customization} storeId={storeId} /> */}
       </div>
     );
 

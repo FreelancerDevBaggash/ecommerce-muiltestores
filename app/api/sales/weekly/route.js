@@ -1,46 +1,54 @@
+// app/api/sales/weekly/route.js
 import { NextResponse } from 'next/server'
-import db from '@/lib/db'
+import db from '@/lib/db'                // عميل Prisma مضبوط على Mongo
+import { ObjectId } from 'mongodb'
 
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url)
     const storeId = searchParams.get('storeId')
-
     if (!storeId) {
-      return NextResponse.json(
-        { error: 'معرف المتجر مطلوب' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'معرّف المتجر مطلوب' }, { status: 400 })
     }
 
-    // جلب بيانات المبيعات الأسبوعية
-    const weeklySales = await db.$queryRaw`
-      SELECT 
-        DATE_TRUNC('week', o."createdAt") as week,
-        SUM(o.total) as total,
-        COUNT(o.id) as ordersCount
-      FROM "Order" o
-      WHERE o."storeId" = ${storeId}
-      AND o."orderStatus" = 'COMPLETED'
-      GROUP BY week
-      ORDER BY week DESC
-      LIMIT 8
-    `
-
-    // تنسيق البيانات للرسم البياني
-    const formattedData = weeklySales.map(item => ({
-      week: new Date(item.week).toLocaleDateString('ar-SA', { month: 'short', day: 'numeric' }),
-      total: Number(item.total),
-      ordersCount: Number(item.ordersCount)
-    })).reverse() // عكس الترتيب ليكون من الأقدم للأحدث
-
-    return NextResponse.json({
-      success: true,
-      data: formattedData
+    // ننفذ Aggregation Pipeline لحساب المجاميع الأسبوعية
+    const result = await db.$runCommandRaw({
+      aggregate: 'Sale',       // اسم collection في Mongo
+      pipeline: [
+        { $match: { storeId: new ObjectId(storeId) } },
+        {
+          $group: {
+            _id: { 
+              $dateTrunc: { date: '$createdAt', unit: 'week' }
+            },
+            total:      { $sum: '$invoiceTotal' },
+            ordersCount:{ $sum: 1 }
+          }
+        },
+        { $sort: { '_id': 1 } },
+        { $limit: 8 }
+      ],
+      cursor: {}
     })
-  } catch (error) {
+
+    // البيانات ترجع داخل firstBatch
+    const weeklySales = result.cursor.firstBatch
+
+    // ننسّقها للواجهة
+    const formatted = weeklySales.map(item => ({
+      week: new Date(item._id).toLocaleDateString('ar-SA', {
+        month: 'short',
+        day:   'numeric'
+      }),
+      total:      item.total,
+      ordersCount:item.ordersCount
+    }))
+
+    return NextResponse.json({ success: true, data: formatted })
+  } catch (err) {
+    console.error('Error in /api/sales/weekly:', err)
     return NextResponse.json(
-      { error: 'فشل في جلب المبيعات الأسبوعية', details: error.message },
+      { error: 'فشل جلب بيانات المبيعات الأسبوعية', details: err.message },
       { status: 500 }
     )
   }

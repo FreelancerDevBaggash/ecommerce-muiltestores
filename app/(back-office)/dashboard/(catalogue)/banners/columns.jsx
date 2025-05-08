@@ -60,6 +60,11 @@ export const columns = [
     header: "IsActive",
   },
   {
+    accessorKey: "store.businessName",
+    header: "اسم المتجر",
+    cell: ({ row }) => row.original.store?.businessName || "_ "
+  },
+  {
     accessorKey: "createdAt",
     header: "Data Created",
     cell: ({ row }) => (<DateColumn row={row} accessorKey="createdAt" /> ),

@@ -47,7 +47,7 @@ import {
    Whatsapp,
    Clipboard, Check,
     ShareIcon,
-
+    IdCardIcon,
     Facebook, Twitter, 
     X,
      Share2,
@@ -107,11 +107,14 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
       { title: "المجتمع", icon: Users2, href: "/dashboard/community" },
       { title: "القوالب", icon: LayoutGrid, href: "/dashboard/templates" },
       { title: "المحفظة", icon: CreditCard, href: "/dashboard/wallet" },
+      { title: 'عروض الباقات ', icon: IdCardIcon, href: '/dashboard/pricing' },
+      { title: 'باقات المتجر ', icon: IdCardIcon, href: '/dashboard/subscriptionPlan' },
+      { title: "الاشتراكات", icon: LayoutGrid, href: "/dashboard/subscriptions" },
       { title: "محفظة المنصة", icon: CreditCard, href: "/dashboard/platformWallet" },
       { title: "مزودي الدفع", icon: CreditCard, href: "/dashboard/payments" },
       { title: "مزودي التوصيل", icon: Truck, href: "/dashboard/deliveringProviders" },
-      { title: "إعدادات الدفع", icon: CreditCard, href: "/dashboard/payment" },
-      { title: "إعدادات التوصيل", icon: Truck, href: "/dashboard/deliveringProvidering" },
+      { title: "إعدادات الدفع", icon: CreditCard, href: "/dashboard/payment-methods" },
+      // { title: "إعدادات التوصيل", icon: Truck, href: "/dashboard/deliveringProvidering" },
       { title: "الإشعارات", icon: Bell, href: "/dashboard/notifications" },
       { title: "الإعدادات", icon: Settings, href: "/dashboard/settings" },
       { title: "المساعدة", icon: HelpCircle, href: "/dashboard/help" },
@@ -121,9 +124,9 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
     const vendorLinks = [
       { title: "الرئيسية", icon: Home, href: "/dashboard" },
       { title: "العملاء", icon: Users2, href: "/dashboard/customers" },
-      { title: "الفئة الرئيسية", icon: Warehouse, href: "/dashboard/mainCategory" },
-      { title: "الموردون", icon: UserSquare2, href: "/dashboard/vendors" },
-      { title: "المتاجر", icon: Store, href: "/dashboard/stores" },
+      // { title: "الفئة الرئيسية", icon: Warehouse, href: "/dashboard/mainCategory" },
+      // { title: "الموردون", icon: UserSquare2, href: "/dashboard/vendors" },
+      // { title: "المتاجر", icon: Store, href: "/dashboard/stores" },
       { title: "الطلبات", icon: ShoppingCart, href: "/dashboard/vendor/orders" },
       { title: "المبيعات", icon: ShoppingBag, href: "/dashboard/sales" },
       { title: "التقارير", icon: BarChart3, href: "/dashboard/reports" },
@@ -133,11 +136,14 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
 
       { title: "التخصيصات", icon: Package, href: "/dashboard/customizations" },
       { title: "المحفظة", icon: CreditCard, href: "/dashboard/wallet" },
+      { title: 'عروض الباقات ', icon: IdCardIcon, href: '/dashboard/pricing' },
+      { title: 'باقات المتجر ', icon: IdCardIcon, href: '/dashboard/subscriptionPlan' },
+      { title: "الاشتراكات", icon: LayoutGrid, href: "/dashboard/subscriptions" },
       // { title: "مزودي الدفع", icon: CreditCard, href: "/dashboard/payments" },
       // { title: "مزودي التوصيل", icon: Truck, href: "/dashboard/deliveringProviders" },
-      { title: "إعدادات التوصيل", icon: Truck, href: "/dashboard/deliveringProvidering" },
-      { title: "المجتمع", icon: Users2, href: "/dashboard/community" },
-      { title: "الإشعارات", icon: Bell, href: "/dashboard/notifications" },
+      // { title: "إعدادات التوصيل", icon: Truck, href: "/dashboard/deliveringProvidering" },
+      // { title: "المجتمع", icon: Users2, href: "/dashboard/community" },
+      // { title: "الإشعارات", icon: Bell, href: "/dashboard/notifications" },
       { title: "إعدادات المتجر", icon: Settings, href: "/dashboard/setting" },
       { title: "المساعدة", icon: HelpCircle, href: "/dashboard/help" },
       { title: "المتجر الإلكتروني", icon: ExternalLink, href: `/${slugDomain}` },
@@ -731,7 +737,7 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
                 )
               })}
           </div>
-        </div>
+       
 
         {/* Footer */}
         <div className="p-4 border-t border-slate-100 dark:border-slate-800 mt-auto">
@@ -739,7 +745,7 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
             <TooltipTrigger asChild>
               <button
                 onClick={handleLogout}
-                className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-colors ${
+                className={`flex items-center gap-3 w-full mb-2 px-4 py-3 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-colors ${
                   collapsed ? "justify-center" : ""
                 }`}
               >
@@ -749,6 +755,7 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
             </TooltipTrigger>
             {collapsed && <TooltipContent side="left">تسجيل الخروج</TooltipContent>}
           </Tooltip>
+        </div>
         </div>
       </div>
     </TooltipProvider>

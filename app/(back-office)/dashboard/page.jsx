@@ -388,8 +388,10 @@ import StatsCard from '@/components/dashboard/StatsCard'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import WeeklySalesChart from '@/components/dashboard/WeeklySalesChart'
-import TrafficSourcesChart from '@/components/dashboard/TrafficSourcesChart'
+// import WeeklySalesChart from '@/components/dashboard/WeeklySalesChart'
+// import TrafficSourcesChart from '@/components/dashboard/TrafficSourcesChart'
+import dynamic from 'next/dynamic'
+
 import { BarChart3, ShoppingBag, Package, Users, TrendingUp } from 'lucide-react'
 import db from "@/lib/db"
 export default async function DashboardPage() {
@@ -419,17 +421,28 @@ export default async function DashboardPage() {
         }
       }
     }
+    if (userType !== "VENDOR") {
+      // مثلاً: تعيد توجيه العملاء إلى صفحة عامة أو تعرض رسالة
+      redirect("/dashboard/customers")
+    }
      // 3. إذا كان بائعاً بدون متجر، نعيد التوجيه لصفحة الإنشاء
   if (userType === "VENDOR" && !store) {
     // userId هو معرف البائع
     redirect(`/onboarding/${userId}`)
   }
 
-  
+  const WeeklySalesChart = dynamic(
+    () => import('@/components/dashboard/WeeklySalesChart'),
+    { ssr: false }
+  )
+  const TrafficSourcesChart = dynamic(
+    () => import("@/components/dashboard/TrafficSourcesChart"),
+    { ssr: false }
+  );
     // جلب بيانات إضافية إذا لزم الأمر
-    const sales = store ? await getData("sales") : []
-    const orders = store ? await getData(`orders/user?storeId=${store.id}`) : []
-    const products = store ? await getData("products", { storeId: store.id }) : []
+    // const sales = store ? await getData("sales") : []
+    // const orders = store ? await getData(`orders/user?storeId=${store.id}`) : []
+    // const products = store ? await getData("products", { storeId: store.id }) : []
   
     // جلب البيانات بشكل متوازي
     const [

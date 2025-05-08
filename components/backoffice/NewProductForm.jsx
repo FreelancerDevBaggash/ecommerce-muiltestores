@@ -841,7 +841,7 @@ export default function NewProductForm({ categories, storeId }) {
           />
 
           <TextInput
-            lable="السعر"
+            lable="سعر تكلفة المنتج"
             name="productPrice"
             type="number"
             register={register}

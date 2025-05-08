@@ -324,6 +324,185 @@
 //     </div>
 //   )
 // }
+
+// "use client"
+
+// import { useEffect, useRef, useState } from "react"
+// import { Bell, Trash2 } from "lucide-react"
+// import { useSession } from "next-auth/react"
+// import useSWR from "swr"
+// import axios from "axios"
+// import { formatDistanceToNow } from "date-fns"
+// import { ar } from "date-fns/locale"
+
+// import {
+//   DropdownMenu,
+//   DropdownMenuTrigger,
+//   DropdownMenuContent,
+//   DropdownMenuLabel,
+//   DropdownMenuSeparator,
+//   DropdownMenuItem,
+// } from "@/components/ui/dropdown-menu"
+
+// const fetcher = url => axios.get(url).then(res => res.data)
+
+// export default function NotificationCenter({ onNavigate }) {
+//   const { data: session } = useSession()
+//   const menuRef = useRef(null)
+//   const audioRef = useRef(null)
+//   const [open, setOpen] = useState(false)
+
+//   const { data, error, mutate, isValidating } = useSWR(
+//     session ? "/api/notifications" : null,
+//     fetcher,
+//     { refreshInterval: 30000 }
+//   )
+
+//   const notifications = data?.notifications || []
+//   const unreadCount = data?.unreadCount || 0
+
+//   // تهيئة الصوت عند التركيب
+//   useEffect(() => {
+//     if (typeof window !== "undefined") {
+//       audioRef.current = new Audio("/sounds/notification.mp3")
+//       audioRef.current.load()
+//     }
+//   }, [])
+
+//   // Pusher + صوت عند وصول إشعار جديد
+//   useEffect(() => {
+//     if (!session || typeof window === "undefined") return
+
+//     // تأكد من تحميل pusher-js في العميل فقط
+//     const Pusher = require("pusher-js")
+//     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
+//       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
+//     })
+//     const channel = pusher.subscribe(`user-${session.user.id}`)
+//     channel.bind("new-notification", notif => {
+//       // تشغيل الصوت
+//       audioRef.current?.play().catch(err => {
+//         console.warn("Audio play failed:", err)
+//       })
+//       // تحديث قائمة الإشعارات
+//       mutate(prev => ({
+//         notifications: [notif, ...(prev?.notifications || [])].slice(0, 50),
+//         unreadCount: (prev?.unreadCount || 0) + 1
+//       }), false)
+//     })
+
+//     return () => {
+//       channel.unbind_all()
+//       channel.unsubscribe()
+//       pusher.disconnect()
+//     }
+//   }, [session, mutate])
+
+//   // إغلاق القائمة عند النقر خارجها
+//   useEffect(() => {
+//     const handleClickOutside = e => {
+//       if (menuRef.current && !menuRef.current.contains(e.target)) {
+//         setOpen(false)
+//       }
+//     }
+//     document.addEventListener("mousedown", handleClickOutside)
+//     return () => document.removeEventListener("mousedown", handleClickOutside)
+//   }, [])
+
+//   const markAllAsRead = async () => {
+//     const unread = notifications.filter(n => !n.read)
+//     await Promise.all(unread.map(n => axios.patch(`/api/notifications/${n.id}/read`)))
+//     mutate(prev => ({
+//       notifications: prev.notifications.map(n => ({ ...n, read: true })),
+//       unreadCount: 0
+//     }), false)
+//   }
+
+//   const markAsRead = async notif => {
+//     if (!notif.read) {
+//       await axios.patch(`/api/notifications/${notif.id}/read`)
+//       mutate(prev => ({
+//         notifications: prev.notifications.map(n =>
+//           n.id === notif.id ? { ...n, read: true } : n
+//         ),
+//         unreadCount: prev.unreadCount - 1
+//       }), false)
+//     }
+//     if (notif.link && onNavigate) onNavigate(notif.link)
+//     setOpen(false)
+//   }
+
+//   const deleteNotification = async id => {
+//     await axios.delete(`/api/notifications/${id}`)
+//     mutate(prev => ({
+//       notifications: prev.notifications.filter(n => n.id !== id),
+//       unreadCount: Math.max(0, prev.unreadCount - 1)
+//     }), false)
+//   }
+
+//   return (
+//     <div className="relative" ref={menuRef}>
+//       <DropdownMenu open={open} onOpenChange={setOpen}>
+//         <DropdownMenuTrigger asChild>
+//           <button className="relative p-2">
+//             <Bell className="w-6 h-6 text-slate-700 dark:text-slate-200" />
+//             {unreadCount > 0 && (
+//               <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 text-[10px] font-bold text-white bg-red-500 rounded-full">
+//                 {unreadCount > 9 ? "9+" : unreadCount}
+//               </span>
+//             )}
+//           </button>
+//         </DropdownMenuTrigger>
+
+//         <DropdownMenuContent align="end" sideOffset={8} className="w-80 max-w-sm px-2 py-2">
+//           <DropdownMenuLabel className="flex justify-between items-center px-2">
+//             <span>الإشعارات</span>
+//             {unreadCount > 0 && (
+//               <button onClick={markAllAsRead} className="text-xs text-blue-600 hover:underline">
+//                 تعليم الكل كمقروء
+//               </button>
+//             )}
+//           </DropdownMenuLabel>
+
+//           <DropdownMenuSeparator />
+
+//           {isValidating && <div className="p-4 text-center text-gray-500">جارٍ التحميل...</div>}
+//           {error && <div className="p-4 text-center text-red-600">خطأ في جلب البيانات</div>}
+//           {!error && !isValidating && notifications.length === 0 && (
+//             <div className="p-4 text-center text-gray-500">لا توجد إشعارات</div>
+//           )}
+
+//           <div className="max-h-72 overflow-y-auto space-y-1">
+//             {notifications.map(notif => (
+//               <DropdownMenuItem
+//                 key={notif.id}
+//                 className={`flex items-start gap-2 px-2 py-2 rounded-md cursor-pointer group ${notif.read ? "" : "bg-lime-50 dark:bg-slate-700"}`}
+//                 onSelect={() => markAsRead(notif)}
+//               >
+//                 <div className="w-8 h-8 flex items-center justify-center rounded-full bg-lime-100 dark:bg-lime-800/30">
+//                   <Bell size={16} className="text-lime-700 dark:text-lime-300" />
+//                 </div>
+//                 <div className="flex-1 text-right">
+//                   <p className="text-sm font-medium text-slate-900 dark:text-white line-clamp-1">{notif.title || notif.body}</p>
+//                   <p className="text-xs text-gray-500 dark:text-gray-400">
+//                     {formatDistanceToNow(new Date(notif.createdAt), { addSuffix: true, locale: ar })}
+//                   </p>
+//                 </div>
+//                 <button
+//                   onClick={e => { e.stopPropagation(); deleteNotification(notif.id) }}
+//                   className="text-gray-400 hover:text-red-500 invisible group-hover:visible"
+//                 >
+//                   <Trash2 size={16} />
+//                 </button>
+//               </DropdownMenuItem>
+//             ))}
+//           </div>
+//         </DropdownMenuContent>
+//       </DropdownMenu>
+//     </div>
+//   )
+// }
+
 "use client"
 
 import { useEffect, useRef, useState } from "react"
@@ -347,7 +526,6 @@ const fetcher = url => axios.get(url).then(res => res.data)
 
 export default function NotificationCenter({ onNavigate }) {
   const { data: session } = useSession()
-  const menuRef = useRef(null)
   const audioRef = useRef(null)
   const [open, setOpen] = useState(false)
 
@@ -360,7 +538,6 @@ export default function NotificationCenter({ onNavigate }) {
   const notifications = data?.notifications || []
   const unreadCount = data?.unreadCount || 0
 
-  // تهيئة الصوت عند التركيب
   useEffect(() => {
     if (typeof window !== "undefined") {
       audioRef.current = new Audio("/sounds/notification.mp3")
@@ -368,22 +545,16 @@ export default function NotificationCenter({ onNavigate }) {
     }
   }, [])
 
-  // Pusher + صوت عند وصول إشعار جديد
   useEffect(() => {
     if (!session || typeof window === "undefined") return
 
-    // تأكد من تحميل pusher-js في العميل فقط
     const Pusher = require("pusher-js")
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
     })
     const channel = pusher.subscribe(`user-${session.user.id}`)
     channel.bind("new-notification", notif => {
-      // تشغيل الصوت
-      audioRef.current?.play().catch(err => {
-        console.warn("Audio play failed:", err)
-      })
-      // تحديث قائمة الإشعارات
+      audioRef.current?.play().catch(err => console.warn("Audio play failed:", err))
       mutate(prev => ({
         notifications: [notif, ...(prev?.notifications || [])].slice(0, 50),
         unreadCount: (prev?.unreadCount || 0) + 1
@@ -396,17 +567,6 @@ export default function NotificationCenter({ onNavigate }) {
       pusher.disconnect()
     }
   }, [session, mutate])
-
-  // إغلاق القائمة عند النقر خارجها
-  useEffect(() => {
-    const handleClickOutside = e => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setOpen(false)
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
 
   const markAllAsRead = async () => {
     const unread = notifications.filter(n => !n.read)
@@ -424,11 +584,17 @@ export default function NotificationCenter({ onNavigate }) {
         notifications: prev.notifications.map(n =>
           n.id === notif.id ? { ...n, read: true } : n
         ),
-        unreadCount: prev.unreadCount - 1
+        unreadCount: Math.max(0, prev.unreadCount - 1)
       }), false)
     }
-    if (notif.link && onNavigate) onNavigate(notif.link)
-    setOpen(false)
+
+    if (notif.link && onNavigate) {
+      onNavigate(notif.link)
+      // تأخير إغلاق القائمة لتفادي أخطاء DOM
+      setTimeout(() => setOpen(false), 50)
+    } else {
+      setOpen(false)
+    }
   }
 
   const deleteNotification = async id => {
@@ -440,7 +606,7 @@ export default function NotificationCenter({ onNavigate }) {
   }
 
   return (
-    <div className="relative" ref={menuRef}>
+    <div className="relative">
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
           <button className="relative p-2">

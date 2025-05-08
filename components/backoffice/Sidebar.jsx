@@ -548,7 +548,7 @@ export default function Sidebar({ showSidebar, setShowSidebar }) {
     { title: 'المدفوعات', icon: LayoutGrid, href: '/dashboard/payments' },
     { title: 'مقدمو الخدمة', icon: LayoutGrid, href: '/dashboard/deliveringProviders' },
     { title: 'إعدادات الدفع', icon: LayoutGrid, href: '/dashboard/payment' },
-    { title: 'إعدادات التوصيل', icon: LayoutGrid, href: '/dashboard/deliveringProvidering' },
+    // { title: 'إعدادات التوصيل', icon: LayoutGrid, href: '/dashboard/deliveringProvidering' },
     { title: 'الإعدادات', icon: LayoutGrid, href: '/dashboard/settings' },
     { title: 'المتجر الإلكتروني', icon: ExternalLink, href: '/' },
   ];
@@ -575,7 +575,7 @@ export default function Sidebar({ showSidebar, setShowSidebar }) {
       { title: 'المدفوعات', icon: User, href: '/dashboard/payments' },
       { title: 'مقدمو الخدمة', icon: LayoutGrid, href: '/dashboard/deliveringProviders' },
       { title: 'إعدادات الدفع', icon: LayoutGrid, href: '/dashboard/payment' },
-      { title: 'إعدادات التوصيل', icon: LayoutGrid, href: '/dashboard/deliveringProvidering' },
+      // { title: 'إعدادات التوصيل', icon: LayoutGrid, href: '/dashboard/deliveringProvidering' },
       { title: 'المجتمع', icon: User, href: '/dashboard/community' },
       { title: 'إعدادات المتجر', icon: LayoutGrid, href: '/dashboard/setting' },
       { title: 'المتجر الإلكتروني', icon: ExternalLink, href:`/${slugDomain}` },

@@ -44,7 +44,7 @@
 //   useEffect(() => {
 //     const fetchUserStore = async () => {
 //       if (sessionStatus === "loading") return
-      
+
 //       if (!session?.user?.id) {
 //         router.push("/login")
 //         return
@@ -53,17 +53,17 @@
 //       try {
 //         setStoreLoading(true)
 //         const res = await fetch(`/api/stores?vendorId=${session.user.id}`)
-        
+
 //         if (!res.ok) {
 //           throw new Error("Failed to fetch store data")
 //         }
 
 //         const storeData = await res.json()
-        
+
 //         if (storeData?.length > 0) {
 //           setUserStoreId(storeData[0].id)
 //         } else {
-         
+
 //           router.push("/dashboard/stores")
 //         }
 //       } catch (error) {
@@ -84,12 +84,12 @@
 //   // جلب التصنيفات بعد تحديد المتجر
 //   useEffect(() => {
 //     if (!userStoreId) return
-    
+
 //     const fetchCategories = async () => {
 //       try {
 //         setIsLoading(true)
 //         const response = await fetch(`/api/categories?storeId=${userStoreId}`)
-        
+
 //         if (!response.ok) {
 //           throw new Error("Failed to fetch categories")
 //         }
@@ -98,19 +98,19 @@
 //         setCategories(data || [])
 //       } catch (error) {
 //         console.error("Failed to fetch categories:", error)
-       
+
 //       } finally {
 //         setIsLoading(false)
 //       }
 //     }
-    
+
 //     fetchCategories()
 //   }, [userStoreId])
 
 //   // جلب بيانات المخزون
 //   useEffect(() => {
 //     if (!userStoreId) return
-    
+
 //     const fetchInventoryData = async () => {
 //       setIsLoading(true)
 //       try {
@@ -123,13 +123,13 @@
 //         if (date.to) queryParams.append('endDate', date.to.toISOString())
 
 //         const response = await fetch(`/inventory/inventory?${queryParams.toString()}`)
-        
+
 //         if (!response.ok) {
 //           throw new Error("Failed to fetch inventory data")
 //         }
 
 //         const data = await response.json()
-        
+
 //         setInventoryData(data.products || [])
 //         setStats({
 //           totalProducts: data.totalProducts || 0,
@@ -139,7 +139,7 @@
 //         })
 //       } catch (error) {
 //         console.error("Failed to fetch inventory data:", error)
-        
+
 //       } finally {
 //         setIsLoading(false)
 //       }
@@ -198,9 +198,9 @@
 //           }
 //         })
 //       })
-      
+
 //       const data = await response.json()
-      
+
 //       if (data.success) {
 //         // تنزيل الملف
 //         const link = document.createElement('a')
@@ -209,14 +209,14 @@
 //         document.body.appendChild(link)
 //         link.click()
 //         document.body.removeChild(link)
-        
-        
+
+
 //       } else {
 //         throw new Error(data.message || "فشل في التصدير")
 //       }
 //     } catch (error) {
 //       console.error('فشل التصدير:', error)
-     
+
 //     }
 //   }
 
@@ -266,7 +266,7 @@
 //             onChange={(e) => setSearchQuery(e.target.value)}
 //           />
 //         </div>
-        
+
 //         <div className="flex items-center gap-2 w-full md:w-auto">
 //           {filters.map((filter) => (
 //             <Select
@@ -286,7 +286,7 @@
 //               </SelectContent>
 //             </Select>
 //           ))}
-          
+
 //           <Popover>
 //             <PopoverTrigger asChild>
 //               <Button
@@ -316,7 +316,7 @@
 //               />
 //             </PopoverContent>
 //           </Popover>
-          
+
 //           <Button onClick={handleExport}>
 //             <Download className="h-4 w-4 mr-2" />
 //             تصدير
@@ -408,7 +408,7 @@
 //                             : product.productStock < 10 
 //                               ? 'منخفض' 
 //                               : 'متوفر'
-                              
+
 //                           return (
 //                             <TableRow key={product.id}>
 //                               <TableCell>{product.title}</TableCell>
@@ -487,7 +487,7 @@
 //                         const stockStatus = product.productStock === 0 
 //                           ? 'نفذ' 
 //                           : 'منخفض'
-                          
+
 //                         return (
 //                           <TableRow key={product.id}>
 //                             <TableCell>{product.title}</TableCell>
@@ -534,7 +534,7 @@
 //                   <TableBody>
 //                     {inventoryData.map((product) => {
 //                       const stockValue = product.productStock * product.productPrice
-                      
+
 //                       return (
 //                         <TableRow key={product.id}>
 //                           <TableCell>{product.title}</TableCell>
@@ -560,6 +560,7 @@
 //     </div>
 //   )
 // }
+
 "use client"
 
 import { useState, useEffect } from "react"
@@ -605,7 +606,7 @@ export default function InventoryReportsPage() {
   useEffect(() => {
     const fetchUserStore = async () => {
       if (sessionStatus === "loading") return
-      
+
       // if (!session?.user?.id) {
       //   router.push("/login")
       //   return
@@ -614,13 +615,13 @@ export default function InventoryReportsPage() {
       try {
         setStoreLoading(true)
         const res = await fetch(`/api/stores?vendorId=${session.user.id}`)
-        
+
         if (!res.ok) {
           throw new Error("Failed to fetch store data")
         }
 
         const storeData = await res.json()
-        
+
         if (storeData?.length > 0) {
           setUserStoreId(storeData[0].id)
         } else {
@@ -644,12 +645,12 @@ export default function InventoryReportsPage() {
   // جلب التصنيفات بعد تحديد المتجر
   useEffect(() => {
     if (!userStoreId) return
-    
+
     const fetchCategories = async () => {
       try {
         setIsLoading(true)
         const response = await fetch(`/api/inventory/categories?storeId=${userStoreId}`)
-        
+
         if (!response.ok) {
           throw new Error("Failed to fetch categories")
         }
@@ -667,14 +668,14 @@ export default function InventoryReportsPage() {
         setIsLoading(false)
       }
     }
-    
+
     fetchCategories()
   }, [userStoreId])
 
   // جلب بيانات المخزون مع debounce
   useEffect(() => {
     if (!userStoreId) return
-    
+
     const fetchData = async () => {
       setIsLoading(true)
       try {
@@ -688,11 +689,11 @@ export default function InventoryReportsPage() {
         })
 
         const response = await fetch(`/api/inventory/reports?${queryParams.toString()}`)
-        
+
         if (!response.ok) throw new Error("Failed to fetch data")
-        
+
         const data = await response.json()
-        
+
         setInventoryData(data.data.products || [])
         setStats({
           totalProducts: data.data.totalProducts || 0,
@@ -753,7 +754,7 @@ export default function InventoryReportsPage() {
   const handleExport = async () => {
     try {
       setIsExporting(true); // بدء عملية التصدير
-      
+
       const response = await fetch('/api/inventory/export', {
         method: 'POST',
         headers: {
@@ -769,12 +770,12 @@ export default function InventoryReportsPage() {
           }
         })
       })
-  
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message || 'فشل في تصدير البيانات');
       }
-  
+
       // إنشاء رابط تنزيل
       const blob = await response.blob();
       const downloadUrl = window.URL.createObjectURL(blob);
@@ -783,14 +784,17 @@ export default function InventoryReportsPage() {
       link.download = `تقرير_المخزون_${new Date().toISOString().slice(0, 10)}.xlsx`;
       document.body.appendChild(link);
       link.click();
-      document.body.removeChild(link);
+      if (document.body.contains(link)) {
+        document.body.removeChild(link)
+      }
+      window.URL.revokeObjectURL(downloadUrl)
       window.URL.revokeObjectURL(downloadUrl);
-  
-     
-  
+
+
+
     } catch (error) {
       console.error('Export failed:', error);
-      
+
     } finally {
       setIsExporting(false); // إنهاء عملية التصدير
     }
@@ -823,7 +827,7 @@ export default function InventoryReportsPage() {
   }
 
   return (
-    <div  className="space-y-6">
+    <div className="space-y-6">
       <PageHeader
         title="تقارير المخزون والمنتجات"
         description={`آخر تحديث في ${format(new Date(), 'PPPP', { locale: ar })}`}
@@ -842,7 +846,7 @@ export default function InventoryReportsPage() {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        
+
         <div className="flex items-center gap-2 w-full md:w-auto">
           {filters.map((filter) => (
             <Select
@@ -862,7 +866,7 @@ export default function InventoryReportsPage() {
               </SelectContent>
             </Select>
           ))}
-          
+
           <Popover>
             <PopoverTrigger asChild>
               <Button
@@ -892,7 +896,7 @@ export default function InventoryReportsPage() {
               />
             </PopoverContent>
           </Popover>
-          
+
           <Button onClick={handleExport}>
             <Download className="h-4 w-4 mr-2" />
             تصدير
@@ -979,12 +983,12 @@ export default function InventoryReportsPage() {
                       {inventoryData.length > 0 ? (
                         inventoryData.map((product) => {
                           const stockValue = product.productStock * product.productPrice
-                          const stockStatus = product.productStock === 0 
-                            ? 'نفذ' 
-                            : product.productStock < 10 
-                              ? 'منخفض' 
+                          const stockStatus = product.productStock === 0
+                            ? 'نفذ'
+                            : product.productStock < 10
+                              ? 'منخفض'
                               : 'متوفر'
-                              
+
                           return (
                             <TableRow key={product.id}>
                               <TableCell>{product.title}</TableCell>
@@ -996,13 +1000,12 @@ export default function InventoryReportsPage() {
                               <TableCell>{stockValue?.toLocaleString('ar-SA')} ر.ي</TableCell>
                               <TableCell>
                                 <span
-                                  className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${
-                                    stockStatus === 'متوفر'
+                                  className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${stockStatus === 'متوفر'
                                       ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
                                       : stockStatus === 'منخفض'
                                         ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300"
                                         : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300"
-                                  }`}
+                                    }`}
                                 >
                                   {stockStatus}
                                 </span>
@@ -1060,10 +1063,10 @@ export default function InventoryReportsPage() {
                     {inventoryData
                       .filter(p => p.productStock < 10)
                       .map((product) => {
-                        const stockStatus = product.productStock === 0 
-                          ? 'نفذ' 
+                        const stockStatus = product.productStock === 0
+                          ? 'نفذ'
                           : 'منخفض'
-                          
+
                         return (
                           <TableRow key={product.id}>
                             <TableCell>{product.title}</TableCell>
@@ -1071,11 +1074,10 @@ export default function InventoryReportsPage() {
                             <TableCell>10</TableCell>
                             <TableCell>
                               <span
-                                className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${
-                                  stockStatus === 'منخفض'
+                                className={`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${stockStatus === 'منخفض'
                                     ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300"
                                     : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300"
-                                }`}
+                                  }`}
                               >
                                 {stockStatus}
                               </span>
@@ -1110,7 +1112,7 @@ export default function InventoryReportsPage() {
                   <TableBody>
                     {inventoryData.map((product) => {
                       const stockValue = product.productStock * product.productPrice
-                      
+
                       return (
                         <TableRow key={product.id}>
                           <TableCell>{product.title}</TableCell>

@@ -12,7 +12,7 @@ export default async function page(){
     
     <div>
 {/*Header*/}
-<PageHeader heading="Limi Coummunity Trainings"  href="/dashboard/community/new" linkTitle="Add Training"/>
+<PageHeader heading="مجتمع اتجر للتدريبات"  href="/dashboard/community/new" linkTitle="اضافة تدريب "/>
 
 
 <div className="py-0">

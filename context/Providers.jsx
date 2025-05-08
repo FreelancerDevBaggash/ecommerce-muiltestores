@@ -23,13 +23,7 @@ export default function Providers({ children }){
         <SessionProvider>
         <Provider store={store}>  {children} </Provider>
         </SessionProvider>       
-        {/* <Provider store={store}>
-        {isVendor ? (
-          <SessionProvider>{children}</SessionProvider>
-        ) : (
-          children
-        )}
-      </Provider> */}
+       
     </ThemeProvider>
     )
 }

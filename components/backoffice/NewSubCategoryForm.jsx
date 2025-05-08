@@ -474,36 +474,36 @@ import { makePostRequest } from "../../lib/apiRequest";
 import { useRouter } from "next/navigation";
 import { generateSlug } from "../../lib/generateSlug";
 
-export default function NewSubCategoryForm({ categoryId, storeId }) {
+export default function NewSubCategoryForm({ categories, storeId }) {
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
-
+  
   const {
-    register,
-    reset,
-    watch,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      isActive: true,
-    },
-  });
-
-  const isActive = watch("isActive");
+  register,
+  reset,
+  watch,
+  handleSubmit,
+  formState: { errors },
+  } = useForm({ defaultValues: { isActive: true } });
+  
+  // تتبع التصنيف المختار
+  const selectedCategoryId = watch("categoryId");
+  // إيجاد التصنيف المحدد للتحقق من تعطيله وسبب التعطيل
+  const selectedOption = categories.find((c) => c.id === selectedCategoryId);
+  const disabledMessage = selectedOption?.disabled ? selectedOption.message : "";
+  
   const router = useRouter();
-
+  
   function redirect() {
-    router.push("/dashboard/subcategory");
+  router.push("/dashboard/subcategory");
   }
-
+  
   async function onSubmit(data) {
-    const slug = generateSlug(data.title);
-    data.slug = slug;
-    data.storeId = storeId;
-   // data.categoryId = categoryId[0]?.id;
-    data.imageUrl = imageUrl;
-
+  const slug = generateSlug(data.title);
+  data.slug = slug;
+  data.storeId = storeId;
+  data.categoryId = data.categoryId;
+  data.imageUrl = imageUrl;
     makePostRequest(
       setLoading,
       "api/subcategory",
@@ -551,14 +551,19 @@ export default function NewSubCategoryForm({ categoryId, storeId }) {
             textarea
           />
 
-          <SelectInput
-            lable="اختر القسم الرئيسي"
-            name="categoryId"
-            register={register}
-            errors={errors}
-            options={categoryId}
-            disabled={!!categoryId} // إذا تم تمرير categoryId من الأب، نعطله
-          />
+   {/* اختيار القسم الرئيسي */}
+   <SelectInput
+        label="اختر القسم الرئيسي"
+        name="categoryId"
+        register={register}
+        errors={errors}
+        options={categories.map(({ id, title, disabled }) => ({ id, title, disabled }))}
+      />
+
+      {/* رسالة التعطيل إن وجدت */}
+      {disabledMessage && (
+        <p className="mt-2 text-sm text-red-600">{disabledMessage}</p>
+      )}
 
           <ToggleInput
             label="حالة القسم الفرعي"
@@ -568,11 +573,12 @@ export default function NewSubCategoryForm({ categoryId, storeId }) {
             register={register}
           />
 
-          <SubmitButton
-            isLoading={loading}
-            buttonTitle="حفظ القسم الفرعي"
-            loadingButtonTitle="جاري الحفظ..."
-          />
+<SubmitButton
+  isLoading={loading}
+  buttonTitle="حفظ القسم الفرعي"
+  loadingButtonTitle="جاري الحفظ..."
+  disabled={!!disabledMessage || loading} // أضف شرط التعطيل هنا
+/>
         </div>
       </form>
     </div>

@@ -166,25 +166,37 @@ export default function Navbar({ showSidebar, setShowSidebar, collapsed }) {
   const unreadCount   = data?.unreadCount   || 0
 
   // Subscribe to Pusher for real-time notifications
-  useEffect(() => {
-    if (!session) return
-    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
-      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
-    })
-    const channel = pusher.subscribe(`user-${session.user.id}`)
-    channel.bind("new-notification", notif => {
-      mutate(prev => ({
-        notifications: [notif, ...prev.notifications].slice(0, 50),
-        unreadCount: prev.unreadCount + 1
-      }), false)
-    })
-    return () => {
-      channel.unbind_all()
-      channel.unsubscribe()
-      pusher.disconnect()
-    }
-  }, [session, mutate])
-
+  // useEffect(() => {
+  //   if (!session) return;
+  
+  //   const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
+  //     cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
+  //   });
+  //   const channel = pusher.subscribe(`user-${session.user.id}`);
+    
+  //   channel.bind("new-notification", notif => {
+  //     mutate(prev => ({
+  //       notifications: [notif, ...prev.notifications].slice(0, 50),
+  //       unreadCount: prev.unreadCount + 1
+  //     }), false);
+  //   });
+  
+  //   return () => {
+  //     try {
+  //       // Ensure to clean up correctly when component unmounts
+  //       if (channel) {
+  //         channel.unbind_all();
+  //         channel.unsubscribe();
+  //       }
+  //       if (pusher) {
+  //         pusher.disconnect();
+  //       }
+  //     } catch (err) {
+  //       console.warn("Pusher cleanup error:", err);
+  //     }
+  //   };
+  // }, [session, mutate]);
+  
   // Mark all notifications as read
   const markAllAsRead = async () => {
     await Promise.all(

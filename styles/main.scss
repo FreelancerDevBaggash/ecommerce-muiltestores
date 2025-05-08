@@ -4,6 +4,7 @@
 
 
 @layer base {
+
   /* استيراد الخط */
   @font-face {
     font-family: 'IBMPlexArabic';
@@ -11,49 +12,49 @@
     font-weight: normal;
     font-style: normal;
   }
-  
+
   @font-face {
     font-family: 'IBMPlexArabic';
     src: url('/fonts/IBMPlexArabic-Bold.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
   }
-  
+
   @font-face {
     font-family: 'IBMPlexArabic';
     src: url('/fonts/IBMPlexArabic-SemiBold.ttf') format('truetype');
     font-weight: 600;
     font-style: normal;
   }
-  
+
   @font-face {
     font-family: 'IBMPlexArabic';
     src: url('/fonts/IBMPlexArabic-Light.ttf') format('truetype');
     font-weight: 300;
     font-style: normal;
   }
-  
+
   @font-face {
     font-family: 'IBMPlexArabic';
     src: url('/fonts/IBMPlexArabic-Thin.ttf') format('truetype');
     font-weight: 100;
     font-style: normal;
   }
-  
+
   @font-face {
     font-family: 'IBMPlexArabic';
     src: url('/fonts/IBMPlexArabic-Medium.ttf') format('truetype');
     font-weight: 500;
     font-style: normal;
   }
-  
+
   @font-face {
     font-family: 'IBMPlexArabic';
     src: url('/fonts/IBMPlexArabic-ExtraLight.ttf') format('truetype');
     font-weight: 200;
     font-style: normal;
   }
-  
+
 
   :root {
     --background: 0 0% 100%;
@@ -78,22 +79,33 @@
     --radius: 0.5rem;
 
     /* أحجام الخطوط */
-    --font-size-base: 1rem; /* 16px */
-    --font-size-lg: 1.125rem; /* 18px */
-    --font-size-xl: 1.25rem; /* 20px */
-    --font-size-2xl: 1.5rem; /* 24px */
-    --font-size-3xl: 2rem; /* 32px */
+    --font-size-base: 1rem;
+    /* 16px */
+    --font-size-lg: 1.125rem;
+    /* 18px */
+    --font-size-xl: 1.25rem;
+    /* 20px */
+    --font-size-2xl: 1.5rem;
+    /* 24px */
+    --font-size-3xl: 2rem;
+    /* 32px */
 
     /* المسافات */
-    --spacing-xs: 0.25rem;  /* 4px */
-    --spacing-sm: 0.5rem;   /* 8px */
-    --spacing-md: 1rem;     /* 16px */
-    --spacing-lg: 1.5rem;   /* 24px */
-    --spacing-xl: 2rem;     /* 32px */
+    --spacing-xs: 0.25rem;
+    /* 4px */
+    --spacing-sm: 0.5rem;
+    /* 8px */
+    --spacing-md: 1rem;
+    /* 16px */
+    --spacing-lg: 1.5rem;
+    /* 24px */
+    --spacing-xl: 2rem;
+    /* 32px */
 
     /* عرض العناصر */
     --container-width: 100%;
-    --max-container-width: 1400px; /* 2xl */
+    --max-container-width: 1400px;
+    /* 2xl */
   }
 
   .dark {
@@ -155,28 +167,75 @@
     padding-left: var(--spacing-md);
     padding-right: var(--spacing-md);
   }
+
   /* إخفاء شريط التمرير افتراضيًا */
-.scrollbar-hidden::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
+  .scrollbar-hidden::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
+
+  /* إظهاره عند تحريك الفأرة فوق العنصر */
+  .group:hover .scrollbar-hidden::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  /* دعم لمتصفحات فايرفوكس */
+  .scrollbar-hidden {
+    scrollbar-width: none;
+  }
+
+  .group:hover .scrollbar-hidden {
+    scrollbar-width: thin;
+  }
+ 
+@keyframes shine {
+  0% { background-position: -100% 0; }
+  100% { background-position: 200% 0; }
 }
 
-/* إظهاره عند تحريك الفأرة فوق العنصر */
-.group:hover .scrollbar-hidden::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+.text-shadow-lg {
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 
-/* دعم لمتصفحات فايرفوكس */
-.scrollbar-hidden {
-  scrollbar-width: none;
+.drop-shadow-md {
+  filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.15));
 }
 
-.group:hover .scrollbar-hidden {
-  scrollbar-width: thin;
+.animate-ribbon-shine {
+  animation: shine 3s linear infinite;
+  background-size: 200% auto;
+}
+}
+@media print {
+  /* إخفاء كل شيء عدا قسم التقرير */
+  body * {
+    visibility: hidden;
+  }
+
+  #wallet-report-printable,
+  #wallet-report-printable * {
+    visibility: visible;
+  }
+
+  #wallet-report-printable {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 20px;
+    background: white;
+    color: black;
+    font-family: 'IBMPlexArabic', sans-serif;
+    direction: rtl;
+  }
+
+  /* إخفاء الأزرار في الطباعة */
+  .no-print {
+    display: none !important;
+  }
 }
 
-}
 // @layer base {
 //   :root {
 //     --background: 0 0% 100%;
@@ -264,21 +323,21 @@
 //     --input: 214.3 31.8% 91.4%;
 //     --ring: 222.2 84% 4.9%;
 //     --radius: 0.5rem;
-    
+
 //     /* أحجام الخطوط */
 //     --font-size-base: 1rem; /* 16px */
 //     --font-size-lg: 1.125rem; /* 18px */
 //     --font-size-xl: 1.25rem; /* 20px */
 //     --font-size-2xl: 1.5rem; /* 24px */
 //     --font-size-3xl: 2rem; /* 32px */
-    
+
 //     /* المسافات */
 //     --spacing-xs: 0.25rem;  /* 4px */
 //     --spacing-sm: 0.5rem;   /* 8px */
 //     --spacing-md: 1rem;    /* 16px */
 //     --spacing-lg: 1.5rem;  /* 24px */
 //     --spacing-xl: 2rem;    /* 32px */
-    
+
 //     /* عرض العناصر */
 //     --container-width: 100%;
 //     --max-container-width: 1400px; /* 2xl */
@@ -316,7 +375,7 @@
 //   * {
 //     @apply border-border;
 //   }
-  
+
 //   body {
 //     @apply bg-background text-foreground;
 //     font-size: var(--font-size-base);
@@ -325,7 +384,7 @@
 //   h1 {
 //     font-size: var(--font-size-3xl);
 //   }
-  
+
 //   h2 {
 //     font-size: var(--font-size-2xl);
 //   }

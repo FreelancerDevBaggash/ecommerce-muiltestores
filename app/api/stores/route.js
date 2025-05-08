@@ -245,6 +245,7 @@ export async function GET(request) {
         updatedAt: true,
         currencies: true,
         socialLinks: true,
+        subscription: true,
 
       },
       skip,

@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ThemeProvider } from "@/components/theme-provider"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import { FloatingNav } from "@/components/ui/floating-nav"
@@ -26,25 +25,25 @@ export default function ClientLayout({ children }) {
   }
 
   return (
-    <html lang="ar" dir="rtl" className="scroll-smooth">
-      <body className="min-h-screen bg-background font-tajawal antialiased rtl">
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+    <div className="scroll-smooth bg-background font-tajawal antialiased rtl min-h-screen flex flex-col">
+
           <MousePositionProvider>
             <SmoothScroll>
               <ScrollProgress />
               <CursorEffect />
               <Navbar />
               <AnimatePresence mode="wait">
+              <main className="relative">
                 <PageTransition key={pathname}>
-                  <main className="relative">{children}</main>
+                 {children}
                 </PageTransition>
+                </main> 
               </AnimatePresence>
               <Footer />
               <FloatingNav />
             </SmoothScroll>
           </MousePositionProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+
+          </div>
   )
 }

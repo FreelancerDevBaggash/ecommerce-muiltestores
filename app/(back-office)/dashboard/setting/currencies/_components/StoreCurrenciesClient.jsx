@@ -495,7 +495,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 export default function StoreCurrenciesClient({ currencies = [], storeId }) {
   const [storeCurrencies, setStoreCurrencies] = useState([]);
@@ -636,7 +636,6 @@ export default function StoreCurrenciesClient({ currencies = [], storeId }) {
 
   return (
     <div className="max-w-5xl mx-auto p-6">
-      <Toaster position="top-center" />
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold text-gray-700">العملات المتاحة</h2>

@@ -116,6 +116,11 @@ export const columns = [
     header: "مفعل",
   },
   {
+    accessorKey: "store.businessName",
+    header: "اسم المتجر",
+    cell: ({ row }) => row.original.store?.businessName || "_ "
+  },
+  {
     accessorKey: "createdAt",
     header: "تاريخ الإنشاء",
     cell: ({ row }) => (<DateColumn row={row} accessorKey="createdAt" />),

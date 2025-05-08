@@ -21,7 +21,6 @@ export async function POST(request) {
       )
     }
 
-    // جلب البيانات من قاعدة البيانات
     const products = await db.product.findMany({
       where: {
         storeId,
@@ -31,7 +30,9 @@ export async function POST(request) {
             { sku: { contains: filters.searchQuery, mode: 'insensitive' } }
           ]
         }),
-        ...(filters?.category && { categoryId: filters.category }),
+        ...(filters?.category && filters.category !== 'all' && {
+          categoryId: filters.category
+        }),
         ...(filters?.status === 'low' && { productStock: { lt: 10 } }),
         ...(filters?.status === 'out' && { productStock: 0 })
       },
@@ -40,10 +41,11 @@ export async function POST(request) {
         subCategory: { select: { title: true } }
       }
     })
-
+    
     // إنشاء ملف Excel
     const workbook = new Workbook()
-    const worksheet = workbook.addWorksheet('تقرير المخزون')
+    const worksheet = workbook.addWorksheet('تقرير المخزون' , {
+      views: [{ rightToLeft: true }]})
 
     // تعريف الأعمدة
     worksheet.columns = [

@@ -55,18 +55,19 @@
 //     </div>
 //   );
 // }
-
 import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/authOptions"
 import DashboardLayout from "@/components/dashboard/DashboardLayout"
-
+import CountdownFloatingBox from "@/components/dashboard/CountdownFloatingBox"
 export default async function Layout({ children }) {
   const session = await getServerSession(authOptions)
+  const subscriptionEndDate = "2025-05-10T23:59:59Z"; 
+  // if (!session) {
+  //   redirect("/login?callbackUrl=/dashboard")
+  // }
 
-  if (!session) {
-    redirect("/login?callbackUrl=/dashboard")
-  }
-
-  return <DashboardLayout>{children}</DashboardLayout>
+  return <DashboardLayout className="pt-10">
+     <CountdownFloatingBox endDate={subscriptionEndDate}/>
+     {children}</DashboardLayout>
 }

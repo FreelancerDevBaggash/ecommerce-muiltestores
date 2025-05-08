@@ -15,6 +15,7 @@ isActive,
 isWholesale,
 productCode,
 productPrice,
+oldPrice,
 salePrice,
 sku,
 slug,
@@ -57,6 +58,7 @@ isActive,
 isWholesale,
 productCode,
 productPrice:parseFloat(productPrice),
+oldPrice:parseFloat(oldPrice),
 salePrice:parseFloat(salePrice),
 sku,
 slug,
@@ -121,15 +123,26 @@ export async function GET(request ){
         }
     }
     let products;
-    try{
-        if(searchTerm){
+    try {
+      const includeOptions = {
+        store: {
+          select: {
+            businessName: true
+          }
+        },
+        orderItems: true,
+        saleItems: true
+      };
+  
+      if (searchTerm){
             products = await db.product.findMany({
                 where:{
                     OR: [
                         {title: {contains: searchTerm,mode: 'insensitive'} }
                     ]
-                } 
-              
+                } ,
+                include: includeOptions,
+                orderBy: { createdAt: "desc" }
                 },
             )
         }else  if (categoryId && page){
@@ -140,6 +153,7 @@ export async function GET(request ){
              orderBy:{
                 createdAt: "desc",
             },
+            include: includeOptions
         })
       }else  if(categoryId && sortBy){
          products = await db.product.findMany({
@@ -147,6 +161,7 @@ export async function GET(request ){
              orderBy:{
                 salePrice: sortBy === "asc" ? "asc" : "desc",
             },
+            include: includeOptions
         })
        }else if(categoryId){
         products = await db.product.findMany({
@@ -154,6 +169,7 @@ export async function GET(request ){
            orderBy:{
                createdAt:"desc"
            },
+           include: includeOptions
        })
       } 
        else if(!storeId || storeId === "undefined") {
@@ -165,6 +181,7 @@ export async function GET(request ){
                 orderItems: true,
                 saleItems :true
               },  
+              include: includeOptions
         });
        } else {
         products = await db.product.findMany({
@@ -173,10 +190,7 @@ export async function GET(request ){
               }, 
             orderBy: {
                 createdAt: "desc",
-              },  include: {
-                orderItems: true,
-                saleItems:true
-              },     
+              },  include: includeOptions   
         });     
        }
         return NextResponse.json(products)

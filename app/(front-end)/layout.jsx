@@ -86,13 +86,11 @@ export async function generateMetadata() {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="ar-YE">
-      <head />
-      <body>
+    <div lang="ar-YE">
+      
         <ClientLayout>
           {children}
         </ClientLayout>
-      </body>
-    </html>
+     </div>
   );
 }

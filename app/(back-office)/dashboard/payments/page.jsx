@@ -62,7 +62,7 @@ import { columns } from "./columns";
 
 export default async function Page() {
   // جلب البيانات من الـ API
-  const paymentProviders = await getData("PaymentProvider");
+  const paymentProviders = await getData("PaymentProvider", {mode: 'real-time'});
   console.log("paymentProviders", paymentProviders);
 
   return (

@@ -120,7 +120,7 @@ model Product {
   barcode        String?
   productCode    String?
   unit           String?
-  oldPrice       String?
+  oldPrice       Float?
   productPrice   Float
   salePrice      Float
   wholesalePrice Float?

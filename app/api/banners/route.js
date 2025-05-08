@@ -60,17 +60,31 @@ export async function GET(request){
             orderBy: {
               createdAt: "desc",
             },  
+        include: {
+          store: {
+            select: {
+              businessName: true,
+            },
+          },
+        },
           });
         } else {
           // إذا تم تمرير userId، ابحث عن المتجر الخاص بهذا المستخدم
           banners = await db.banner.findMany({
               
+            where: {
+              storeId: storeId,
+            },
             orderBy: {
               createdAt: "desc",
             },
-            where: {
-              storeId: storeId,
-            },  
+            include: {
+              store: {
+                select: {
+                  businessName: true,
+                },
+              },
+            },
           });
         }
         if (!banners || banners.length === 0) {

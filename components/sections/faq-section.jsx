@@ -45,20 +45,20 @@ export default function FAQSection() {
   return (
     <section id="faq" dir="rtl" className="py-20 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div  dir="rtl" className="text-center mb-16">
           <FadeIn>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               الأسئلة <span className="text-indigo-600 dark:text-indigo-400">الشائعة</span>
             </h2>
           </FadeIn>
           <SlideIn>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <p className="text-xl  text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               إجابات على الأسئلة الأكثر شيوعًا حول منصة أتجر وكيفية استخدامها
             </p>
           </SlideIn>
         </div>
 
-        <div ref={ref} className="max-w-3xl mx-auto">
+        <div  dir="rtl" ref={ref} className="max-w-3xl mx-auto">
           <Accordion type="single" collapsible className="space-y-4">
             {faqs.map((faq, index) => (
               <motion.div
@@ -71,7 +71,7 @@ export default function FAQSection() {
                   value={`item-${index}`}
                   className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-800"
                 >
-                  <AccordionTrigger className="px-6 py-4 text-right font-bold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
+                  <AccordionTrigger className="px-6 py-4 text-left font-bold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400">
                     {faq.question}
                   </AccordionTrigger>
                   <AccordionContent className="px-6 pb-4 text-gray-600 dark:text-gray-300">

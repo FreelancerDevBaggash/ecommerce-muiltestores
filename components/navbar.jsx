@@ -218,12 +218,12 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1 space-x-reverse">
+          <nav className="hidden md:flex font-arabic items-center space-x-1 space-x-reverse">
             {navItems.map((item, index) => (
               <Link
                 key={index}
                 href={item.href}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${pathname === item.href
+                className={`px-4 py-2  font-arabic rounded-full text-sm font-medium transition-colors ${pathname === item.href
                     ? "text-indigo-600 dark:text-indigo-400 bg-amber-50 dark:bg-amber-900/20"
                     : "text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-100 dark:hover:bg-gray-800"
                   }`}

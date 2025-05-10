@@ -8,33 +8,27 @@ import Image from "next/image"
 const cards = [
   {
     id: 1,
-    title: "أكثر من ٢٥ تطبيق جديد في متجر التطبيقات",
-    description: "التطبيقات واحدة من حلول المنصة الذكية التي تسهل على التاجر إنجاز أعماله بسرعة وذكاء.",
-    image: "https://cdn.salla.sa/AQ43OUZuD9Pfo8T6yuUb5nDfGKI4x1IZ857hB5wu.png",
+    title: "توفير أكثر من خدمة  ",
+    description: "لوحة واحدة من حلول المنصة الذكية التي تسهل على التاجر إنجاز أعماله بسرعة وذكاء.",
+    image: "/images/login.svg",
   },
   {
     id: 2,
-    title: "تطبيق جديد للتحكم في المخزون",
-    description: "يساعدك التطبيق في إدارة المخزون الخاص بك بكفاءة عالية وتقليل الفاقد.",
-    image: "https://cdn.salla.sa/TbSlerjULGYYC7YA9K18DqpTbUdm8gkIrjPV8ejK.jpg",
+    title: "تحديث جديد لتقارير المخزون",
+    description: "يساعدك التحديث في عرض تقارير المخزون الخاص بك بكفاءة عالية .",
+    image: "/images/inv.png",
   },
   {
     id: 3,
-    title: "تطبيق إدارة العملاء",
-    description: "تطبيق يساعدك في إدارة علاقاتك مع العملاء بكفاءة وسهولة.",
-    image: "https://cdn.salla.sa/nGqKvdnr9ouMDp3JCXpByNVOONc0lo8axtMemVfy.jpg",
+    title: "نظام إدارة العملاء",
+    description: "نظام يساعدك في إدارة علاقاتك مع العملاء بكفاءة وسهولة.",
+    image: "/images/customer.png",
   },
   {
     id: 4,
     title: "تحليل المبيعات",
     description: "اكتشف طرق تحليل المبيعات لتحسين أداء الأعمال واتخاذ قرارات مستنيرة.",
-    image: "https://cdn.salla.sa/mlEh1kXGsRe6nNfNi29jHQlAwO2xaWpzq97Iq6cQ.jpg",
-  },
-  {
-    id: 5,
-    title: "تحديثات جديدة",
-    description: "تعرف على أحدث التحديثات في منصة التجارة وكيفية الاستفادة منها.",
-    image: "https://cdn.salla.sa/AQ43OUZuD9Pfo8T6yuUb5nDfGKI4x1IZ857hB5wu.png",
+    image: "/images/sales.png",
   },
 ]
 
@@ -116,7 +110,7 @@ export default function FeatureSlider() {
                   <Image
                     src={cards[currentCard].image || "/placeholder.svg"}
                     alt={cards[currentCard].title}
-                    className="rounded-lg object-cover"
+                    className="rounded-lg object-fill"
                     fill
                     sizes="(max-width: 768px) 100vw, 300px"
                     priority

@@ -562,7 +562,7 @@ export default function ShippingDetailsForm() {
         <div className="space-y-4">
           <h3 className="text-xl font-semibold dark:text-gray-100 flex items-center gap-2">
             <Truck className="w-6 h-6" />
-            خيارات الشحن
+            خيارات التوصيل
           </h3>
           <div className="grid gap-4 md:grid-cols-2">
             {[8, 20].map((cost) => (
@@ -582,21 +582,21 @@ export default function ShippingDetailsForm() {
                 />
                 <div className="flex items-center gap-4">
                   <div className={`p-3 rounded-lg ${
-                    shippingCost === cost.toString() 
+                    shippingCost === cost 
                       ? 'bg-blue-500 text-white' 
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-600'
                   }`}>
                     <Truck className="w-6 h-6" />
                   </div>
                   <div className="flex-1">
-                    <p className="font-medium text-gray-900 dark:text-gray-100">شحن UPS</p>
+                    <p className="font-medium text-gray-900 dark:text-gray-100">توصيل مستعجل</p>
                     <p className="text-gray-600 dark:text-gray-400">3-5 أيام عمل</p>
                     <p className="mt-2 text-lg font-bold text-blue-600 dark:text-blue-400">
-                      ${cost}.00
+                      ر.ي{cost}.00
                     </p>
                   </div>
                   <Circle className={`w-5 h-5 ${
-                    shippingCost === cost.toString() 
+                    shippingCost === cost
                       ? 'text-blue-500 fill-blue-500' 
                       : 'text-gray-400 dark:text-gray-500'
                   }`} />

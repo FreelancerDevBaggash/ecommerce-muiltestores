@@ -29,14 +29,14 @@ export const columns = [
           (table.getIsSomePageRowsSelected() && "indeterminate")
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
+        aria-label="تحديد الكل"
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
+        aria-label="تحديد صف"
       />
     ),
     enableSorting: false,
@@ -44,17 +44,17 @@ export const columns = [
   },
   {
     accessorKey: "imageUrl",
-    header: "Category Image",
+    header: "صورة ",
     cell: ({ row }) => (<ImageColumn row={row} accessorKey="imageUrl" />)
   },
   {
     accessorKey: "title",
-    header: ({ column }) => (<SorttableColumn column={column} title="Title"/>)
+    header: ({ column }) => (<SorttableColumn column={column} title="اسم الفئة"/>)
   },
 
   {
     accessorKey: "description",
-    header: "Description",
+    header: "وصف الفئة",
     cell: ({ row }) => {
         const description = row.getValue("description")
 
@@ -67,18 +67,18 @@ export const columns = [
   },
   {
     accessorKey: "isActive",
-    header: "Active",
+    header: "نشر",
   },
   {
     accessorKey: "createdAt",
-    header: "Data Created",
+    header: "تاريخ الانشاء",
     cell: ({ row }) => (<DateColumn row={row} accessorKey="createdAt"/> ),
   },
   {
     id: "actions",
     cell: ({ row }) => {
       const category =row.original
-      return (<ActionColumn row={row} title="Category"
+      return (<ActionColumn row={row} title="الفئة"
       editEndpoint = {`categories/update/${category.id}`}
       endpoint= {`categories/${category.id}`} />);
      }

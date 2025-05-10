@@ -4,7 +4,7 @@ import Link from 'next/link'
 import React from 'react'
 import { useSelector } from 'react-redux'
 
-export default function CartBanner() {
+export default function CartBanner({slugDomain}) {
   const cartItems = useSelector((store) => store.cart);
   const subTotal = cartItems.reduce((acc, currentTtem) => {
     return acc + currentTtem.salePrice * currentTtem.qty;
@@ -18,14 +18,14 @@ export default function CartBanner() {
             <ShoppingBag className="w-6 h-6" />
           </div>
           <p className="ml-3 text-base font-normal text-gray-900">
-            You have {cartItems.length} items in cart. Sub total is{" "}
-            <span className="font-bold">${subTotal} </span>
+            لديك {cartItems.length} عناصر في السلة. بإجمالي{" "}
+            <span className="font-bold">ر.ي{subTotal} </span>
           </p>
         </div>
 
         <div className="mt-4 sm:mt-0">
           <Link
-            href="/cart"
+            href={`${slugDomain}/cart`}
             className="
                                 inline-flex
                                 items-center
@@ -43,7 +43,7 @@ export default function CartBanner() {
                                 focus:outline-none focus:ring-2 focus:text-gray-900 focus:ring-offset-2 focus:ring-gray-500
                             "
           >
-            Edit cart
+            تعديل السلة
           </Link>
         </div>
       </div>

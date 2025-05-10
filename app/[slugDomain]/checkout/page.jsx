@@ -105,7 +105,7 @@ export default function CheckoutPage({ params: { slugDomain } }) {
 
   // إذا كانت بيانات المتجر أو التخصيص لم يتم جلبها بعد
   if (!store ) {
-    return <h1 className="bg-slate-50 text-slate-500 text-center py-10">Loading...</h1>;
+    return <h1 className="bg-slate-50 text-slate-500 text-center py-10">جاري التحميل...</h1>;
   }
 
   // تعريف خطوات عملية الدفع (Checkout)
@@ -124,7 +124,7 @@ export default function CheckoutPage({ params: { slugDomain } }) {
 
         <div className="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
           {/* عرض بانر السلة */}
-          <CartBanner customization={customizationData}  />
+          <CartBanner slugDomain={slugDomain} customization={customizationData}  />
 
           {/* عرض النموذج الخاص بعملية الدفع مع تمرير بيانات المتجر والتخصيص وسلة الشراء */}
           <StepForm 

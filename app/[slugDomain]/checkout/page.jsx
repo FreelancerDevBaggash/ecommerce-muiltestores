@@ -110,10 +110,10 @@ export default function CheckoutPage({ params: { slugDomain } }) {
 
   // تعريف خطوات عملية الدفع (Checkout)
   const steps = [
-    { number: 1, title: "Personal Details" },
-    { number: 2, title: "Shipping Details" },
-    { number: 3, title: "Payment Method" },
-    { number: 4, title: "Order Summary" },
+    { number: 1, title: "تفاصيل شخصية" },
+    { number: 2, title: "تفاصيل التوصيل" },
+    { number: 3, title: "طريقة الدفع" },
+    { number: 4, title: "ملخص الطلب" },
   ];
 
   return (

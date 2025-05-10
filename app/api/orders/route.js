@@ -280,6 +280,7 @@ export async function POST(request) {
     const body = await request.json()
     const { checkoutFormData, orderItems } = body
 
+    console.log("rrrrr", checkoutFormData)
     // التحقق من وجود البيانات المطلوبة
     if (!checkoutFormData || !Array.isArray(orderItems) || orderItems.length === 0) {
       return NextResponse.json(

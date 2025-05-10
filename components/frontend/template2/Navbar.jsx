@@ -830,7 +830,7 @@
 'use client';
 
 import React, { useEffect, useState, useMemo } from 'react';
-import { useSession } from 'next-auth/react';
+// import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
@@ -844,7 +844,7 @@ import UserAvatar from './UserAvatar';
 import { useTheme } from 'next-themes';
 import WishlistButton from './WishlistButton';
 
-export default function Navbar({ slugDomain={}, storeData = {}, categories ,customization = {}, storeId }) {
+export default function Navbar({ slugDomain={}, storeData = {}, categories ,customization = {}, storeId , session, status}) {
   // Default values for empty props
   const safeStoreData = useMemo(() => ({
     profileImageUrl: '/default-store.png',
@@ -990,7 +990,7 @@ export default function Navbar({ slugDomain={}, storeData = {}, categories ,cust
     accentPalette
   ]);
 
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
   const [categoriesData, setCategories] = useState([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(false);
@@ -1385,7 +1385,7 @@ export default function Navbar({ slugDomain={}, storeData = {}, categories ,cust
                     aria-label="حساب المستخدم"
                     aria-expanded={isDropdownOpen}
                   >
-                    <UserAvatar user={session?.user} />
+                    <UserAvatar slugDomain={slugDomain} user={session?.user} />
                   </motion.button>
                 </motion.div>
               )}

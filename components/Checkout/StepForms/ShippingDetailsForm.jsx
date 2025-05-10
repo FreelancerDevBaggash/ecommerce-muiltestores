@@ -282,7 +282,7 @@ export default function ShippingDetailsForm() {
 
     const finalData = {
       ...data,
-      shippingCost,
+      shippingCost: parseFloat(shippingCost),
       selectedAddressId,
       location: {
         lat: location.lat,
@@ -565,7 +565,7 @@ export default function ShippingDetailsForm() {
             خيارات التوصيل
           </h3>
           <div className="grid gap-4 md:grid-cols-2">
-            {[8, 20].map((cost) => (
+            {[800, 2000].map((cost) => (
               <label
                 key={cost}
                 className={`relative p-6 border rounded-xl cursor-pointer transition-all text-right
@@ -590,7 +590,7 @@ export default function ShippingDetailsForm() {
                   </div>
                   <div className="flex-1">
                     <p className="font-medium text-gray-900 dark:text-gray-100">توصيل مستعجل</p>
-                    <p className="text-gray-600 dark:text-gray-400">3-5 أيام عمل</p>
+                    <p className="text-gray-600 dark:text-gray-400">7-5 أيام عمل</p>
                     <p className="mt-2 text-lg font-bold text-blue-600 dark:text-blue-400">
                       ر.ي{cost}.00
                     </p>

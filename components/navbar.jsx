@@ -209,12 +209,10 @@ export default function Navbar() {
                 transition={{ duration: 0.5 }}
                 className="flex items-center"
               >
-                <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white font-bold text-xl">
-                  ا
+                <div className="h-16 w-16 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                <img src="/logo.svg" alt="" />
                 </div>
-                <span className="mr-2 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-indigo-400 dark:from-indigo-400 dark:to-indigo-300">
-                  اتجر
-                </span>
+        
               </motion.div>
             </Link>
           </div>

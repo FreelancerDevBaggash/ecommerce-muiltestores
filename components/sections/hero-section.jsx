@@ -107,7 +107,7 @@ export default function HeroSection() {
                     className="w-10 h-10 rounded-full border-2 border-white dark:border-gray-800 overflow-hidden bg-gray-200 dark:bg-gray-700"
                   >
                 <Image
-  src={`/images/horo.svg`}
+  src={`/images/pic.svg`}
   alt={`User ${i}`}
   width={40}
   height={40}
@@ -117,7 +117,7 @@ export default function HeroSection() {
                 ))}
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400">
-                <span className="font-bold text-indigo-600 dark:text-indigo-400">+10,000</span> تاجر يستخدمون أتجر
+                <span className="font-bold text-indigo-600 dark:text-indigo-400">+1000</span> تاجر يستخدمون أتجر
               </div>
             </motion.div>
           </motion.div>
@@ -148,7 +148,7 @@ export default function HeroSection() {
                   {/* استبدال Lottie بصورة ثابتة */}
                   <div className="w-full h-[350px] relative">
                     <Image
-                      src="/images/horo.svg"
+                      src="/images/pic.svg"
                       alt="لوحة تحكم أتجر"
                       fill
                       className="object-contain"

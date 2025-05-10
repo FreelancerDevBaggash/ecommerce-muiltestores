@@ -13,7 +13,7 @@ export default function ProductShowcaseSection() {
   const products = [
     {
       name: "لوحة التحكم الرئيسية",
-      image: "/images/في لوحةKPIs.png",
+      image: "/images/dash.png",
       description:
         "واجهة سهلة الاستخدام تمكنك من إدارة متجرك بكفاءة. راقب المبيعات، وأدر المخزون، وتفاعل مع العملاء، كل ذلك من مكان واحد.",
       features: ["تقارير مبيعات مفصلة", "إدارة المخزون", "متابعة الطلبات", "إحصائيات العملاء"],
@@ -34,7 +34,7 @@ export default function ProductShowcaseSection() {
     },
     {
       name: "التحليلات والتقارير",
-      image: "/images/في لوحةKPIs.png",
+      image: "/images/dash.png",
       description:
         "احصل على رؤى دقيقة حول أداء متجرك. تتبع المبيعات والزيارات وسلوك العملاء لاتخاذ قرارات مستنيرة لنمو أعمالك.",
       features: ["تقارير مبيعات", "تحليل سلوك العملاء", "تتبع الزيارات", "تحليل معدل التحويل"],
@@ -78,7 +78,7 @@ export default function ProductShowcaseSection() {
                     src={products[activeIndex].image || "/placeholder.svg"}
                     alt={products[activeIndex].name}
                     fill
-                    className="object-cover"
+                    className="object-contain"
                   />
                 </div>
                 <div className="p-8 lg:p-12 flex flex-col justify-center">

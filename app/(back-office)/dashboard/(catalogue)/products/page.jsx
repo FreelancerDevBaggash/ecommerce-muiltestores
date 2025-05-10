@@ -106,7 +106,7 @@ export default async function page() {
       <PageHeader
         heading="المنتجات"
         linkTitle="إضافة منتج جديد"
-        href="/dashboard/products/create"
+        href="/dashboard/products/new"
         disabled={!allowAddProduct}
         alertMessage={alertMessage}
       />

@@ -423,7 +423,7 @@ export default async function DashboardPage() {
     }
     if (userType !== "VENDOR") {
       // مثلاً: تعيد توجيه العملاء إلى صفحة عامة أو تعرض رسالة
-      redirect("/dashboard/customers")
+      redirect("/dashboard/admin")
     }
      // 3. إذا كان بائعاً بدون متجر، نعيد التوجيه لصفحة الإنشاء
   if (userType === "VENDOR" && !store) {
@@ -524,6 +524,9 @@ export default async function DashboardPage() {
           <TabsContent value="orders" className="border rounded-lg p-4">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold">الطلبات الأخيرة</h3>
+              <a href="/dashboard/vendor/orders" className="text-sm text-indigo-600 hover:underline">
+                عرض الكل
+              </a>
              
             </div>
             <div className="overflow-x-auto">

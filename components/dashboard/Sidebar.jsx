@@ -97,18 +97,18 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
       { title: "الرئيسية", icon: Home, href: "/dashboard" },
       { title: "العملاء", icon: Users2, href: "/dashboard/customers" },
       { title: "الفئة الرئيسية", icon: Warehouse, href: "/dashboard/mainCategory" },
-      { title: "الموردون", icon: UserSquare2, href: "/dashboard/vendors" },
+      { title: "حسابات التجار", icon: UserSquare2, href: "/dashboard/vendors" },
       { title: "المتاجر", icon: Store, href: "/dashboard/stores" },
       { title: "الطلبات", icon: ShoppingCart, href: "/dashboard/orders" },
       { title: "المبيعات", icon: ShoppingBag, href: "/dashboard/sales" },
       { title: "التقارير", icon: BarChart3, href: "/dashboard/reports" },
       { title: "التسويق", icon: Target, href: "/dashboard/marketing" },
-      { title: "فريقنا", icon: User, href: "/dashboard/staff" },
+      // { title: "فريقنا", icon: User, href: "/dashboard/staff" },
       { title: "المجتمع", icon: Users2, href: "/dashboard/community" },
-      { title: "القوالب", icon: LayoutGrid, href: "/dashboard/templates" },
-      { title: "المحفظة", icon: CreditCard, href: "/dashboard/wallet" },
+      { title: "الثيمات/القوالب", icon: LayoutGrid, href: "/dashboard/templates" },
+      // { title: "المحفظة", icon: CreditCard, href: "/dashboard/wallet" },
       { title: 'عروض الباقات ', icon: IdCardIcon, href: '/dashboard/pricing' },
-      { title: 'باقات المتجر ', icon: IdCardIcon, href: '/dashboard/subscriptionPlan' },
+      { title: 'انواع باقات المتجر ', icon: IdCardIcon, href: '/dashboard/subscriptionPlan' },
       { title: "الاشتراكات", icon: LayoutGrid, href: "/dashboard/subscriptions" },
       { title: "محفظة المنصة", icon: CreditCard, href: "/dashboard/platformWallet" },
       { title: "مزودي الدفع", icon: CreditCard, href: "/dashboard/payments" },
@@ -118,7 +118,7 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
       { title: "الإشعارات", icon: Bell, href: "/dashboard/notifications" },
       { title: "الإعدادات", icon: Settings, href: "/dashboard/settings" },
       { title: "المساعدة", icon: HelpCircle, href: "/dashboard/help" },
-      { title: "المتجر الإلكتروني", icon: ExternalLink, href: "/" },
+      // { title: "المتجر الإلكتروني", icon: ExternalLink, href: "/" },
     ]
 
     const vendorLinks = [
@@ -131,14 +131,13 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
       { title: "المبيعات", icon: ShoppingBag, href: "/dashboard/sales" },
       { title: "التقارير", icon: BarChart3, href: "/dashboard/reports" },
       { title: "التسويق", icon: Target, href: "/dashboard/marketing" },
-      { title: "فريقنا", icon: User, href: "/dashboard/staff" },
-      { title: "القوالب", icon: LayoutGrid, href: "/dashboard/templates" },
+      // { title: "فريقنا", icon: User, href: "/dashboard/staff" },
+      { title: "الثيمات/القوالب", icon: LayoutGrid, href: "/dashboard/templates" },
 
       { title: "التخصيصات", icon: Package, href: "/dashboard/customizations" },
       { title: "المحفظة", icon: CreditCard, href: "/dashboard/wallet" },
       { title: 'عروض الباقات ', icon: IdCardIcon, href: '/dashboard/pricing' },
-      { title: 'باقات المتجر ', icon: IdCardIcon, href: '/dashboard/subscriptionPlan' },
-      { title: "الاشتراكات", icon: LayoutGrid, href: "/dashboard/subscriptions" },
+      { title: 'باقات المتجر ', icon: IdCardIcon, href: '/dashboard/subscriptions' },
       // { title: "مزودي الدفع", icon: CreditCard, href: "/dashboard/payments" },
       // { title: "مزودي التوصيل", icon: Truck, href: "/dashboard/deliveringProviders" },
       // { title: "إعدادات التوصيل", icon: Truck, href: "/dashboard/deliveringProvidering" },
@@ -168,7 +167,7 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
       { title: "المنتجات", icon: Boxes, href: "/dashboard/products" },
       { title: "الفئات", icon: LayoutList, href: "/dashboard/categories" },
       { title: "الفئات الفرعية", icon: LayoutList, href: "/dashboard/subcategory" },
-      { title: "الخصائص", icon: SendToBack, href: "/dashboard/attributes" },
+      { title: "الخصائص", icon: SendToBack, href: "/dashboard/customizations" },
       { title: "الكوبونات", icon: ScanSearch, href: "/dashboard/coupons" },
       { title: "لافتات المتجر", icon: MonitorPlay, href: "/dashboard/banners" },
     ]
@@ -177,6 +176,7 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
       { title: "المنتجات", icon: Boxes, href: "/dashboard/products" },
       { title: "الفئات", icon: LayoutList, href: "/dashboard/categories" },
       { title: "الفئات الفرعية", icon: LayoutList, href: "/dashboard/subcategory" },
+      
 
     ]
 
@@ -308,14 +308,22 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
   return (
     <TooltipProvider delayDuration={0}>
       <div dir="rtl"
-        className={`${
-          showSidebar
-            ? "sm:block sm-mt-0  fixed right-0 top-0 h-screen z-50"
-            : " sm:mt-0  sm:block fixed right-0 top-0 h-screen z-50"
-        } font-arabic bg-white dark:bg-slate-900 shadow-xl transition-all duration-300 flex flex-col ${
-          collapsed ? "w-16" : "w-64"
-        }`}
+        className={`
+          fixed right-0 top-0 h-screen z-50
+          font-arabic bg-white dark:bg-slate-900 shadow-xl
+          transition-all duration-300 flex flex-col
+          ${collapsed ? "w-16" : "w-64"}
+          ${showSidebar ? "block" : "hidden"}  /* مخفي افتراضيًا */
+          sm:block sm:flex                   /* يظهر في sm وما فوق */
+        `}
       >
+        {/* في أعلى Sidebar */}
+<button
+  className="sm:hidden p-2 absolute top-4 left-4 text-slate-700 dark:text-slate-300"
+  onClick={() => setShowSidebar(false)}
+>
+  <X className="w-6 h-6" />
+</button>
         {/* Header */}
         {/* <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
           {!collapsed && (
@@ -401,7 +409,7 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
     </Link>
   )}
 
-  <div className="flex items-center gap-2">
+  <div className="flex items-center gap-2 ">
     {/* زر المشاركة */}
     <Dialog>
       <DialogTrigger asChild>
@@ -450,10 +458,10 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
     <Button
       variant="ghost"
       size="icon"
-      className="h-8 w-8 text-slate-500 dark:text-slate-400"
+      className="h-8 w-8 text-slate-500 dark:text-slate-400 sm:inline-flex"
       onClick={toggleCollapse}
     >
-      {collapsed ? <Menu className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+      {collapsed ? <Menu className="h-4 w-4" /> : <ChevronRight className="h-4 w-4 hidden sm:inline-block" />}
     </Button>
   </div>
   </div>
@@ -475,7 +483,7 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
                     : "hover:bg-indigo-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
                 } ${collapsed ? "justify-center" : ""}`}
               >
-                <Home className="w-5 h-5" />
+                <Home className="w-5 h-5 hidden sm:inline-block" />
                 {!collapsed && <span className="font-medium">الرئيسية</span>}
               </Link>
             </TooltipTrigger>
@@ -530,7 +538,7 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
                             : "hover:bg-indigo-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
                         }`}
                       >
-                        <Icon className="w-4 h-4" />
+                        <Icon className="w-4 h-4 hidden sm:inline-block" />
                         <span>{item.title}</span>
                       </Link>
                     )
@@ -588,7 +596,7 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
                           : "hover:bg-indigo-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
                       }`}
                     >
-                      <Icon className="w-4 h-4" />
+                      <Icon className="w-4 h-4 hidden sm:inline-block" />
                       <span>{item.title}</span>
                     </Link>
                   )
@@ -645,7 +653,7 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
                           : "hover:bg-indigo-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
                       }`}
                     >
-                      <Icon className="w-4 h-4" />
+                      <Icon className="w-4 h-4 hidden sm:inline-block" />
                       <span>{item.title}</span>
                     </Link>
                   )
@@ -702,7 +710,7 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
                           : "hover:bg-indigo-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
                       }`}
                     >
-                      <Icon className="w-4 h-4" />
+                      <Icon className="w-4 h-4 hidden sm:inline-block" />
                       <span>{item.title}</span>
                     </Link>
                   )
@@ -728,7 +736,7 @@ export default function Sidebar({ showSidebar, setShowSidebar, collapsed, setCol
                             : "hover:bg-indigo-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
                         } ${collapsed ? "justify-center" : ""}`}
                       >
-                        <Icon className="w-5 h-5" />
+                        <Icon className="w-5 h-5 hidden sm:inline-blockhidden sm:inline-block" />
                         {!collapsed && <span className="font-medium">{item.title}</span>}
                       </Link>
                     </TooltipTrigger>

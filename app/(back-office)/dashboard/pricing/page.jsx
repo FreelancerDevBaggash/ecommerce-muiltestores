@@ -33,7 +33,7 @@ export default function PricingPage() {
           },
           features: p.features || [],
           limitations: p.limitations || [],
-          cta: p.monthlyPrice === 0 ? "ابدأ مجاناً" : "ابدأ الآن",
+          cta: p.monthlyPrice === 0 ? "لقد تم اشتراك بالباقة المجانيه بالفعل ... " : "ابدأ الآن",
           popular: false, // يمكنك إضافة حقل isPopular في الـ DB لاحقاً
         }));
         setPlans(mapped);
@@ -132,17 +132,18 @@ export default function PricingPage() {
                   </span>
                 </div>
                 <Button
-                  onClick={() => handleCheckout(plan.id)}
-                  className={`w-full ${
-                    plan.price.monthly === 0
-                      ? "bg-green-600 hover:bg-green-700"
-                      : plan.popular
-                      ? "bg-indigo-700 hover:bg-indigo-800"
-                      : "bg-gray-800 hover:bg-gray-700"
-                  } text-white`}
-                >
-                  {plan.cta}
-                </Button>
+  onClick={() => handleCheckout(plan.id)}
+  disabled={plan.price.monthly === 0}
+  className={`w-full ${
+    plan.price.monthly === 0
+      ? "bg-green-600 hover:bg-green-700 opacity-50 cursor-not-allowed"
+      : plan.popular
+      ? "bg-indigo-700 hover:bg-indigo-800"
+      : "bg-gray-800 hover:bg-gray-700"
+  } text-white`}
+>
+  {plan.cta}
+</Button>
               </div>
 
               <div className="border-t border-gray-200 dark:border-gray-700 p-8">

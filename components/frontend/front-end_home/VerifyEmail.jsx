@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 export default function VerifyEmail({ verificationToken, vendorId }) {
@@ -8,9 +8,17 @@ export default function VerifyEmail({ verificationToken, vendorId }) {
   const [error, setError] = useState("");
   const [showResend, setShowResend] = useState(false);
   const [timer, setTimer] = useState(30);
-  const [token, setToken] = useState(verificationToken); // ✅ حالة للتوكن
+  const [token, setToken] = useState(verificationToken);
+  const [isVerifying, setIsVerifying] = useState(false); // ✅ حالة التحقق
 
   const router = useRouter();
+  const firstInputRef = useRef(null);
+
+  useEffect(() => {
+    if (firstInputRef.current) {
+      firstInputRef.current.focus();
+    }
+  }, []);
 
   const handleChange = (index, value) => {
     if (/^[0-9۰-۹٠-٩]?$/.test(value)) {
@@ -23,12 +31,27 @@ export default function VerifyEmail({ verificationToken, vendorId }) {
     }
   };
 
+  useEffect(() => {
+    const code = otp.join("");
+    if (code.length === 4 && code.split("").every((char) => char !== "")) {
+      // ✅ تشغيل صوت
+      const audio = new Audio("/sounds/success.mp3"); // تأكد من وجود هذا المسار
+      audio.play().catch((e) => console.log("تعذر تشغيل الصوت", e));
+
+      // ✅ اهتزاز الجهاز
+      if (navigator.vibrate) navigator.vibrate(150);
+
+      handleSubmit();
+    }
+  }, [otp]);
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     const code = otp.join("");
 
-    if (code === token) { // ✅ التحقق باستخدام التوكن المحدث
+    if (code === token) {
       try {
+        setIsVerifying(true); // ✅ ابدأ التحقق
         const res = await fetch("/api/verify-email", {
           method: "POST",
           headers: {
@@ -47,6 +70,8 @@ export default function VerifyEmail({ verificationToken, vendorId }) {
       } catch (err) {
         setError("حدث خطأ أثناء تأكيد البريد.");
         console.log(err);
+      } finally {
+        setIsVerifying(false); // ✅ انتهى التحقق
       }
     } else {
       setError("رمز التحقق غير صحيح.");
@@ -70,13 +95,13 @@ export default function VerifyEmail({ verificationToken, vendorId }) {
         setError(data.message || "فشل في إرسال رمز جديد.");
       } else {
         alert("تم إرسال رمز تحقق جديد إلى بريدك الإلكتروني.");
-        setToken(data.verificationToken); // ✅ تحديث رمز التحقق
+        setToken(data.verificationToken);
         setShowResend(false);
         setTimer(30);
-        setOtp(["", "", "", ""]); // ✅ تفريغ الخانات السابقة
+        setOtp(["", "", "", ""]);
       }
     } catch (err) {
-      setError("err حدث خطأ أثناء إعادة إرسال الرمز.");
+      setError("حدث خطأ أثناء إعادة إرسال الرمز.");
       console.log(err);
     }
   };
@@ -111,6 +136,7 @@ export default function VerifyEmail({ verificationToken, vendorId }) {
               <input
                 key={index}
                 id={`otp-${index}`}
+                ref={index === 0 ? firstInputRef : null}
                 type="text"
                 inputMode="numeric"
                 maxLength={1}
@@ -127,9 +153,12 @@ export default function VerifyEmail({ verificationToken, vendorId }) {
 
           <button
             type="submit"
-            className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-2 rounded-xl transition duration-200"
+            disabled={isVerifying} // ✅ تعطيل الزر عند التحقق
+            className={`w-full ${
+              isVerifying ? "bg-gray-400 cursor-not-allowed" : "bg-primary hover:bg-primary-dark"
+            } text-white font-semibold py-2 rounded-xl transition duration-200`}
           >
-            Verify
+            {isVerifying ? "Verifying..." : "Verify"}
           </button>
         </form>
 

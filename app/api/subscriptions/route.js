@@ -2,12 +2,17 @@
 import { NextResponse } from "next/server";
 import db from "../../../lib/db";
 import { getServerSession } from "next-auth";  
-import { authOptions } from "../../../lib/authOptions";  // تأكد من المسار الصحيح
+import { authOptions } from "../../../lib/authOptions";
 
+// أداة لحساب التاريخ
+function addDays(date, days) {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
 
 export async function POST(request) {
   try {
-    // 1. اقرأ بيانات الطلب
     const {
       storeId,
       subscriptionPlanId,
@@ -16,7 +21,6 @@ export async function POST(request) {
       paymentMethod,
     } = await request.json();
 
-    // 2. تحقق من الحقول المطلوبة
     if (!storeId || !subscriptionPlanId || !planId || !billingCycle) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -24,77 +28,119 @@ export async function POST(request) {
       );
     }
 
-    // 3. حساب تواريخ البداية والنهاية
-    const startDate = new Date();
-    const endDate = new Date(startDate);
-    if (billingCycle === "monthly") {
-      endDate.setDate(endDate.getDate() + 30);
-    } else if (billingCycle === "yearly") {
-      endDate.setFullYear(endDate.getFullYear() + 1);
-    } else {
+    // 1. تحقق من وجود اشتراك حالي نشط
+    const existingSubscription = await db.subscription.findFirst({
+      where: {
+        store: {
+          
+            id: storeId,
+          
+        },
+        endDate: {
+          gt: new Date(), // الاشتراك لم ينتهِ بعد
+        },
+        status: "active",
+      },
+    });
+
+    // 2. احسب الأيام المتبقية (إن وُجد اشتراك حالي)
+    let remainingDays = 0;
+    if (existingSubscription) {
+      const now = new Date();
+      const endDate = new Date(existingSubscription.endDate);
+      remainingDays = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+    }
+
+    // 3. احسب عدد الأيام الجديدة حسب خطة الاشتراك
+    const newDurationDays = billingCycle === "monthly" ? 30 : billingCycle === "yearly" ? 365 : 0;
+    if (newDurationDays === 0) {
       return NextResponse.json(
         { error: "Invalid billingCycle" },
         { status: 400 }
       );
     }
 
-    // 4. إنشاء سجل الاشتراك في قاعدة البيانات
-    const subscription = await db.subscription.create({
-      data: {
-        store: {
-  connect: { id: "67fa545f6971a95b3e78f49b" }
-},
-        subscriptionPlan: { connect: { id: subscriptionPlanId } },
-        planId,
-        billingCycle,
-        startDate,
-        endDate,
-        status: "active",
-        paymentMethod,
-      },
-    });
+    const totalDays = remainingDays + newDurationDays;
+    const newStartDate = new Date();
+    const newEndDate = addDays(newStartDate, totalDays);
 
-    // 5. إعادة الاشتراك المنشأ
+    let subscription;
+
+    if (existingSubscription) {
+      // 4. تحديث الاشتراك الحالي
+      subscription = await db.subscription.update({
+        where: { id: existingSubscription.id },
+        data: {
+          subscriptionPlan: { connect: { id: subscriptionPlanId } },
+          planId,
+          billingCycle,
+          startDate: newStartDate,
+          endDate: newEndDate,
+          paymentMethod,
+          status: "active",
+        },
+      });
+    } else {
+      // 5. إنشاء اشتراك جديد
+      subscription = await db.subscription.create({
+        data: {
+          store: { connect: { id: storeId } },
+          subscriptionPlan: { connect: { id: subscriptionPlanId } },
+          planId,
+          billingCycle,
+          startDate: newStartDate,
+          endDate: newEndDate,
+          status: "active",
+          paymentMethod,
+        },
+      });
+    }
+
     return NextResponse.json(subscription, { status: 201 });
+
   } catch (error) {
-    console.error("Error creating subscription:", error);
+    console.error("Error creating/updating subscription:", error);
     return NextResponse.json(
-      { error: "Failed to create subscription" },
+      { error: "فشل إنشاء أو تحديث الاشتراك." },
       { status: 500 }
     );
   }
 }
 
 
+
 export async function GET(req) {
   try {
+    // الحصول على الجلسة باستخدام authOptions
     const session = await getServerSession(authOptions);
-    const userId = session?.user?.id;
 
+    console.log("Session:", session); // متابعة الجلسة
+
+    // التحقق من وجود session و userId
+    const userId = session?.user?.id;
     if (!userId) {
+      console.log("User not authorized, no userId found");
       return NextResponse.json({ error: 'غير مصرح' }, { status: 401 });
     }
 
     // استرجاع المتجر المرتبط بالمستخدم (التاجر)
-    const storeData = await fetch(`/api/stores?vendorId=${userId}`);
+    const storeData = await fetch(`https://your-api-url/stores?vendorId=${userId}`);
     const store = await storeData.json();
-    console.log("Store Data:", store);  // تأكد من بيانات المتجر
+
+    console.log("Store Data:", store); // متابعة استرجاع بيانات المتجر
 
     if (!store || !store.storeId) {
+      console.log("Store not found or storeId is missing");
       return NextResponse.json({ error: 'لا يوجد متجر مرتبط بالمستخدم' }, { status: 404 });
     }
 
+    // استرجاع الاشتراك المرتبط بالـ storeId
     const subscription = await db.subscription.findFirst({
-      where: {
-        store: {
-          some: { storeId: store.storeId },
-        },
-        status: 'active',
-      },
+      where: { storeId: store.storeId },
       orderBy: { createdAt: 'desc' },
     });
-    
-    console.log("Fetched Subscription:", subscription);  // تحقق من الاشتراك المسترجع
+
+    console.log("Subscription:", subscription); // متابعة الاشتراك
 
     if (!subscription || !subscription.endDate) {
       console.log("No active subscription found or endDate is missing");
@@ -103,7 +149,8 @@ export async function GET(req) {
 
     return NextResponse.json({ endDate: subscription.endDate });
   } catch (error) {
-    console.error('Error fetching subscription:', error);
+    console.error('Error fetching subscription:', error); // طباعة تفاصيل الخطأ
     return NextResponse.json({ error: 'فشل في جلب الاشتراك' }, { status: 500 });
   }
 }
+

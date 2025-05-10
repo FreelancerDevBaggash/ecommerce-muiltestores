@@ -45,6 +45,10 @@ export const columns = [
     cell: ({ row }) => (<DateColumn row={row} accessorKey="expiryDate" /> ),
   },
   {
+    accessorKey: 'storeName',
+    header: 'المتجر',
+  },
+  {
     accessorKey: "isActive",
     header: "IsActive",
   },

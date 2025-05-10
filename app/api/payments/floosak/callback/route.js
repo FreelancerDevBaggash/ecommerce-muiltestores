@@ -7,7 +7,7 @@ export async function GET(request) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
     // 1) استخرج معلمات الاستعلام
-    const params = request.nextUrl.searchParams
+    const params = new URL(request.url);
     const orderId = params.get('orderId')
     const amount = parseFloat(params.get('amount') || '0')
     const currency = params.get('currency') || 'YER'

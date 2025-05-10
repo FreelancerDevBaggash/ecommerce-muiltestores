@@ -64,6 +64,11 @@ export const columns = [
     cell: ({ row }) => <FontFamilyColumn font={row.original.fontFamily} />, // استخدم هنا المكون FontFamilyColumn
   },
   {
+    accessorKey: "store.businessName",
+    header: "اسم المتجر",
+    cell: ({ row }) => row.original?.store?.businessName || "—",
+  },  
+  {
     accessorKey: "isActive",
     header: "Active",
     cell: ({ row }) => <Checkbox checked={row.original.isActive} disabled />,

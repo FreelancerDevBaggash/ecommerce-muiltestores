@@ -7,7 +7,7 @@ export async function GET(request, { params: { id } }) {
         const customization = await db.customization.findUnique({
             where: {
                 id,
-            },
+            }
         });
 
         if (!customization) {

@@ -5,7 +5,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Loader } from 'lucide-react'; // ✅ أضفه هنا
-
+import toast from 'react-hot-toast';
+  
 export default function PaymentForm({ planId, billingCycle }) {
   const router = useRouter();
 
@@ -14,6 +15,7 @@ export default function PaymentForm({ planId, billingCycle }) {
   const [storeId, setStoreId] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   // 1. جلب بيانات الخطة
   useEffect(() => {
@@ -63,6 +65,18 @@ export default function PaymentForm({ planId, billingCycle }) {
 
     setLoading(true);
     try {
+
+        // 0. التحقق من وجود اشتراك مسبق
+const checkRes = await fetch(
+  `/api/subscriptions/check?storeId=${storeId}&planId=${plan.id}&cycle=${billingCycle}`
+);
+const checkData = await checkRes.json();
+
+if (checkData?.alreadySubscribed) {
+  alert('لقد اشتركت بالفعل في هذه الخطة.');
+  return;
+}
+
       // 4.1 خصم من المحفظة
       const wRes = await fetch(
         `/api/wallet/store_balance/withdraw?plan=${planId}&cycle=${billingCycle}`,
@@ -108,9 +122,10 @@ export default function PaymentForm({ planId, billingCycle }) {
         setLoading(false);
         return;
       }
-
-      // 4.3 إعادة التوجيه إلى صفحة التأكيد
-      router.push(`/dashboard`);
+      toast.success('تم الاشتراك بنجاح');
+      setTimeout(() => {
+        router.push('/dashboard');
+      }, 2000); //
     } catch (err) {
       console.error(err);
       alert('فشل الاتصال بالخادم.');
@@ -197,17 +212,22 @@ export default function PaymentForm({ planId, billingCycle }) {
       <Button
   onClick={handleContinue}
   disabled={!selectedPayment || loading}
-  className="w-full flex justify-center items-center gap-2"
+  className={`w-full flex justify-center items-center gap-2 ${
+    loading ? 'opacity-60 cursor-not-allowed' : ''
+  }`}
 >
   {loading ? (
     <>
       <Loader className="w-4 h-4 animate-spin" />
-      <span>جارٍ المعالجة...</span>
+      <span>جارٍ الدفع...</span>
     </>
   ) : (
     'متابعة للدفع'
   )}
 </Button>
+{successMessage && (
+  <p className="text-green-600 text-center mt-4">{successMessage}</p>
+)}
     </div>
   );
 }

@@ -1760,7 +1760,7 @@ const handleStatusChange = async (e) => {
 // دالة تحديد ألوان الحالة
 function getStatusColor(status) {
   const colors = {
-    "PENDING": "text-green-800 bg-green-100",
+    "PENDING": "text-green-800 bg-white-700",
     "PROCESSING": "text-blue-800 bg-blue-100",
     "SHIPPED": "text-purple-800 bg-purple-100",
     "DELIVERED": "text-teal-800 bg-teal-100",

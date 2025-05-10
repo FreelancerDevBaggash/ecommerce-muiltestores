@@ -418,8 +418,8 @@ export default function UpdateStoreDataForm({ updateData = {} }) {
 
         <SubmitButton 
           isLoading={loading} 
-          buttonTitle="Save Changes"
-          loadingButtonTitle="Saving Changes, please wait..."
+          buttonTitle="حفظ التغييرات"
+          loadingButtonTitle="جاري حفظ التغييرات يرجى الانتظار..."
         /> 
       </form>
     </div>

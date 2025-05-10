@@ -29,23 +29,33 @@ console.log("data:",data )
 }
 
 // دالة GET لاسترجاع التخصيصات بناءً على storeId
+// app/api/customizations/route.js
+
 export async function GET(request) {
   try {
-    const { searchParams } = new URL(request.url);
-      const storeId = searchParams.get('storeId');
-    // جلب التخصيصات بناءً على storeId
-    const customizations = await db.customization.findMany({
-      where: { storeId },
-    });
+    const { searchParams } = new URL(request.url)
+    const storeId = searchParams.get("storeId")
 
-    return NextResponse.json(customizations);
+    // نبني شرط الفلترة بشكل مشروط
+    const where = {}
+    if (storeId) {
+      where.storeId = storeId
+    }
+
+    const customizations = await prisma.customization.findMany({
+      where,
+      include: {
+        store: { select: { id: true, businessName: true } }
+      }
+    })
+
+    return NextResponse.json({ data: customizations })
   } catch (error) {
-    console.log(error);
+    console.error("Failed to fetch customizations:", error)
     return NextResponse.json(
-      {
-        error: "Failed to fetch customizations",
-      },
+      { error: "Failed to fetch customizations" },
       { status: 500 }
-    );
+    )
   }
 }
+

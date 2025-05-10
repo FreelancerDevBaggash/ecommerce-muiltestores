@@ -60,14 +60,39 @@ import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/authOptions"
 import DashboardLayout from "@/components/dashboard/DashboardLayout"
 import CountdownFloatingBox from "@/components/dashboard/CountdownFloatingBox"
+import db from "@/lib/db"
+
 export default async function Layout({ children }) {
   const session = await getServerSession(authOptions)
-  const subscriptionEndDate = "2025-05-10T23:59:59Z"; 
-  // if (!session) {
-  //   redirect("/login?callbackUrl=/dashboard")
-  // }
+  
+  if (!session) {
+    redirect("/login?callbackUrl=/dashboard")
+  }
 
-  return <DashboardLayout className="pt-10">
-     <CountdownFloatingBox endDate={subscriptionEndDate}/>
-     {children}</DashboardLayout>
+  // جلب بيانات اشتراك التاجر
+  let subscriptionEndDate = null;
+  
+  if (session.user.role === "VENDOR") {
+    const vendor = await db.vendor.findUnique({
+      where: { id: session.user.id },
+      include: {
+        store: {
+          include: {
+            subscription: true
+          }
+        }
+      }
+    });
+
+    if (vendor?.store?.subscription?.endDate) {
+      subscriptionEndDate = vendor.store.subscription.endDate.toISOString();
+    }
+  }
+
+  return (
+    <DashboardLayout subscriptionEndDate={subscriptionEndDate} className="pt-10  ">
+      
+      {children}
+    </DashboardLayout>
+  )
 }

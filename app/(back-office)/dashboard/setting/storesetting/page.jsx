@@ -16,7 +16,7 @@ export default async function UpdateStoreData(){
 
 return (
   <div>
-    <FormHeader title="Update Store Data" />
+    <FormHeader title="تحديث بيانات المتجر" />
     <UpdateStoreDataForm updateData={storeData}/>
   </div>
 );

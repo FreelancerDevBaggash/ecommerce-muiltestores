@@ -4,9 +4,9 @@ import { useState, useEffect } from "react"
 import Navbar from "./Navbar"
 import Sidebar from "./Sidebar"
 import { Button } from "@/components/ui/button"
-import { ArrowUp } from "lucide-react"
+import { ArrowUp, Menu } from "lucide-react"
 
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout({ children , subscriptionEndDate }) {
   const [showSidebar, setShowSidebar] = useState(false)
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
@@ -32,7 +32,17 @@ export default function DashboardLayout({ children }) {
 
   return (
     <div dir="rtl" className="min-h-screen bg-slate-50  dark:bg-slate-950">
-      <Navbar  showSidebar={showSidebar} setShowSidebar={setShowSidebar} collapsed={collapsed} />
+    
+      <Navbar  showSidebar={showSidebar} setShowSidebar={setShowSidebar} collapsed={collapsed} subscriptionEndDate={subscriptionEndDate}/>
+      
+    {/* زر المينيو على الشاشات الصغيرة */}
+    <button
+      className="sm:hidden p-2 text-slate-700 dark:text-slate-300 fixed top-4 right-4 z-60"
+      onClick={() => setShowSidebar(true)}
+    >
+      <Menu className="w-6 h-6" />
+    </button>
+
       <Sidebar
         showSidebar={showSidebar}
         setShowSidebar={setShowSidebar}

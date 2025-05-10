@@ -46,8 +46,8 @@ export default async function Page() {
     <div dir="rtl">
       <PageHeader
         heading="باقات اشتراك"
-        href="/dashboard/subscriptions/new"
-        linkTitle="إضافة باقة"
+        href="/dashboard/pricing"
+        linkTitle="الاشتراك في باقة"
       />
 
       <div className="py-4">

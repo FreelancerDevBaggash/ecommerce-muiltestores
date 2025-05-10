@@ -13,7 +13,7 @@ import { generateIsoFormattedDate } from "../../lib/generateIsoFormattedDate";
 import { useRouter } from "next/navigation";
 import { useSession } from 'next-auth/react'
 
-export default async function NewCouponForm({storeId}){
+export default  function NewCouponForm({storeId}){
     const {data:session,status}=useSession()
     // if(status === "loading"){
     //     return <p>Loading... </p>

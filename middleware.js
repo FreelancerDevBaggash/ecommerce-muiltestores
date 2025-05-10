@@ -56,37 +56,46 @@ const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 
 export async function middleware(req) {
   const { pathname } = req.nextUrl;
+  const token = await getToken({ req, secret: NEXTAUTH_SECRET });
 
-  // 1) حاول جلب جلسة الـ Vendor
-  const vendorToken = await getToken({ req, secret: NEXTAUTH_SECRET });
-  // 2) حاول جلب JWT عميل من الكوكي
-  const customerToken = req.cookies.get("customer_token")?.value;
+  // 1) منع Vendors من الوصول لـ /dashboard/SubscriptionPlan
+  const adminOnlyPages = [
+    "/dashboard/SubscriptionPlan",
+    // "/dashboard/Settings",
+    // "/dashboard/Billing",
+    // "/dashboard/AdminTools",
+  ];
 
-  // مسارات لوحة التحكم – خاصّة بالتجار فقط
+  if (adminOnlyPages.some(page => pathname.startsWith(page))) {
+    if (token?.role !== "ADMIN") {
+      // إعادة التوجيه إلى لوحة التحكم إذا كان Vendor
+      return NextResponse.redirect(new URL("/dashboard", req.url));
+    }
+    return NextResponse.next(); // يسمح للـ Admin
+  }
+
+
+  // 2) حماية لوحة التحكم (للتجار والمسؤولين حسب الصلاحيات)
   if (pathname.startsWith("/dashboard")) {
-    if (vendorToken) {
+    if (token?.role === "ADMIN" || token?.role === "VENDOR") {
       return NextResponse.next();
     }
+    // إذا لم يكن مسجلاً نهائياً، نرسله لصفحة تسجيل الدخول
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  // مسارات الدفع – خاصّة بالعملاء فقط
-  // نستخدم matcher لكل من /checkout و /:slug/checkout
+  // 3) مسارات الدفع (للعملاء فقط)
   if (pathname === "/checkout" || pathname.match(/^\/[^/]+\/checkout$/)) {
+    const customerToken = req.cookies.get("customer_token")?.value;
     if (customerToken) {
       return NextResponse.next();
     }
-    // إذا كان في مسار /:slug/checkout نعيد توجيههم ل slug/loginCustomer
-    // أما إذا كان /checkout فقط نرسلهم إلى /loginCustomer
     const parts = pathname.split("/").filter(Boolean);
     const slug = parts.length === 2 ? parts[0] : null;
-    const redirectTo = slug
-      ? `/${slug}/loginCustomer`
-      : `/loginCustomer`;
+    const redirectTo = slug ? `/${slug}/loginCustomer` : `/loginCustomer`;
     return NextResponse.redirect(new URL(redirectTo, req.url));
   }
 
-  // باقي الصفحات مفتوحة للجميع
   return NextResponse.next();
 }
 

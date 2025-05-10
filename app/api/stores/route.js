@@ -93,6 +93,36 @@ export async function POST(request){
       },
     ],
   });
+  
+ // ابحث عن خطة الاشتراك المجانية بالاسم "مجاني"
+ const freePlan = await db.subscriptionPlan.findFirst({
+  where: {
+    name: 'مجاني',
+  },
+});
+if (!freePlan) {
+  throw new Error('لم يتم العثور على خطة الاشتراك المجانية');
+}
+
+    // حدد تواريخ الاشتراك
+    const startDate = new Date();
+    const endDate = new Date();
+    endDate.setMonth(endDate.getMonth() + 3); // بعد 3 أشهر
+console.log("newStore.idnewStore.idnewStore.id",newStore.id)
+console.log("freePlan.id.freePlan.id.freePlan.id.id",freePlan.id)
+
+const subscription = await db.subscription.create({
+  data: {
+    store: { connect: { id: newStore.id } },
+    subscriptionPlan: { connect: { id: freePlan.id } },
+    planId: 1,
+    billingCycle: 'monthly',
+    startDate: new Date(),
+    endDate: new Date(new Date().setMonth(new Date().getMonth() + 3)),
+    status: 'active',
+    paymentMethod: 'local',
+  },
+});
 
   console.log(newStore);
   return NextResponse.json(newStore);

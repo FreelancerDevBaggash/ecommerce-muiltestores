@@ -141,6 +141,7 @@ import axios from "axios"
 import Pusher from "pusher-js"
 import { AlignJustify, Search, X } from "lucide-react"
 import Link from "next/link"
+import CountdownFloatingBox from "@/components/dashboard/CountdownFloatingBox"
 
 import ThemeSwitcherBtn from "./ThemeSwitcherBtn"
 import UserAvatar from "./UserAvatar"
@@ -151,7 +152,7 @@ import { Input } from "@/components/ui/input"
 // fetcher function for SWR
 const fetcher = url => axios.get(url).then(res => res.data)
 
-export default function Navbar({ showSidebar, setShowSidebar, collapsed }) {
+export default function Navbar({ showSidebar, setShowSidebar, collapsed ,subscriptionEndDate }) {
   const { data: session, status } = useSession()
   const [showSearch, setShowSearch] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
@@ -290,12 +291,15 @@ export default function Navbar({ showSidebar, setShowSidebar, collapsed }) {
               href="/dashboard"
               className="text-lg font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
             >
-              منصة التجارة
+              منصة أتجر
             </Link>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
+        {subscriptionEndDate && (
+        <CountdownFloatingBox endDate={subscriptionEndDate} />
+      )}
           <ThemeSwitcherBtn />
 
           {status === "authenticated" && (

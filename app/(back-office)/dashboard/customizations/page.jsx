@@ -50,6 +50,10 @@
 //         </div>
 //     );
 // }
+// app/dashboard/customizations/page.tsx
+// app/(back-office)/dashboard/customizations/page.jsx
+
+// app/(back-office)/dashboard/customizations/page.jsx
 import PageHeader from "../../../../components/backoffice/PageHeader";
 import React from "react";
 import DataTable from "../../../../components/data-table-components/DataTable";
@@ -59,40 +63,62 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../lib/authOptions";
 
 export default async function page() {
-  const session = await getServerSession(authOptions);
-  const userId = session?.user?.id;
-  console.log("معرف المستخدم:", userId);
+  const session  = await getServerSession(authOptions);
+  const userId   = session?.user?.id;
+  const userRole = session?.user?.role;
+
+  if (!userId) {
+    console.log("User session not found.");
+    return null;
+  }
+
+  // دالة مساعدة لتحويل المخرجات إلى مصفوفة
+  function extractArray(res) {
+    if (Array.isArray(res)) return res;
+    if (res && Array.isArray(res.data)) return res.data;
+    return [];
+  }
+
   let customizations = [];
 
-  if (userId) {
-    try {
-      // استرداد المتجر المرتبط بالمستخدم
-      const storeData = await getData(`stores?vendorId=${userId}`, {mode: 'real-time'});
+  if (userRole === "ADMIN") {
+    // ADMIN: نجلب كل المتاجر والتخصيصات
+    const resStores = await getData("stores", { mode: "real-time" });
+    const stores    = extractArray(resStores);
 
-      if (storeData && storeData.length > 0) {
-        const storeId = storeData[0].id;
+    const storeMap = Object.fromEntries(stores.map(s => [s.id, s.businessName]));
 
-        // استرداد التخصيصات الخاصة بالمتجر بناءً على storeId
-        customizations = await getData(`customizations?storeId=${storeId}`, {mode: 'real-time'});
+    const resCust = await getData("customizations", { mode: "real-time" });
+    const allCust = extractArray(resCust);
 
-        if (customizations && customizations.length > 0) {
-          console.log("التخصيصات الخاصة بالمتجر:", customizations);
-        } else {
-          console.log("لم يتم العثور على تخصيصات للمتجر.");
-        }
-      } else {
-        console.log("لم يتم العثور على متجر مرتبط بالمستخدم.");
-      }
-    } catch (error) {
-      console.log("حدث خطأ أثناء جلب بيانات المتجر أو التخصيصات:", error);
-    }
+    customizations = allCust.map(c => ({
+      ...c,
+      storeName: storeMap[c.storeId] || "—"
+    }));
   } else {
-    console.log("جلسة المستخدم غير موجودة.");
+    // VENDOR: نجلب متجره أولاً
+    const resStores = await getData(`stores?vendorId=${userId}`, { mode: "real-time" });
+    const stores    = extractArray(resStores);
+
+    if (!stores.length) {
+      console.log("No store found for the user.");
+      return null;
+    }
+
+    const store = stores[0];
+
+    // ثم تخصيصات هذا المتجر
+    const resCust      = await getData(`customizations?storeId=${store.id}`, { mode: "real-time" });
+    const storeCustArr = extractArray(resCust);
+
+    customizations = storeCustArr.map(c => ({
+      ...c,
+      storeName: store.businessName
+    }));
   }
 
   return (
     <div>
-      {/* العنوان الرئيسي للصفحة */}
       <PageHeader
         heading="تخصيصات المتجر"
         href="/dashboard/customizations/new"
@@ -100,9 +126,15 @@ export default async function page() {
       />
 
       <div className="py-8">
-        {/* عرض الجدول للتخصيصات */}
         <DataTable data={customizations} columns={columns} />
       </div>
     </div>
   );
 }
+
+
+
+
+
+
+

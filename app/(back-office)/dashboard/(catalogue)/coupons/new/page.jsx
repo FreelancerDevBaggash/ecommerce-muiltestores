@@ -8,30 +8,22 @@ import {getData} from "../../../../../../lib/getData";
 import NewCouponForm from '../../../../../../components/backoffice/NewCouponForm'
 import { authOptions } from '@/lib/authOptions';
 export default async function NewCoupon(){
+  const sessions = await getServerSession(authOptions)
+  console.log("➡ sessions:", sessions)
 
-    // if(status === "loading"){
-    //     return <p>Loading... </p>
-    //   }
-    const sessions = await getServerSession(authOptions)
+  const vendorId = sessions?.user?.id
+  console.log("➡ vendorId:", vendorId)
 
-    const vendorId = sessions?.user?.id;  
-    let storeId = "";
+  if (!vendorId) {
+    // إذا لم يكن مسجلاً فقم بإعادة التوجيه إلى تسجيل الدخول
+    redirect("/login")
+  }
 
-    if (vendorId) { 
-       // استرداد المتجر المرتبط بالمستخدم
-       const storeData = await getData(`stores?vendorId=${vendorId}`);
-      
-        if (storeData && storeData.length > 0) {
-            const store = storeData[0];
-           storeId = store.id;
-        }
-    }
-    console.log(vendorId)
-  
-  
-    return(
- 
-    <NewCouponForm storeId={storeId}/>
+  const storeData = await getData(`stores?vendorId=${vendorId}`)
+  console.log("➡ storeData:", storeData)
 
-    );
+  const storeId = storeData?.[0]?.id
+  console.log("➡ storeId:", storeId)
+
+  return <NewCouponForm storeId={storeId}/>
 }

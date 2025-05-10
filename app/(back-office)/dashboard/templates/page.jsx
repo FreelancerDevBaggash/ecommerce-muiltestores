@@ -6,9 +6,12 @@ import { columns } from "./columns";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../lib/authOptions";
 import SelectTemplate from './_components/SelectTemplate';
+import Heading from '@/components/backoffice/Heading'
 export default async function page() {
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id;
+  const role = session?.user?.role; // افتراضياً: "admin" أو "vendor"
+
   // console.log(
   //   "user jhynnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn    id :",
   //   userId
@@ -33,8 +36,15 @@ export default async function page() {
   return (
     <div>
       {/*Header*/}
-      <PageHeader heading="Templates" href="/dashboard/templates/new" linkTitle="Add Template" />
-
+      {role === "ADMIN" ? (
+        <PageHeader
+          heading="الثيمات/القوالب"
+          href="/dashboard/templates/new"
+          linkTitle="اضافة قالب"
+        />
+      ) : (
+      <Heading title={"الثيمات/القوالب"} />
+      )}
       <div className="py-8">
         {/* <DataTable data={vendorCategories} columns={columns} /> */}
         <SelectTemplate templateId={templateId} storeId={storeId} />

@@ -125,9 +125,9 @@ export default function VerifyEmail({ verificationToken, vendorId }) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="bg-white shadow-lg rounded-2xl p-8 max-w-md w-full">
-        <h1 className="text-2xl font-bold text-center mb-4">Verify Your Email</h1>
+        <h1 className="text-2xl font-bold text-center mb-4">تحقق من الايميل</h1>
         <p className="text-gray-600 text-center mb-6">
-          Please enter the 4-digit code sent to your email
+        يرجى إدخال الرمز المكون من 4 أرقام الذي تم إرساله إلى بريدك الإلكتروني.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -158,7 +158,7 @@ export default function VerifyEmail({ verificationToken, vendorId }) {
               isVerifying ? "bg-gray-400 cursor-not-allowed" : "bg-primary hover:bg-primary-dark"
             } text-white font-semibold py-2 rounded-xl transition duration-200`}
           >
-            {isVerifying ? "Verifying..." : "Verify"}
+            {isVerifying ? "جاري التحقق..." : "تحقق"}
           </button>
         </form>
 

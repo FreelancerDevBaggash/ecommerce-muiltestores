@@ -121,6 +121,7 @@ export default function Setting() {
                   icon={<Award className="text-yellow-500" />}
                   title="إعدادات التقييم"
                   description="تخصيص نظام التقييم لمتجرك."
+                  soon={true}
                 />
                 
                 <SettingCard
@@ -135,6 +136,7 @@ export default function Setting() {
                   icon={<Globe className="text-green-500" />}
                   title="إعدادات النطاق"
                   description="إدارة إعدادات نطاق متجرك."
+                  soon={true}
                 />
                 <SettingCard
                   href="/notifications"
@@ -147,6 +149,7 @@ export default function Setting() {
                   icon={<ShoppingCart className="text-yellow-500" />}
                   title="خيارات الطلب"
                   description="إضافة حقول مخصصة لعربة التسوق."
+                  soon={true}
                 />
               </div>
             </section>

@@ -60,9 +60,9 @@ console.log("planIdplanIdplanId",planId)
 
 
     let categoryLimit = 0;
-    if (planId === 1) categoryLimit = 3;
+    if (planId === 1) categoryLimit = 5;
     else if (planId === 2) categoryLimit = 6;
-    else if (planId === 3) categoryLimit = 10;
+    else if (planId === 3) categoryLimit = 1000;
 
 
     allowAddCategory = categoryCount < categoryLimit;

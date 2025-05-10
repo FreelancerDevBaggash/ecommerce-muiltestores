@@ -43,17 +43,17 @@ export const columns = [
     enableHiding: false,
   },
   {
-    accessorKey: "title",
+    accessorKey: "العنوان",
     header: ({ column }) => (<SorttableColumn column={column} title="Title"/>)
   },
   {
     accessorKey: "imageUrl",
-    header: "Banner Image",
+    header: "صورة اللافتة الاعلانية",
     cell: ({ row }) => (<ImageColumn row={row} accessorKey="imageUrl" />)
   },
   {
     accessorKey: "link",
-    header: "Banner Link",
+    header: "رابط الاعلان",
   },
   {
     accessorKey: "isActive",
@@ -66,7 +66,7 @@ export const columns = [
   },
   {
     accessorKey: "createdAt",
-    header: "Data Created",
+    header: "تاريخ الانشاء",
     cell: ({ row }) => (<DateColumn row={row} accessorKey="createdAt" /> ),
   },
   {

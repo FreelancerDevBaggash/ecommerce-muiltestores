@@ -89,9 +89,9 @@ export default async function page() {
       <div>
         {/* Header */}
         <PageHeader
-          heading="Banners"
+          heading="لافتة اعلانية"
           href="/dashboard/banners/new"
-          linkTitle="Add Banner"
+          linkTitle="اضافة لافتة "
         />
   
         <div className="py-8">

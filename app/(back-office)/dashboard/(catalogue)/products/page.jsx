@@ -89,7 +89,7 @@ export default async function page() {
 
       // تحديد الحد حسب الباقة
       let productLimit = 0;
-      if (planId === 1) productLimit = 5;
+      if (planId === 1) productLimit = 50;
       else if (planId === 2) productLimit = 1000;
       else if (planId === 3) productLimit = 10000;
 

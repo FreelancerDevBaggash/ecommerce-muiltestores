@@ -1,3 +1,4 @@
+
 import PageHeader from "@/components/backoffice/PageHeader";
 import React from "react";
 import DataTable from "../../../../../components/data-table-components/DataTable";
@@ -61,7 +62,7 @@ console.log("planIdplanIdplanId",planId)
 
     let categoryLimit = 0;
     if (planId === 1) categoryLimit = 5;
-    else if (planId === 2) categoryLimit = 6;
+    else if (planId === 2) categoryLimit = 50;
     else if (planId === 3) categoryLimit = 1000;
 
 

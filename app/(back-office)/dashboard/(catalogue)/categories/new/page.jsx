@@ -1,3 +1,5 @@
+export const dynamic = "force-static";
+
 import React from "react"
 import NewCategoryForm from "../../../../../../components/backoffice/NewCategoryForm";
 import {getData} from "../../../../../../lib/getData";
@@ -23,12 +25,7 @@ export default async function NewCategory(){
    
     console.log(storeId)
   console.log(mainCategoryId)
-    {/*- id
-        -title
-        -slug
-        -description
-        -image
-        */}
+
     return(
     <NewCategoryForm 
     storeId={storeId}

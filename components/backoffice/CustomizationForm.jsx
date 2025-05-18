@@ -811,7 +811,7 @@ export default function CustomizationForm({ storeId }) {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <FormHeader title="🎨 Customization Studio" />
+      <FormHeader title="🎨 معرض التخصيص" />
       
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -821,7 +821,7 @@ export default function CustomizationForm({ storeId }) {
           {/* Color Controls Section */}
           <div className="space-y-8">
             <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-xl">
-              <h3 className="text-lg font-bold mb-4">Primary Color</h3>
+              <h3 className="text-lg font-bold mb-4">لون رئيسي</h3>
               <ChromePicker
                 color={primaryColor}
                 onChangeComplete={handleColorChange}
@@ -856,7 +856,7 @@ export default function CustomizationForm({ storeId }) {
 
           {/* Live Preview Section */}
           <div className="bg-gray-100 dark:bg-gray-900 p-8 rounded-xl space-y-6">
-            <h3 className="text-xl font-bold text-center">Live Preview</h3>
+            <h3 className="text-xl font-bold text-center">معاينة مباشرة</h3>
             
             {/* Mockup Header */}
             <div 
@@ -867,13 +867,13 @@ export default function CustomizationForm({ storeId }) {
                 className="text-2xl font-bold mb-4"
                 style={{ color: backgroundColor }}
               >
-                Website Header
+                رأس الموقع
               </h2>
               <p 
                 className="text-sm"
                 style={{ color: accentColor }}
               >
-                This is a sample header section
+                هذا نموذج لقسم الرأس
               </p>
             </div>
 
@@ -886,14 +886,13 @@ export default function CustomizationForm({ storeId }) {
                 className="text-lg font-semibold mb-3"
                 style={{ color: primaryColor }}
               >
-                Content Section
+                قسم المحتوى
               </h3>
               <p 
                 className="text-gray-600 dark:text-gray-300 mb-4"
                 style={{ color: secondaryColor }}
               >
-                This is a sample content area showing how text would appear with 
-                the selected color scheme.
+                هذا مثال لمنطقة المحتوى يظهر كيف سيظهر النص باستخدام نظام الالوان المختار.
               </p>
               
               <button
@@ -904,14 +903,14 @@ export default function CustomizationForm({ storeId }) {
                   color: chroma(accentColor).luminance() > 0.5 ? '#000' : '#fff'
                 }}
               >
-                Sample Button
+                زر تجريبي
               </button>
             </div>
 
             {/* Font Family Preview */}
             <div className="mt-6">
               <label className="block text-sm font-medium mb-2">
-                Font Family Preview
+                معاينة نوع الخط
               </label>
               <input
                 type="text"
@@ -940,8 +939,8 @@ export default function CustomizationForm({ storeId }) {
           
           <SubmitButton
             isLoading={loading}
-            buttonTitle="Save Design"
-            loadingButtonTitle="Saving..."
+            buttonTitle="حفظ التصميم"
+            loadingButtonTitle="جاري الحفظ..."
             className="px-8 py-3 rounded-lg bg-gradient-to-r from-primary to-secondary text-white font-bold hover:opacity-90 transition-opacity"
           />
         </div>

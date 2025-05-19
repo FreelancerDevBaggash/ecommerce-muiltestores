@@ -3,7 +3,7 @@ export const dynamic = "force-static";
 import React from "react"
 import NewCategoryForm from "../../../../../../components/backoffice/NewCategoryForm";
 import {getData} from "../../../../../../lib/getData";
-import { getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/authOptions';
 
 export default async function NewCategory(){

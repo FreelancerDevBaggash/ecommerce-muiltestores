@@ -65,9 +65,9 @@ import db from "@/lib/db"
 export default async function Layout({ children }) {
   const session = await getServerSession(authOptions)
   
-  if (!session) {
-    redirect("/login?callbackUrl=/dashboard")
-  }
+  // if (!session) {
+  //   redirect("/login?callbackUrl=/dashboard")
+  // }
 
   // جلب بيانات اشتراك التاجر
   let subscriptionEndDate = null;
